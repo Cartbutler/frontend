@@ -1,0 +1,172 @@
+/* Colors definition in :root */
+:root {
+    --primary: #0d0e0e; /* Main color of the theme */
+    --primary-variant: #1B5A4E; /* Variant of primary */
+    --secondary: #191568; /* Secondary color of the theme */
+    --secondary-variant: #34865c; /* Variant of secondary */
+    --background: #000000; /* General background color */
+    --surface: #dadada; /* Surface elements */
+    --error: #B00020; /* Error messages */
+    --on-primary: #EDEDED; /* Text on primary */
+    --on-secondary: #88C3AC; /* Text on secondary */
+    --on-background: #FFFFFF; /* Text on background */
+    --on-surface: #000000; /* Text on surface */
+    --on-error: #FFFFFF; /* Text on error */
+}
+
+/* CSS with semantic variables */
+html, body {
+    height: 100%; /* Ensures the body takes the full height */
+    margin: 0;
+    padding: 0;
+    background-color: var(--primary); /* Background applied to navbar and footer */
+    color: var(--on-primary); /* Light text */
+}
+
+body {
+    display: flex;
+    flex-direction: column; /* Organizes content in a column */
+}
+
+.navbar {
+    background-color: var(--secondary); /* Navbar background */
+    color: var(--on-primary); /* Light text */
+    padding-left: 0px; /* Removes extra spacing, keeping alignment */
+}
+
+.navbar-brand {
+    display: flex;
+    align-items: center; /* Centers logo and text */
+    gap: 10px; /* Space between logo and text */
+    color: var(--on-secondary); /* Fixed text color */
+    text-decoration: none; /* Removes underline, if applicable */
+    margin-left: -80px; /* Adjusts margin to align the logo */
+}
+
+.navbar-brand:hover {
+    color: var(--on-secondary); /* Keeps the same color when hovering */
+}
+
+.navbar-brand img {
+    height: 130px; /* Logo size */
+    width: 130px;
+    object-fit: contain; /* Ensures logo proportions */
+    margin-left: 0;
+}
+
+.search-container {
+    width: 60%;
+    margin-right: auto; /* To center with login/sign up */
+}
+
+.search-container .form-control {
+    height: 50px; /* Aligns height with buttons */
+    background-color: var(--surface); /* Background of input */
+    color: var(--on-surface); /* Text color in input */
+    border: 1px solid var(--border); /* Border color */
+}
+
+/* Placeholder text */
+.search-container .form-control::placeholder {
+    color: var(--on-surface); /* Placeholder color */
+    opacity: 1; /* Ensures full visibility */
+}
+
+.search-container .btn {
+    background-color: var(--primary-variant); /* Button background */
+    color: var(--on-primary); /* Button text */
+    border: 1px solid var(--border); /* Button border */
+    height: 50px; /* Same height as the search bar */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    white-space: nowrap;
+    padding: 0 15px;
+    margin-right: 10px;
+    border-radius: 5px;
+    transition: all 0.3s ease;
+}
+
+.search-container .btn:hover {
+    background-color: var(--secondary-variant); /* Hover background */
+    color: var(--on-primary); /* Hover text color */
+    border-color: var(--primary-variant); /* Hover border */
+}
+
+.market-card {
+    background-color: var(--tertiary); /* Card background */
+    color: var(--on-primary); /* Card text */
+    border: 1px solid var(--on-primary); /* Card border */
+    border-radius: 8px;
+    width: 150px; /* Fixed width */
+    height: 150px; /* Fixed height */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+}
+
+.market-card:hover {
+    background-color: var(--secondary-variant); /* Hover background */
+    color: var(--on-primary); /* Hover text color */
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+}
+
+main {
+    flex: 1;
+    display: grid;
+    grid-template-columns: repeat(6, 1fr); /* 6 columns */
+    grid-template-rows: repeat(2, 1fr); /* 2 rows */
+    gap: 20px; /* Space between categories */
+    padding: 20px;
+    justify-items: center; /* Centers items */
+    align-items: center;
+}
+
+/* Responsiveness for smaller screens */
+@media (max-width: 768px) {
+    main {
+        grid-template-columns: repeat(2, 1fr); /* 2 columns for smaller screens */
+    }
+}
+
+footer {
+    background-color: var(--secondary); /* Footer background */
+    color: var(--on-primary); /* Light text */
+    padding: 10px 0;
+    text-align: center;
+    line-height: 40px; /* Adjusts vertical alignment of text */
+    height: 60px; /* Sets the total footer height */
+}
+
+.navbar .form-control {
+    height: 50px; /* Aligns height with buttons */
+    background-color: var(--background); /* Input background */
+    color: var(--on-background); /* Input text */
+    border: 1px solid var(--border); /* Input border */
+}
+
+.navbar .btn-outline-primary {
+    background-color: var(--primary-variant); /* Button background */
+    color: var(--on-primary); /* Button text */
+    border: 1px solid var(--border); /* Button border */
+    height: 50px; /* Same height as the search bar */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    white-space: nowrap;
+    padding: 0 15px;
+    border-radius: 5px;
+    transition: all 0.3s ease;
+}
+
+.navbar .btn-outline-primary:hover {
+    background-color: var(--button-hover); /* Hover background */
+    color: var(--on-primary); /* Hover text */
+    border-color: var(--primary-variant); /* Hover border */
+}
+
+.navbar .form-control::placeholder {
+    color: var(--on-surface); /* Placeholder text color */
+    opacity: 1; /* Ensures full visibility */
+}

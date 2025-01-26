@@ -1,0 +1,165 @@
+/* Colors definition in :root */
+:root {
+    --primary: #f2f2f2; /* Main color of the theme */
+    --primary-variant: #1E6D5C; /* Variant for primary button */
+    --secondary: #8AD167; /* Navbar background */
+    --secondary-variant: #3C9585; /* Variant for hover effect */
+    --background: #FFFFFF; /* General website background */
+    --surface: #FFFFFF; /* Input and surface backgrounds */
+    --error: #B00020; /* Error message color */
+    --on-primary: #26251C; /* Text on primary */
+    --on-secondary: #036452; /* Text on secondary */
+    --on-background: #4D4D4D; /* Softer gray for text on background */
+    --on-surface: #6E6E6E; /* Softer gray for text on surface */
+    --on-error: #FFFFFF; /* Text on error messages */
+    --border: #036452; /* General border color */
+    --hover: #EF766E; /* General hover color */
+}
+
+/* CSS with semantic variables */
+html, body {
+    height: 100%; /* Ensures the body takes the full height */
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    background-color: var(--primary); /* Surface */
+    color: var(--on-primary); /* On Surface */
+    display: flex;
+    flex-direction: column; /* Organizes content in a column */
+}
+
+.navbar {
+    background-color: var(--secondary); /* Primary */
+    padding-left: 0px; /* Removes extra space, bringing the logo closer to the left */
+}
+
+.navbar-brand {
+    display: flex;
+    align-items: center; /* Vertically centers the logo and text */
+    gap: 10px; /* Space between the logo and text */
+    margin-left: -80px; /* Negative margin to bring the logo closer to the left edge */
+}
+
+.navbar-brand img {
+    height: 130px; /* Adjusts the logo size */
+    width: 130px;
+    object-fit: contain; /* Ensures the image is not cropped */
+    margin-left: 0; /* Removes additional margin */
+}
+
+.search-container {
+    width: 60%; /* Increases the width of the search bar */
+    margin-right: auto; /* Centers with login/sign up */
+}
+
+.search-container .form-control,
+.navbar .form-control {
+    height: 50px; /* Consistent height for inputs */
+    background-color: var(--background); /* White background for the input */
+    color: var(--on-surface); /* Softer gray text for the input */
+    border: 1px solid var(--border); /* Outline */
+    border-radius: 5px; /* Rounded corners */
+}
+
+.search-container .form-control::placeholder,
+.navbar .form-control::placeholder {
+    color: var(--on-surface); /* Softer gray placeholder text */
+    opacity: 0.8; /* Slight transparency for a more subtle look */
+}
+
+.search-container .btn,
+.navbar .btn-outline-primary {
+    height: 50px; /* Consistent height for buttons */
+}
+
+/* Search Button */
+.search-container .btn {
+    background-color: var(--primary-button); /* Primary Container */
+    color: var(--background); /* On Primary Container */
+    border: 1px solid var(--border); /* Outline */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    white-space: nowrap; /* Prevents line breaks */
+    padding: 0 15px; /* Internal spacing */
+    margin-right: 10px; /* Space between Search and Login */
+    border-radius: 5px; /* Rounded corners */
+    transition: all 0.3s ease; /* Smoothness when hovering */
+}
+
+.search-container .btn:hover {
+    background-color: var(--secondary-variant); /* Background on hover */
+    color: var(--background); /* White text on hover */
+    border-color: var(--border); /* Consistent light border on hover */
+}
+
+/* Sign Up Button */
+.navbar .btn-outline-primary {
+    background-color: var(--primary-button); /* Same as Search button */
+    color: var(--background); /* Text */
+    border: 1px solid var(--border); /* Borders */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    white-space: nowrap; /* Prevents line breaks in the text */
+    padding: 0 15px; /* Internal spacing */
+    border-radius: 5px; /* Rounded corners */
+    transition: all 0.3s ease; /* Smoothness when hovering */
+}
+
+.navbar .btn-outline-primary:hover {
+    background-color: var(--secondary-variant); /* Background on hover */
+    color: var(--background); /* White text on hover */
+    border-color: var(--primary-button); /* Consistent border on hover */
+}
+
+/* Category Cards */
+.market-card {
+    background-color: var(--tertiary); /* Vibrant Salmon */
+    color: var(--background); /* On Vibrant Salmon */
+    border: 1px solid var(--border); /* Outline */
+    border-radius: 8px;
+    width: 150px; /* Fixed width */
+    height: 150px; /* Fixed height */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+}
+
+.market-card:hover {
+    background-color: var(--hover); /* Darker Salmon */
+    color: var(--background); /* On Primary */
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2); /* Soft shadow */
+}
+
+/* Grid Adjustments */
+main {
+    flex: 1; /* Ensures the main content takes all available space */
+    display: grid;
+    grid-template-columns: repeat(6, 1fr); /* 6 columns */
+    grid-template-rows: repeat(2, 1fr); /* 2 rows */
+    gap: 20px; /* Space between categories */
+    padding: 20px;
+    justify-items: center; /* Centers items in the grid */
+    align-items: center;
+}
+
+/* Responsiveness for smaller screens */
+@media (max-width: 768px) {
+    main {
+        grid-template-columns: repeat(2, 1fr); /* 2 columns for smaller screens */
+    }
+}
+
+/* Footer adjusted to always stay at the bottom */
+footer {
+    background-color: var(--secondary); /* Same as Navbar */
+    color: var(--on-primary); /* Text color */
+    padding: 10px 0; /* Internal spacing */
+    text-align: center; /* Horizontally centers */
+    line-height: 40px; /* Adjusts the vertical position of the text */
+    height: 60px; /* Total footer height */
+}
