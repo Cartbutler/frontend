@@ -11,7 +11,7 @@
     --on-secondary: #88C3AC; /* Text on secondary */
     --on-background: #FFFFFF; /* Text on background */
     --on-surface: #000000; /* Text on surface */
-    --on-error: #FFFFFF; /* Text on error */ 
+    --on-error: #FFFFFF; /* Text on error */
 }
 
 /* CSS with semantic variables */
@@ -167,6 +167,6 @@ footer {
 }
 
 .navbar .form-control::placeholder {
-    color: var(--on-surface); /* Placeholder text color */
+    color: var(--on-primary); /* Placeholder text color */
     opacity: 1; /* Ensures full visibility */
 }
