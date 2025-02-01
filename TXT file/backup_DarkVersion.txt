@@ -2,28 +2,44 @@
 /* === Colors Definition === */
 /* ========================== */
 :root {
-    --primary: #191568; /* Cor primária (Dark Mode) */
-    --primary-variant: #3D33C2; /* Cor variante primária (Dark Mode) */
-    --secondary: #0091EA; /* Cor secundária (Dark Mode) */
-    --secondary-variant: #0277BD; /* Cor variante secundária (Dark Mode) */
+    /* === Primary Colors === */
+    --primary: #0d0e0e; 
+    --on-primary: #EDEDED;
+    --primary-container: #1B5A4E;
+    --on-primary-container: #EDEDED; 
+
+    /* === Secondary Colors === */
+    --secondary: #191568;
+    --on-secondary: #E0E0FF;
+    --secondary-container: #34865c;
+    --on-secondary-container: #CAF0F8;
 
     /* === Background & Surfaces === */
     --background: #161313; /* Fundo principal (Dark Mode) */
+    --on-background: #FFFFFF; /* Texto sobre o fundo */
     --surface: #2A2A2A; /* Elementos de superfície ajustado para escuro */
+    --on-surface: #FFFFFF; /* Texto sobre surface */
+    --surface-variant: #49454F; /* Variantes de fundo */
+    --on-surface-variant: #CAC4D0; /* Texto sobre surface variante */
+
+    /* === Borders, Outline & Shadows === */
+    --border: var(--outline);
+    --outline: #CAC4D0;
+    --outline-variant: #49454F;
+    --shadow: rgba(0, 0, 0, 0.3);
 
     /* === Error Colors === */
     --error: #B00020;
-    
-    --on-primary: #FFFFFF; /* Texto sobre primary */
-    --on-secondary: #EDE7F6; /* Texto sobre secondary */
-    --on-background: #E0E0E0; /* Texto sobre o fundo */
-    --on-surface: #F5F5F5; /* Texto sobre surface */
-    --on-error: #FFCDD2; /* Texto sobre erro */
-     
-    --border: var(--primary-variant); /* Cor de bordas */
-    --hover: var(--secondary-variant); /* Cor de hover */
+    --on-error: #FFFFFF;
+    --error-container: #FFDAD4;
+    --on-error-container: #410E0B;
+
+    /* === Interactions === */
+    --hover: var(--secondary-container);
+    --inverse-surface: #E6E1E5;
+    --inverse-on-surface: #322F35;
 }
-   
+
 /* ========================== */
 /* === Global Styling === */
 /* ========================== */
@@ -44,7 +60,7 @@ body {
 /* === Navbar Styling === */
 /* ========================== */
 .navbar {
-    background-color: var(--primary); /* AQUI TEM QUE USAR A PRIMARY POIS EH A COR PRINCIPAL CERTO? */
+    background-color: var(--secondary);
     color: var(--on-primary);
     padding-left: 0px;
 }
@@ -53,13 +69,13 @@ body {
     display: flex;
     align-items: center;
     gap: 10px;
-    color: var(--on-primary); /* AQUI ESTA OK - COR DO CARTBLUTER NA BARRA*/
+    color: var(--on-secondary);
     text-decoration: none;
     margin-left: -80px;
 }
 
 .navbar-brand:hover {
-    color: var(--on-primary); /* AQUI ESTA OK - COR FIXA DO CARTBLUTER*/
+    color: var(--on-secondary);
 }
 
 .navbar-brand img {
@@ -77,19 +93,19 @@ body {
 
 .search-container .form-control {
     height: 50px;
-    background-color: var(--error); /* ISSO ESTA EM USO??? BLOCO COMPLETO */
+    background-color: var(--surface);
     color: var(--on-surface);
-    border: 1px solid var(--error); /* DEIXEI COM A COR SO PARA TESTAR */
+    border: 1px solid var(--border);
 }
 
 .search-container .form-control::placeholder {
-    color: var(--error); /* ISSO ESTA EM USO??? BLOCO COMPLETO */
+    color: var(--on-surface);
     opacity: 1;
 }
 
 .search-container .btn {
-    background-color: var(--secondary); 
-    color: var(--on-secondary);
+    background-color: var(--primary-container);
+    color: var(--on-primary);
     border: 1px solid var(--border);
     height: 50px;
     display: flex;
@@ -103,9 +119,9 @@ body {
 }
 
 .search-container .btn:hover {
-    background-color: var(--background);
-    color: var(--on-background);
-    border-color: var(--border);
+    background-color: var(--hover);
+    color: var(--on-primary);
+    border-color: var(--primary-container);
 }
 
 /* ========================== */
@@ -115,8 +131,8 @@ body {
     position: absolute;
     width: auto;
     min-width: 80%;
-    background-color: var(--background);
-    color: var(--on-background);
+    background-color: var(--surface);
+    color: var(--on-surface);
     border: 1px solid var(--border);
     max-height: 200px;
     overflow-y: auto;
@@ -128,13 +144,13 @@ body {
 [data-theme="dark"] .suggestions {
     background-color: var(--background); /* Fundo escuro */
     color: var(--on-background); /* Texto branco */
-    border: 1px solid var(--border);
+    border: 1px solid var(--outline-variant);
 }
 
 /* Light Mode: light background */
-[data-theme="light"] .suggestions { /* ISSO ESTA EM USO?? BLOCO COMPLETO? */
-    background-color: var(--background);
-    color: var(--on-background); 
+[data-theme="light"] .suggestions {
+    background-color: var(--surface);
+    color: var(--on-surface);
 }
 
 /* fixing the list items */
@@ -150,23 +166,21 @@ body {
 }
 
 /* 🔧 Hover correct for each mode */
-[data-theme="light"] .suggestions li:hover { /* ISSO ESTA EM USO?? BLOCO COMPLETO? */
-    background-color: var(--background);
-    color: var(--on-background);
+[data-theme="light"] .suggestions li:hover {
+    background-color: var(--hover);
+    color: var(--on-surface);
 }
 
-[data-theme="dark"] .suggestions li:hover { /* VER SE ISSO VAI MUDAR? NA LISTA DE SUGESTOES */ 
-    
-    /* AQUI PODE FICAR ASSIM??? AZUL NA LISTA SUSPENSA */
-    background-color: var(--secondary); 
-    color: var(--on-secondary);
+[data-theme="dark"] .suggestions li:hover {
+    background-color: var(--secondary);
+    color: var(--on-primary);
 }
 
 /* ========================== */
 /* === Market Cards === */
 /* ========================== */
 .market-card {
-    color: var(--primary); /* AQUI NAO MUDOU NADA QUANDO TROQUEI A COR - BLOCO COMPLETO */
+    color: var(--primary);
     border: 1px solid var(--border);
     border-radius: 8px;
     width: 150px;
@@ -178,9 +192,9 @@ body {
 }
 
 .market-card:hover {
-    background-color: var(--background);
-    color: var(--on-background);
-    box-shadow: var(--on-background); /* ESTA EM USO??? BLOCO COMPLETO?? */
+    background-color: var(--primary-container);
+    color: var(--on-primary);
+    box-shadow: var(--primary-container)
 }
 
 /* ========================== */
@@ -193,7 +207,7 @@ body {
 }
 
 footer {
-    background-color: var(--primary); /* O QUE FAZER AQUI? POIS NAO EH A COR DE FUNDO */
+    background-color: var(--secondary);
     color: var(--on-primary);
     padding: 10px 0;
     text-align: center;
@@ -201,18 +215,16 @@ footer {
     height: 60px;
 }
 
-/* COR DE FUNDO DOS INPUTS */
 .navbar .form-control {
     height: 50px;
-    background-color: var(--background);
-    color: var(--on-background);
+    background-color: var(--surface);
+    color: var(--on-surface);
     border: 1px solid var(--border);
 }
 
-/* BOTÃO DE SIGN UP */
 .navbar .btn-outline-primary {
-    background-color: var(--secondary); /* O QUE FAZER AQUI? POIS NAO EH A COR DO BACKGROUND */
-    color: var(--on-secondary);
+    background-color: var(--primary-container);
+    color: var(--on-primary);
     border: 1px solid var(--border);
     height: 50px;
     display: flex;
@@ -225,12 +237,12 @@ footer {
 }
 
 .navbar .btn-outline-primary:hover {
-    background-color: var(--background);
-    color: var(--on-background);
-    border-color: var(--border);
+    background-color: var(--hover);
+    color: var(--on-primary);
+    border-color: var(--primary-container);
 }
 /* ========================== */
-/* === Market Cards - Dark Mode STRUCTURE === */
+/* === Market Cards - Dark Mode === */
 /* ========================== */
 [data-theme="dark"] main {
     flex: 1;
@@ -244,8 +256,8 @@ footer {
 }
 
 [data-theme="dark"] .market-card {
-    background-color: var(--background);
-    color: var(--on-background);
+    background-color: var(--surface-variant);
+    color: var(--on-surface);
     border: 1px solid var(--border);
     border-radius: 8px;
     width: 150px;
@@ -258,9 +270,9 @@ footer {
 }
 
 [data-theme="dark"] .market-card:hover {
-    background-color: var(--background);
-    color: var(--on-background);
-    box-shadow: 0px 4px 10px var(--on-background); /* SOMBREAMENTO DAS CAIXAS DE SUGESTOES */
+    background-color: var(--secondary);
+    color: var(--on-primary);
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
 }
 
 /* ========================== */
@@ -283,8 +295,8 @@ footer {
     width: 50px; /* Mesmo tamanho dos outros botões */
     height: 50px; /* Garantindo alinhamento */
     border-radius: 8px;
-    background-color: var(--secondary); /* O QUE FAZER AQUI? POIS NAO EH A COR DO BACKGROUND */
-    color: var(--on-secondary);
+    background-color: var(--primary-container);
+    color: var(--on-primary);
     border: 1px solid var(--border);
     transition: all 0.3s ease-in-out;
     cursor: pointer;
@@ -293,8 +305,8 @@ footer {
 
 /* Efeito ao passar o mouse */
 .theme-toggle:hover {
-    background-color: var(--background);
-    color: var(--on-background);
+    background-color: var(--hover);
+    color: var(--on-primary);
 }
 
 /* Ícone de tema responsivo */
@@ -306,5 +318,5 @@ footer {
 /* Removendo a borda pixelada */
 .theme-toggle:focus {
     outline: none;
-    box-shadow: 0 0 10px var(--background);
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
 }
