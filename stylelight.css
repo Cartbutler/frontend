@@ -170,7 +170,7 @@ body {
 [data-theme="light"] .suggestions li:hover {
     
     /* ESSA PARTE EH A COR FICA SOBRE O NOMES DO ITENS DE SUGESTOES */
-    background-color: var(--background); 
+    background-color: var(--primary); 
     
     /* POSSO ABRIR UMA EXCECAO AQUI??? 
     USAR UMA COR ESPECIFICA AQUI??? ATE MESMO FORA DA PALETA? */ 
