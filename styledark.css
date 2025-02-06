@@ -2,26 +2,26 @@
 /* === Colors Definition === */
 /* ========================== */
 :root {
-    --primary: #191568; /* Cor primária (Dark Mode) */
-    --primary-variant: #3D33C2; /* Cor variante primária (Dark Mode) */
-    --secondary: #0091EA; /* Cor secundária (Dark Mode) */
-    --secondary-variant: #0277BD; /* Cor variante secundária (Dark Mode) */
+    --primary: #191568; /* Primary color (Dark Mode) */
+    --primary-variant: #3D33C2; /* Primary variant color (Dark Mode) */
+    --secondary: #0091EA; /* Secondary color (Dark Mode) */
+    --secondary-variant: #0277BD; /* Secondary variant color (Dark Mode) */
 
     /* === Background & Surfaces === */
-    --background: #161313; /* Fundo principal (Dark Mode) */
-    --surface: #2A2A2A; /* Elementos de superfície ajustado para escuro */
+    --background: #161313; /* Main background (Dark Mode) */
+    --surface: #2A2A2A; /* Surface elements adjusted for dark */
 
     /* === Error Colors === */
     --error: #B00020;
     
-    --on-primary: #FFFFFF; /* Texto sobre primary */
-    --on-secondary: #EDE7F6; /* Texto sobre secondary */
-    --on-background: #E0E0E0; /* Texto sobre o fundo */
-    --on-surface: #F5F5F5; /* Texto sobre surface */
-    --on-error: #FFCDD2; /* Texto sobre erro */
+    --on-primary: #FFFFFF; /* Text on primary */
+    --on-secondary: #EDE7F6; /* Text on secondary */
+    --on-background: #E0E0E0; /* Text on background */
+    --on-surface: #F5F5F5; /* Text on surface */
+    --on-error: #FFCDD2; /* Text on error */
      
-    --border: var(--primary-variant); /* Cor de bordas */
-    --hover: var(--secondary-variant); /* Cor de hover */
+    --border: var(--primary-variant); /* Border color */
+    --hover: var(--secondary-variant); /* Hover color */
 }
    
 /* ========================== */
@@ -44,7 +44,7 @@ body {
 /* === Navbar Styling === */
 /* ========================== */
 .navbar {
-    background-color: var(--primary); /* AQUI TEM QUE USAR A PRIMARY POIS EH A COR PRINCIPAL CERTO? */
+    background-color: var(--primary); /* HERE YOU HAVE TO USE PRIMARY BECAUSE IT IS THE MAIN COLOR, RIGHT? */
     color: var(--on-primary);
     padding-left: 0px;
 }
@@ -53,13 +53,13 @@ body {
     display: flex;
     align-items: center;
     gap: 10px;
-    color: var(--on-primary); /* AQUI ESTA OK - COR DO CARTBLUTER NA BARRA*/
+    color: var(--on-primary); /* THIS IS OK - CARTBLUTER COLOR ON THE BAR */
     text-decoration: none;
     margin-left: -80px;
 }
 
 .navbar-brand:hover {
-    color: var(--on-primary); /* AQUI ESTA OK - COR FIXA DO CARTBLUTER*/
+    color: var(--on-primary); /* THIS IS OK - FIXED CARTBLUTER COLOR */
 }
 
 .navbar-brand img {
@@ -70,20 +70,21 @@ body {
 }
 
 .search-container {
-    width: 60%;
+    width: 100%;  /* check if this is working */
+    max-width: 500px;  /* Define a limit for the width */
     margin-right: auto;
     position: relative;
 }
 
 .search-container .form-control {
     height: 50px;
-    background-color: var(--error); /* ISSO ESTA EM USO??? BLOCO COMPLETO */
+    background-color: var(--on-surface); /* IS THIS IN USE??? COMPLETE BLOCK */
     color: var(--on-surface);
-    border: 1px solid var(--error); /* DEIXEI COM A COR SO PARA TESTAR */
+    border: 1px solid var(--border); /* LEFT WITH THE COLOR JUST TO TEST */
 }
 
 .search-container .form-control::placeholder {
-    color: var(--error); /* ISSO ESTA EM USO??? BLOCO COMPLETO */
+    color: var(--error); /* IS THIS IN USE??? COMPLETE BLOCK */
     opacity: 1;
 }
 
@@ -109,12 +110,14 @@ body {
 }
 
 /* ========================== */
-/* === Sugestions Styling List === */
+/* === Suggestions Styling List === */
 /* ========================== */
 .suggestions {
     position: absolute;
-    width: auto;
-    min-width: 80%;
+    top: 100%;
+    left: 0;
+    width: 80%;  /* Agora sempre terá a mesma largura do input */
+    min-width: unset;  /* Remove qualquer largura fixa que esteja causando problemas */
     background-color: var(--background);
     color: var(--on-background);
     border: 1px solid var(--border);
@@ -126,13 +129,13 @@ body {
 
 /* Dark Mode: dark background */
 [data-theme="dark"] .suggestions {
-    background-color: var(--background); /* Fundo escuro */
-    color: var(--on-background); /* Texto branco */
+    background-color: var(--background); /* Dark background */
+    color: var(--on-background); /* White text */
     border: 1px solid var(--border);
 }
 
 /* Light Mode: light background */
-[data-theme="light"] .suggestions { /* ISSO ESTA EM USO?? BLOCO COMPLETO? */
+[data-theme="light"] .suggestions { /* IS THIS IN USE?? COMPLETE BLOCK? */
     background-color: var(--background);
     color: var(--on-background); 
 }
@@ -143,21 +146,37 @@ body {
     cursor: pointer;
 }
 
-/* Dark mode of sugestions list */
+/* Dark mode of suggestions list */
 [data-theme="dark"] .suggestions li {
-    background-color: var(--background); /* Garante fundo escuro */
-    color: var(--on-background); /* Ajusta cor do texto */
+    background-color: var(--background); /* Ensures dark background */
+    color: var(--on-background); /* Adjusts text color */
+}
+
+/* Dark mode of suggestions list - Items */
+.suggestions-item { 
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 8px;
+}
+
+/* Dark mode of suggestions list - Image */
+.suggestion-img {
+    width: 30px;
+    height: 30px;
+    object-fit: contain; /* Avoids image distortion */
+    border-radius: 4px; /* Rounded border for a cleaner design */
 }
 
 /* 🔧 Hover correct for each mode */
-[data-theme="light"] .suggestions li:hover { /* ISSO ESTA EM USO?? BLOCO COMPLETO? */
+[data-theme="light"] .suggestions li:hover { /* IS THIS IN USE?? COMPLETE BLOCK? */
     background-color: var(--background);
     color: var(--on-background);
 }
 
-[data-theme="dark"] .suggestions li:hover { /* VER SE ISSO VAI MUDAR? NA LISTA DE SUGESTOES */ 
+[data-theme="dark"] .suggestions li:hover { /* SEE IF THIS WILL CHANGE? IN THE SUGGESTIONS LIST */ 
     
-    /* AQUI PODE FICAR ASSIM??? AZUL NA LISTA SUSPENSA */
+    /* CAN IT STAY LIKE THIS??? BLUE IN THE DROPDOWN LIST */
     background-color: var(--secondary); 
     color: var(--on-secondary);
 }
@@ -166,21 +185,35 @@ body {
 /* === Market Cards === */
 /* ========================== */
 .market-card {
-    color: var(--primary); /* AQUI NAO MUDOU NADA QUANDO TROQUEI A COR - BLOCO COMPLETO */
+    color: var(--primary);
     border: 1px solid var(--border);
     border-radius: 8px;
     width: 150px;
-    height: 150px;
+    height: 180px; /* Adjusted height to accommodate the image */
     display: flex;
+    flex-direction: column; /* Now the image is on top and the name below */
     align-items: center;
     justify-content: center;
     transition: all 0.3s ease;
+    overflow: hidden;
+    text-align: center;
 }
 
 .market-card:hover {
-    background-color: var(--background);
-    color: var(--on-background);
-    box-shadow: var(--on-background); /* ESTA EM USO??? BLOCO COMPLETO?? */
+    background-color: var(--surface);
+    color: var(--on-surface);
+    box-shadow: 4px 8px 15px var(--on-surface); /* Light and soft shadow */
+}
+
+.market-card img {
+    width: 120px; /* Adjust the image size */
+    height: 120px;
+    object-fit: contain; /* Avoids image distortion */
+    margin-bottom: 5px; /* Space between the image and the text */
+}
+
+.market-card h5 {
+    font-size: 14px; /* Adjusted text size */
 }
 
 /* ========================== */
@@ -193,7 +226,7 @@ body {
 }
 
 footer {
-    background-color: var(--primary); /* O QUE FAZER AQUI? POIS NAO EH A COR DE FUNDO */
+    background-color: var(--primary);
     color: var(--on-primary);
     padding: 10px 0;
     text-align: center;
@@ -201,7 +234,7 @@ footer {
     height: 60px;
 }
 
-/* COR DE FUNDO DOS INPUTS */
+/* BACKGROUND COLOR OF INPUTS */
 .navbar .form-control {
     height: 50px;
     background-color: var(--background);
@@ -209,9 +242,9 @@ footer {
     border: 1px solid var(--border);
 }
 
-/* BOTÃO DE SIGN UP */
+/* SIGN UP BUTTON */
 .navbar .btn-outline-primary {
-    background-color: var(--secondary); /* O QUE FAZER AQUI? POIS NAO EH A COR DO BACKGROUND */
+    background-color: var(--secondary); 
     color: var(--on-secondary);
     border: 1px solid var(--border);
     height: 50px;
@@ -260,7 +293,7 @@ footer {
 [data-theme="dark"] .market-card:hover {
     background-color: var(--background);
     color: var(--on-background);
-    box-shadow: 0px 4px 10px var(--on-background); /* SOMBREAMENTO DAS CAIXAS DE SUGESTOES */
+    box-shadow: 0px 4px 10px var(--on-background); /* SHADOWING OF SUGGESTION BOXES */
 }
 
 /* ========================== */
@@ -275,35 +308,35 @@ footer {
     opacity: 0.7; /* Make it a little softer */
 }
 
-/* Botão de alternância de tema moderno */
+/* Modern theme toggle button */
 .theme-toggle {
     display: flex;
     align-items: center;
     justify-content: center;
-    width: 50px; /* Mesmo tamanho dos outros botões */
-    height: 50px; /* Garantindo alinhamento */
+    width: 50px; /* Same size as other buttons */
+    height: 50px; /* Ensuring alignment */
     border-radius: 8px;
-    background-color: var(--secondary); /* O QUE FAZER AQUI? POIS NAO EH A COR DO BACKGROUND */
+    background-color: var(--secondary); 
     color: var(--on-secondary);
     border: 1px solid var(--border);
     transition: all 0.3s ease-in-out;
     cursor: pointer;
-    margin-left: 15px; /* Move o botão um pouco para a direita */
+    margin-left: 15px; /* Moves the button slightly to the right */
 }
 
-/* Efeito ao passar o mouse */
+/* Hover effect */
 .theme-toggle:hover {
     background-color: var(--background);
     color: var(--on-background);
 }
 
-/* Ícone de tema responsivo */
+/* Responsive theme icon */
 .theme-toggle svg {
     width: 24px;
     height: 24px;
 }
 
-/* Removendo a borda pixelada */
+/* Removing pixelated border */
 .theme-toggle:focus {
     outline: none;
     box-shadow: 0 0 10px var(--background);

@@ -3,25 +3,25 @@
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>CartBluter Prototype</title>
+        <title>CartBluter</title>
     
         <!-- Bootstrap CSS -->
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
         <link id="theme-style" rel="stylesheet" href="styledark.css">
     
-        <!-- Ícone maior para navegadores modernos -->
+        <!-- Larger icon for modern browsers -->
         <link rel="icon" type="image/png" sizes="512x512" href="images/android-chrome-512x512.png">
 
-        <!-- Ícone para dispositivos Android -->
+        <!-- Icon for Android devices -->
         <link rel="icon" type="image/png" sizes="192x192" href="images/android-chrome-192x192.png">
 
-        <!-- Ícone para Safari e dispositivos Apple -->
+        <!-- Icon for Safari and Apple devices -->
         <link rel="apple-touch-icon" sizes="180x180" href="images/apple-touch-icon.png">
 
-        <!-- Ícone clássico .ico -->
+        <!-- Classic .ico icon -->
         <link rel="icon" type="image/x-icon" href="images/favicon.ico">
 
-        <!--  Manifest para suporte a Progressive Web Apps (PWA) -->
+        <!-- Manifest for Progressive Web Apps (PWA) support -->
         <link rel="manifest" href="images/site.webmanifest">
     </head>
 <body>
@@ -65,87 +65,138 @@
     </nav>
 
     <!-- Main Content -->
-    <main>
-        <div class="market-card"><h5 class="category-name">Fruits</h5></div>
-        <div class="market-card"><h5 class="category-name">Vegetables</h5></div>
-        <div class="market-card"><h5 class="category-name">Dairy</h5></div>
-        <div class="market-card"><h5 class="category-name">Meat</h5></div>
-        <div class="market-card"><h5 class="category-name">Beverages</h5></div>
-        <div class="market-card"><h5 class="category-name">Snacks</h5></div>
-        <div class="market-card"><h5 class="category-name">Frozen</h5></div>
-        <div class="market-card"><h5 class="category-name">Bakery</h5></div>
-        <div class="market-card"><h5 class="category-name">Seafood</h5></div>
-        <div class="market-card"><h5 class="category-name">Spices</h5></div>
-        <div class="market-card"><h5 class="category-name">Household</h5></div>
-        <div class="market-card"><h5 class="category-name">Personal Care</h5></div>
-    </main>
+    <main id="category-container"></main>
 
     <!-- Footer -->
     <footer class="text-center">
         <p>&copy; 2025 CartBluter - Revolutionizing Grocery Shopping</p>
     </footer>
 
-    <!-- Script -->
-    <script>
-        const searchInput = document.getElementById('search-input');
-        const suggestionsBox = document.getElementById('suggestions');
-        const categories = [
-            "Milk", "Whole Milk", "Skimmed Milk", "Almond Milk",
-            "Fruits", "Vegetables", "Dairy", "Meat", "Beverages", "Snacks", "Frozen", 
-            "Bakery", "Seafood", "Spices", "Household", "Personal Care"
-        ];
+    
+<script>
+    const searchInput = document.getElementById('search-input');
+    const suggestionsBox = document.getElementById('suggestions');
 
-        searchInput.addEventListener('input', function () {
-            const searchTerm = searchInput.value.toLowerCase().trim();
-            suggestionsBox.innerHTML = "";
-            if (searchTerm === "") {
-                suggestionsBox.style.display = "none";
-                return;
-            }
-            const filteredCategories = categories.filter(category =>
-                category.toLowerCase().includes(searchTerm)
-            );
-            if (filteredCategories.length > 0) {
-                suggestionsBox.style.display = "block";
-                filteredCategories.forEach(category => {
-                    const li = document.createElement("li");
-                    li.classList.add("list-group-item", "suggestions-item");
-                    li.textContent = category;
-                    li.addEventListener("click", function () {
-                        searchInput.value = category;
-                        suggestionsBox.style.display = "none";
-                    });
-                    suggestionsBox.appendChild(li);
+    // Backend URL 
+
+    // Check if working correctly to show the suggestions list with this URL
+    const API_BASE_URL = "https://southern-shard-449119-d4.nn.r.appspot.com/";    
+    // Fixed list of categories (keeps the images)
+    const categories = [
+        { name: "Fruits", image: "images-DB-Local/fruits.jpg" },
+        { name: "Vegetables", image: "images-DB-Local/vegetables.jpg" },
+        { name: "Dairy", image: "images-DB-Local/dairy.jpg" },
+        { name: "Meat", image: "images-DB-Local/meat.jpg" },
+        { name: "Beverages", image: "images-DB-Local/beverages.jpg" },
+        { name: "Snacks", image: "images-DB-Local/snacks.jpg" },
+        { name: "Frozen", image: "images-DB-Local/frozen.jpg" },
+        { name: "Bakery", image: "images-DB-Local/bakery.jpg" },
+        { name: "Seafood", image: "images-DB-Local/seafood.jpg" },
+        { name: "Spices", image: "images-DB-Local/spices.jpg" },
+        { name: "Household", image: "images-DB-Local/household.jpg" },
+        { name: "Personal Care", image: "images-DB-Local/personal-care.jpg" }
+    ];
+
+    // Display fixed categories on the screen
+    function displayCategories() {
+        const categoryContainer = document.getElementById("category-container");
+        categoryContainer.innerHTML = ""; // Clear before adding new ones
+
+        categories.forEach(category => {
+            const categoryCard = document.createElement("div");
+            categoryCard.classList.add("market-card");
+
+            const img = document.createElement("img");
+            img.src = category.image;
+            img.alt = category.name;
+
+            const title = document.createElement("h5");
+            title.classList.add("category-name");
+            title.textContent = category.name;
+
+            categoryCard.appendChild(img);
+            categoryCard.appendChild(title);
+            categoryContainer.appendChild(categoryCard);
+        });
+    }
+
+    // Function to fetch suggestions from the API
+    async function fetchSuggestions(query) {
+        try {
+            const response = await fetch(`${API_BASE_URL}/suggestions?query=${query}`);
+            const suggestions = await response.json();
+            return suggestions;
+        } catch (error) {
+            console.error("Error fetching suggestions:", error);
+            return [];
+        }
+    }
+
+    // Search bar event
+    searchInput.addEventListener('input', async function () {
+        const searchTerm = searchInput.value.toLowerCase().trim();
+        suggestionsBox.innerHTML = "";
+
+        if (searchTerm === "") {
+            suggestionsBox.style.display = "none";
+            return;
+        }
+
+        const suggestions = await fetchSuggestions(searchTerm);
+        console.log("Suggestions received:", suggestions); // DEBUG LOG
+
+        if (suggestions.length > 0) {
+            suggestionsBox.style.display = "block";
+            suggestions.forEach(suggestion => {
+                console.log("Adding suggestion:", suggestion.name); // DEBUG
+
+                const li = document.createElement("li");
+                li.classList.add("list-group-item", "suggestions-item");
+
+                const span = document.createElement("span");
+                span.textContent = suggestion.name; //  Correct name
+
+                li.appendChild(span);
+
+                li.addEventListener("click", function () {
+                    searchInput.value = suggestion.name; // Correct name on click
+                    suggestionsBox.style.display = "none";
                 });
-            } else {
-                suggestionsBox.style.display = "none";
-            }
-        });
 
-        // Theme Toggle Logic
-        document.addEventListener("DOMContentLoaded", () => {
-            const themeToggle = document.getElementById("theme-toggle");
-            const themeStyle = document.getElementById("theme-style");
-            const storageKey = "theme-preference";
-
-            const getThemePreference = () => localStorage.getItem(storageKey) || "dark";
-
-            const applyTheme = (theme) => {
-                themeStyle.setAttribute("href", theme === "dark" ? "styledark.css" : "stylelight.css");
-                document.documentElement.dataset.theme = theme;
-                
-                // Atualiza a dica do botão (tooltip)
-                themeToggle.title = theme === "dark" ? "Light mode" : "Dark mode";
-            };
-
-            themeToggle.addEventListener("click", () => {
-                const newTheme = document.documentElement.dataset.theme === "dark" ? "light" : "dark";
-                localStorage.setItem(storageKey, newTheme);
-                applyTheme(newTheme);
+                suggestionsBox.appendChild(li);
             });
+        } else {
+            suggestionsBox.style.display = "none";
+        }
+    });
 
-            applyTheme(getThemePreference());
+    // Load fixed categories on the screen when the page opens
+    document.addEventListener("DOMContentLoaded", function () {
+        displayCategories();
+    });
+
+    // Theme toggle button logic
+    document.addEventListener("DOMContentLoaded", () => {
+        const themeToggle = document.getElementById("theme-toggle");
+        const themeStyle = document.getElementById("theme-style");
+        const storageKey = "theme-preference";
+
+        const getThemePreference = () => localStorage.getItem(storageKey) || "dark";
+
+        const applyTheme = (theme) => {
+            themeStyle.setAttribute("href", theme === "dark" ? "styledark.css" : "stylelight.css");
+            document.documentElement.dataset.theme = theme;
+            themeToggle.title = theme === "dark" ? "Light mode" : "Dark mode";
+            suggestionsBox.scrollTop = 0;
+        };
+
+        themeToggle.addEventListener("click", () => {
+            const newTheme = document.documentElement.dataset.theme === "dark" ? "light" : "dark";
+            localStorage.setItem(storageKey, newTheme);
+            applyTheme(newTheme);
         });
-    </script>
-</body>
+
+        applyTheme(getThemePreference());
+    });
+</script>
 </html>
