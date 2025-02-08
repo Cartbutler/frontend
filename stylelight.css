@@ -32,6 +32,7 @@ html, body {
     padding: 0;
     background-color: var(--background);
     color: var(--on-background);
+    font-family: Arial, sans-serif;
 }
 
 body {
@@ -140,7 +141,7 @@ body {
     position: absolute;
     top: 100%;
     left: 0;
-    width: 80%;  /* Check if this is working */
+    width: 79%;  /* Check if this is working */
     min-width: unset;  /* Remove any fixed width if needed */
     background-color: var(--background);
     color: var(--on-background);
@@ -166,13 +167,13 @@ body {
     padding: 8px;
 }
 
-/* Adjusting suggestion images */
+/* Adjusting suggestion images
 .suggestion-img {
     width: 30px;
     height: 30px;
     object-fit: contain; /* Avoids image distortion */
-    border-radius: 4px; /* Rounded border for a cleaner design */
-}
+    /* border-radius: 4px; Rounded border for a cleaner design */
+/*} */
 
 /* Dark Theme Adjustments */
 [data-theme="dark"] .suggestions {
@@ -303,3 +304,9 @@ footer {
     /* box-shadow: 0 0 10px var(--on-primary); */
 }
 
+/* Hover and keyboard selection in light mode */
+[data-theme="light"] .suggestions-item:hover,
+[data-theme="light"] .suggestions-item.active {
+    background-color: var(--primary); 
+    color: var(--on-primary);
+}

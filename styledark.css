@@ -33,6 +33,7 @@ html, body {
     padding: 0;
     background-color: var(--background);
     color: var(--on-background);
+    font-family: Arial, sans-serif;
 }
 
 body {
@@ -116,8 +117,8 @@ body {
     position: absolute;
     top: 100%;
     left: 0;
-    width: 80%;  /* Agora sempre terá a mesma largura do input */
-    min-width: unset;  /* Remove qualquer largura fixa que esteja causando problemas */
+    width: 79%;  /* Adjust the width of suggestions list */
+    min-width: unset;  /* Remove the minimum width constraint */
     background-color: var(--background);
     color: var(--on-background);
     border: 1px solid var(--border);
@@ -176,7 +177,7 @@ body {
 
 [data-theme="dark"] .suggestions li:hover { /* SEE IF THIS WILL CHANGE? IN THE SUGGESTIONS LIST */ 
     
-    /* CAN IT STAY LIKE THIS??? BLUE IN THE DROPDOWN LIST */
+    
     background-color: var(--secondary); 
     color: var(--on-secondary);
 }
@@ -340,4 +341,11 @@ footer {
 .theme-toggle:focus {
     outline: none;
     box-shadow: 0 0 10px var(--background);
+}
+
+/* Hover and keyboard selection in dark mode */
+[data-theme="dark"] .suggestions-item:hover,
+[data-theme="dark"] .suggestions-item.active {
+    background-color: var(--secondary); 
+    color: var(--on-secondary);
 }
