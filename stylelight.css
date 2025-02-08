@@ -1,28 +1,27 @@
 :root {
     /* Core Colors */
-    --primary: #8AD167; /* Verde vibrante */
-    --primary-variant: #1E6D5C; /* Verde escuro */
-    --secondary: #90A4AE; /* Cinza azulado claro */
-    --secondary-variant: #607D8B; /* Cinza azulado escuro */
+    --primary: #8AD167; /* Vibrant green */
+    --primary-variant: #1E6D5C; /* Dark green */
+    --secondary: #90A4AE; /* Light bluish gray */
+    --secondary-variant: #607D8B; /* Dark bluish gray */
 
     /* Backgrounds and Surfaces */
-    --background: #FFFFFF; /* Fundo geral branco */
-    --surface: #f2f2f2; /* Superfície levemente destacada para contraste */
+    --background: #FFFFFF; /* General white background */
+    --surface: #f2f2f2; /* Slightly highlighted surface for contrast */
 
     /* Error Colors */
-    --error: #B00020; /* Vermelho para erros e alertas */
+    --error: #B00020; /* Red for errors and alerts */
 
     /* On-* Colors (Text and Iconography) */
-    --on-primary: #ffffff; /* Texto e ícones sobre primary (branco para contraste) */
-    --on-secondary: #37474f; /* Texto e ícones sobre secondary (cinza escuro para contraste) */
-    --on-background: #212121; /* Texto escuro sobre background claro */
-    --on-surface: #424242; /* Texto levemente mais suave para melhor leitura */
-    --on-error: #FFFFFF; /* Texto branco sobre erro para contraste máximo */
+    --on-primary: #ffffff; /* Text and icons on primary (white for contrast) */
+    --on-secondary: #37474f; /* Text and icons on secondary (dark gray for contrast) */
+    --on-background: #212121; /* Dark text on light background */
+    --on-surface: #424242; /* Slightly softer text for better readability */
+    --on-error: #FFFFFF; /* White text on error for maximum contrast */
 
     /* Borders and Interaction */
-    --border: var(--primary-variant); /* Verde escuro como cor de bordas */
-    --hover: var(--secondary-variant); /* Cinza escuro para efeito de hover */
-
+    --border: var(--primary-variant); /* Dark green as border color */
+    --hover: var(--secondary-variant); /* Dark gray for hover effect */
 }
 
 /* CSS with semantic variables */
@@ -54,7 +53,7 @@ body {
     margin-left: -80px;
 }
 
-/* Navbar Brand - Nao deixa o nome mudar de cor */
+/* Navbar Brand - Prevents the name from changing color */
 .navbar-brand:hover { 
     color: var(--on-primary);
 } 
@@ -135,11 +134,11 @@ body {
 /* Light Theme (Default) */
 .suggestions {
     position: absolute;
-    width: auto; /* O JavaScript vai definir a largura exata */
+    width: auto; /* JavaScript will define the exact width */
     min-width: 80%;
-    background-color: var(--background); /* Mantém fundo claro */
-    color: var(--on-background); /* Texto escuro para contraste */
-    border: 1px solid var(--border); /* Cor da borda ou seja --primary-variant */
+    background-color: var(--background); /* Keeps light background */
+    color: var(--on-background); /* Dark text for contrast */
+    border: 1px solid var(--border); /* Border color, i.e., --primary-variant */
     max-height: 200px;
     overflow-y: auto;
     display: none;
@@ -153,33 +152,17 @@ body {
     color: var(--on-surface);
 }
 
-/* Ajuste para o tema escuro */
-[data-theme="dark"] .suggestions {
-    background-color: var(--error); /* ISSO ESTA EM USO?? BLOCO COMPLETO */
-    color: var(--on-error);
-    border: 1px solid var(--border); /* ISSO ESTA EM USO?? BLOCO COMPLETO */
-}
-
-/* Ajuste dos itens da lista no dark mode */
-[data-theme="dark"] .suggestions li {
-    background-color: var(--error); /* ISSO ESTA EM USO?? BLOCO COMPLETO */ 
-    color: var(--on-error); /* ISSO ESTA EM USO?? BLOCO COMPLETO */
-}
-
-/* Hover para cada tema */
+/* Hover for each theme */
 [data-theme="light"] .suggestions li:hover {
     
-    /* ESSA PARTE EH A COR FICA SOBRE O NOMES DO ITENS DE SUGESTOES */
-    background-color: var(--primary); 
     
-    /* POSSO ABRIR UMA EXCECAO AQUI??? 
-    USAR UMA COR ESPECIFICA AQUI??? ATE MESMO FORA DA PALETA? */ 
+    background-color: var(--primary); 
     
     color: var(--on-background);
 }
 
 [data-theme="dark"] .suggestions li:hover {
-    background-color: var(--error); /* ISSO ESTA EM USO??? BLOCO COMPLETO */
+    background-color: var(--error); 
     color: var(--on-error);
 }
 
@@ -228,44 +211,51 @@ main {
 }
 
 footer {
-    background-color: var(--primary); /* O QUE FAZER AQUI? POIS NAO EH A COR DE FUNDO */
-    color: var(--on-primary); /* O QUE FAZER AQUI? POIS NAO EH A COR DE TEXTO */
+    background-color: var(--primary); 
+    color: var(--on-primary); 
     padding: 10px 0;
     text-align: center;
     line-height: 40px;
     height: 60px;
 }
 
-/* Botão de alternância de tema moderno */ 
+/* Modern theme toggle button */ 
 .theme-toggle {
     display: flex;
     align-items: center;
     justify-content: center;
-    width: 50px; /* Mesmo tamanho dos outros botões */
-    height: 50px; /* Garantindo alinhamento */
+    width: 50px; /* Same size as other buttons */
+    height: 50px; /* Ensuring alignment */
     border-radius: 8px;
     background-color: var(--primary-variant); 
     color: var(--on-primary);
     border: 1px solid var(--border);
     transition: all 0.3s ease-in-out;
     cursor: pointer;
-    margin-left: 15px; /* Move o botão um pouco para a direita */
+    margin-left: 15px; /* Moves the button slightly to the right */
 }
 
-/* Efeito ao passar o mouse */
+/* Hover effect */
 .theme-toggle:hover {
     background-color: var(--background);
     color: var(--on-background);
 }
 
-/* Ícone de tema responsivo */
+/* Responsive theme icon */
 .theme-toggle svg {
     width: 24px;
     height: 24px;
 }
 
-/* Removendo a borda pixelada */
+/* Removing pixelated border */
 .theme-toggle:focus {
     outline: none;
     /* box-shadow: 0 0 10px var(--on-primary); */
+}
+
+/* Light Mode: Hover & Active (Keyboard Navigation) */
+[data-theme="light"] .suggestions li:hover,
+[data-theme="light"] .suggestions li.active {
+    background-color: var(--primary); 
+    color: var(--on-primary);
 }

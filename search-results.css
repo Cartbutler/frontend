@@ -1,0 +1,362 @@
+/* ========================== */
+/* === Colors Definition === */
+/* ========================== */
+:root {
+    --primary: #8AD167; 
+    --primary-variant: #1E6D5C;
+    --secondary: #90A4AE;
+    --secondary-variant: #607D8B;
+
+    /* Backgrounds and Surfaces */
+    --background: #FFFFFF;
+    --surface: #f2f2f2;
+
+    /* Error Color */
+    --error: #B00020;
+
+    /* Text */
+    --on-primary: #ffffff;
+    --on-secondary: #37474f;
+    --on-background: #212121;
+    --on-surface: #424242;
+    --on-error: #FFFFFF;
+
+    /* Borders and Interaction */
+    --border: var(--primary-variant);
+    --hover: var(--secondary-variant);
+}
+
+/* ========================== */
+/* === Dark Mode === */
+/* ========================== */
+[data-theme="dark"] {
+    --primary: #191568;
+    --primary-variant: #3D33C2;
+    --secondary: #0091EA;
+    --secondary-variant: #0277BD;
+
+    --background: #161313;
+    --surface: #2A2A2A;
+
+    --on-primary: #FFFFFF;
+    --on-secondary: #EDE7F6;
+    --on-background: #E0E0E0;
+    --on-surface: #F5F5F5;
+    --on-error: #FFCDD2;
+}
+
+/* ========================== */
+/* === Global Styling === */
+/* ========================== */
+html, body {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    background-color: var(--background);
+    color: var(--on-background);
+    font-family: Arial, sans-serif;
+    display: flex;
+    flex-direction: column;
+}
+
+/* ========================== */
+/* === Navbar === */
+/* ========================== */
+.navbar {
+    background-color: var(--primary);
+    color: var(--on-primary);
+    padding: 8px;
+}
+
+.navbar-brand {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    color: var(--on-primary);
+    text-decoration: none;
+}
+
+.navbar-brand:hover {
+    color: var(--on-primary);
+} 
+
+.navbar img {
+    height: 130px;
+}
+
+/* ========================== */
+/* === Search Container === */
+/* ========================== */
+#search-input {
+    background-color: var(--surface);
+    color: var(--on-surface);
+    border: 1px solid var(--border);
+    border-radius: 5px;
+}
+
+#search-input::placeholder {
+    color: var(--on-surface);
+    opacity: 0.8;
+}
+
+/* ========================== */
+/* === Search Button === */
+/* ========================== */
+.btn-primary {
+    border: 1px solid var(--border);
+    transition: all 0.3s ease;
+}
+
+/* 🔹 Light theme */
+[data-theme="light"] .btn-primary {
+    background-color: var(--primary-variant);
+    color: var(--on-primary);
+}
+
+/* 🔹 Dark theme */
+[data-theme="dark"] .btn-primary {
+    background-color: var(--secondary);
+    color: var(--on-secondary);
+}
+
+/* 🔹 Hover adjusted for each theme */
+[data-theme="light"] .btn-primary:hover {
+    background-color: var(--background);
+    color: var(--on-background);
+}
+
+[data-theme="dark"] .btn-primary:hover {
+    background-color: var(--background);
+    color: var(--on-background);
+}
+
+/* ========================== */
+/* === Suggestion List Styling === */
+/* ========================== */
+.suggestions {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    width: 85%;
+    background-color: var(--surface);
+    color: var(--on-background);
+    border: 1px solid var(--border);
+    max-height: 220px;
+    overflow-y: auto;
+    display: none; /* Hide by default */
+    z-index: 1000;
+    border-radius: 5px;
+}
+
+/* Adjust to dark mode */
+[data-theme="dark"] .suggestions {
+    background-color: var(--background);
+    color: var(--on-background);
+    border: 1px solid var(--border);
+}
+
+/* Itents list */
+.suggestions li {
+    padding: 10px;
+    cursor: pointer;
+    list-style: none;
+}
+
+/* Hover in the list items */
+.suggestions li:hover {
+    background-color: var(--hover);
+    color: var(--on-primary);
+}
+
+/* Responsiveness */
+@media (max-width: 768px) {
+    .suggestions {
+        width: 100%;
+        font-size: 14px;
+    }
+}
+
+/* ========================== */
+/* === Search Results === */
+/* ========================== */
+.search-results-container {  
+    max-width: 1000px;
+    margin: 20px auto;
+    padding: 20px;
+    background-color: var(--surface); 
+    border-radius: 10px;
+}
+
+/* Background of the search container */
+.search-container {
+    background-color: var(--background); 
+    padding: 10px;
+    border-radius: 8px;
+}
+
+/* ========================== */
+/* === Result title === */
+/* ========================== */
+h2 {
+    color: var(--on-background);
+}
+
+/* ========================== */
+/* === List of Results === */
+/* ========================== */
+#search-results {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 15px;
+}
+
+/* ========================== */
+/* === Product Cards === */
+/* ========================== */
+.card {
+    background-color: var(--background);
+    color: var(--on-background);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    transition: 0.3s ease;
+    padding: 10px;
+}
+
+.card:hover {
+    background-color: var(--surface);
+}
+
+.card-img-top {
+    width: 100%;
+    height: auto;
+}
+
+/* ========================== */
+/* === Error Message === */
+/* ========================== */
+#no-results {
+    font-size: 18px;
+    text-align: center;
+    margin-top: 20px;
+    color: var(--error);
+}
+
+/* ========================== */
+/* === Footer === */
+/* ========================== */
+footer {
+    background-color: var(--primary);
+    color: var(--on-primary);
+    text-align: center;
+    padding: 10px 0;
+    margin-top: auto;
+}
+
+/* ========================== */
+/* === Theme Switch Button === */
+/* ========================== */
+.theme-toggle {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 45px;
+    height: 50px;
+    border-radius: 8px;
+    border: 2px solid var(--border);
+    transition: all 0.3s ease-in-out;
+    cursor: pointer;
+    margin-left: 15px;
+}
+
+/* Light Theme  */
+[data-theme="light"] .theme-toggle {
+    background-color: var(--primary-variant);
+    color: var(--on-primary);
+}
+
+/* Dark Theme */
+[data-theme="dark"] .theme-toggle {
+    background-color: var(--secondary);
+    color: var(--on-secondary);
+}
+
+/* Hover adjusted for each theme */
+[data-theme="light"] .theme-toggle:hover {
+    background-color: var(--background);
+    color: var(--on-background);
+}
+
+[data-theme="dark"] .theme-toggle:hover {
+    background-color: var(--background);
+    color: var(--on-background);
+}
+
+/* Icon size inside the button */
+.theme-toggle svg {
+    width: 24px;
+    height: 24px;
+}
+
+/* Remove unwanted outline when focusing */
+.theme-toggle:focus {
+    outline: none;
+    box-shadow: 0 0 12px var(--secondary-variant);
+}
+
+/* ========================== */
+/* === Small Screen Responsiveness === */
+/* ========================== */
+@media (max-width: 768px) {
+    .container {
+        width: 90%;
+        padding: 15px;
+    }
+
+    #search-results {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+        justify-content: center;
+    }
+
+    .card {
+        width: 100%;
+    }
+}
+
+/* Default message styling */
+#no-results {
+    font-size: 18px;
+    text-align: center;
+    margin-top: 20px;
+    color: var(--surface); 
+}
+
+/* Adjust to dark mode */
+[data-theme="dark"] #no-results {
+    color: var(--on-background) !important; /* Forcing the correct color in dark mode */
+}
+
+/* Removing the influence of Bootstrap (which can make text appear faded in dark mode) */
+#no-results.text-muted {
+    color: var(--on-surface) !important; 
+}
+
+[data-theme="dark"] #no-results.text-muted {
+    color: var(--on-background) !important;
+}
+
+/* Hover and selection in light mode */
+[data-theme="light"] .suggestions li:hover,
+[data-theme="light"] .suggestions li.active {
+    background-color: var(--primary); 
+    color: var(--on-primary);
+}
+
+/* Hover and selection in dark mode */
+[data-theme="dark"] .suggestions li:hover,
+[data-theme="dark"] .suggestions li.active {
+    background-color: var(--secondary); 
+    color: var(--on-secondary);
+}
+
