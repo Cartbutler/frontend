@@ -11,11 +11,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // Apply theme to the page
     function applyTheme(theme) {
-        // Set the correct CSS file based on the theme
         themeStyle.setAttribute("href", theme === "dark" ? "styledark.css" : "stylelight.css");
-        // Apply theme to document element to change the dataset attribute
         document.documentElement.dataset.theme = theme;
-        // Update the title of the theme toggle button
         themeToggle.title = theme === "dark" ? "Light mode" : "Dark mode";
     }
 
