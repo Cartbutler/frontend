@@ -1,30 +1,24 @@
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>CartBluter</title>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CartBluter</title>
+
+    <!-- Bootstrap CSS --> 
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link id="theme-style" rel="stylesheet" href="stylelight.css"> 
     
-        <!-- Bootstrap CSS --> 
-        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-        <link id="theme-style" rel="stylesheet" href="styledark.css"> 
 
-        <!-- Larger icon for modern browsers -->
-        <link rel="icon" type="image/png" sizes="512x512" href="images/android-chrome-512x512.png">
-
-        <!-- Icon for Android devices -->
-        <link rel="icon" type="image/png" sizes="192x192" href="images/android-chrome-192x192.png">
-
-        <!-- Icon for Safari and Apple devices -->
-        <link rel="apple-touch-icon" sizes="180x180" href="images/apple-touch-icon.png">
-
-        <!-- Classic .ico icon -->
-        <link rel="icon" type="image/x-icon" href="images/favicon.ico">
-
-        <!-- Manifest for Progressive Web Apps (PWA) support -->
-        <link rel="manifest" href="images/site.webmanifest">
-    </head>
+    <!-- Icons -->
+    <link rel="icon" type="image/png" sizes="512x512" href="images/android-chrome-512x512.png">
+    <link rel="icon" type="image/png" sizes="192x192" href="images/android-chrome-192x192.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="images/apple-touch-icon.png">
+    <link rel="icon" type="image/x-icon" href="images/favicon.ico">
+    <link rel="manifest" href="site.webmanifest">
+</head>
 <body>
+
     <!-- Navbar -->
     <nav class="navbar navbar-expand-lg">
         <div class="container">
@@ -41,7 +35,7 @@
             </div>
             <div class="d-flex align-items-center">
                 <input type="text" class="form-control me-2" placeholder="Login" aria-label="Login">
-                <input type="password" class="form-control me-2" placeholder="Password" aria-label="Password">
+                <input type="password" class="form-control me-2" placeholder="Password">
                 <button class="btn btn-outline-primary">Sign in</button>
             </div>
 
@@ -64,220 +58,22 @@
         </div>
     </nav>
 
-    <!-- Main Content -->
-    <main id="category-container"></main>
+    <!-- Main Content - Categories -->
+    <main class="container mt-4">
+        <div class="row justify-content-center" id="category-container"></div>
+    </main>
 
     <!-- Footer -->
     <footer class="text-center">
         <p>&copy; 2025 CartBluter - Revolutionizing Grocery Shopping</p>
     </footer>
 
-    <script>
-        const searchInput = document.getElementById('search-input');
-        const suggestionsBox = document.getElementById('suggestions');
-        let selectedIndex = -1; // Index of selected suggestion
-        let suggestionsList = []; // List of suggestions from API response
-    
-        const API_BASE_URL = "https://southern-shard-449119-d4.nn.r.appspot.com";
-    
-        // Search API for suggestions
-        async function fetchSuggestions(query) {
-            try {
-                const response = await fetch(`${API_BASE_URL}/suggestions?query=${query}`);
-                return await response.json();
-            } catch (error) {
-                console.error("Error fetching suggestions:", error);
-                return [];
-            }
-        }
-        // Update the list of suggestions
-        function updateSuggestionsList(suggestions) {
-            suggestionsBox.innerHTML = "";
-            suggestionsList = suggestions; // Update the suggestions list
-    
-            if (suggestions.length === 0) {
-                suggestionsBox.style.display = "none";
-                return;
-            }
-    
-            suggestionsBox.style.display = "block";
-            selectedIndex = -1; // Selection reset
-    
-            suggestions.forEach((suggestion, index) => {
-                const li = document.createElement("li");
-                li.classList.add("list-group-item", "suggestions-item");
-                li.textContent = suggestion.name;
-    
-                li.addEventListener("click", () => selectSuggestion(index));
-                suggestionsBox.appendChild(li);
-            });
-        }
-    
-        // Selection of a suggestion from the list
-        function selectSuggestion(index) {
-            if (index >= 0 && index < suggestionsList.length) {
-                searchInput.value = suggestionsList[index].name;
-                suggestionsBox.style.display = "none";
-                performSearch(); // Search automatically
-            }
-        }
-    
-        // Ensures the item selected by the keyboard is visible in the list
-        function highlightSuggestion(index) {
-            const items = document.querySelectorAll(".suggestions-item");
+    <!-- External Scripts -->
+    <script src="js-files/api_service.js"></script>
+    <script src="js-files/suggestions.js"></script>
+    <script src="js-files/theme.js"></script>
+    <script src="js-files/categories.js"></script> 
+    <script src="js-files/search.js"></script>
 
-            items.forEach((item, i) => {
-                item.classList.toggle("active", i === index);
-            });
-
-            // Correctly captures the active item before attempting to scroll
-            const activeItem = document.querySelector(".suggestions-item.active");
-
-            // If the item is outside the visible area, automatically scrolls to it
-            if (activeItem) {
-                activeItem.scrollIntoView({ block: "nearest", behavior: "smooth" });
-            }
-        }
-    
-        // Typing event in the search field
-        searchInput.addEventListener('input', async function () {
-            const searchTerm = searchInput.value.trim().toLowerCase();
-    
-            if (searchTerm === "") {
-                suggestionsBox.style.display = "none";
-                return;
-            }
-    
-            const suggestions = await fetchSuggestions(searchTerm);
-            updateSuggestionsList(suggestions);
-        });
-    
-        // Capture keyboard events
-        searchInput.addEventListener("keydown", function (event) {
-            const items = document.querySelectorAll(".suggestions-item");
-    
-            if (items.length === 0) return;
-    
-            switch (event.key) {
-                case "ArrowDown":
-                    event.preventDefault();
-                    selectedIndex = (selectedIndex + 1) % items.length;
-                    highlightSuggestion(selectedIndex);
-                    break;
-    
-                case "ArrowUp":
-                    event.preventDefault();
-                    selectedIndex = (selectedIndex - 1 + items.length) % items.length;
-                    highlightSuggestion(selectedIndex);
-                    break;
-    
-                case "Enter":
-                    event.preventDefault();
-                    if (selectedIndex >= 0) {
-                        selectSuggestion(selectedIndex);
-                    } else {
-                        performSearch(); // Search if no item is selected
-                    }
-                    break;
-    
-                case "Escape":
-                    suggestionsBox.style.display = "none";
-                    break;
-            }
-        });
-    
-       // Close the list when clicking outside
-        document.addEventListener("click", (event) => {
-            if (!searchInput.contains(event.target) && !suggestionsBox.contains(event.target)) {
-                suggestionsBox.style.display = "none";
-            }
-        });
-    
-        // Redirects to the results page
-        function performSearch() {
-            const searchTerm = searchInput.value.trim();
-            if (searchTerm) {
-                window.location.href = `search-results.html?query=${searchTerm}`;
-            }
-        }
-    
-        document.getElementById("search-form").addEventListener("submit", function(event) {
-            event.preventDefault();
-            performSearch();
-        });
-    
-        // Function to display categories on the page (without images)
-        function displayCategories() {
-            const categoryContainer = document.getElementById("category-container");
-            categoryContainer.innerHTML = ""; // Clear previous content
-
-            const categories = [
-                { name: "Fruits" },
-                { name: "Vegetables"},
-                { name: "Dairy"},
-                { name: "Meat"},
-                { name: "Beverages"},
-                { name: "Snacks"},
-                { name: "Frozen"},
-                { name: "Bakery"},
-                { name: "Seafood"},
-                { name: "Spices"},
-                { name: "Household"},
-                { name: "Personal Care"}
-            ];
-
-            categories.forEach(category => {
-                const categoryCard = document.createElement("div");
-                categoryCard.classList.add("market-card");
-
-                const title = document.createElement("h5");
-                title.classList.add("category-name");
-                title.textContent = category.name;
-
-                categoryCard.appendChild(title);
-                categoryContainer.appendChild(categoryCard);
-            });
-        }
-    
-        // Load categories on startup
-        document.addEventListener("DOMContentLoaded", function () {
-            displayCategories();
-        });
-    
-        // Light/Dark Mode
-        document.addEventListener("DOMContentLoaded", () => {
-            const themeToggle = document.getElementById("theme-toggle");
-            const themeStyle = document.getElementById("theme-style");
-            const storageKey = "theme-preference";
-    
-            const getThemePreference = () => localStorage.getItem(storageKey) || "dark";
-    
-            const applyTheme = (theme) => {
-                themeStyle.setAttribute("href", theme === "dark" ? "styledark.css" : "stylelight.css");
-                document.documentElement.dataset.theme = theme;
-                themeToggle.title = theme === "dark" ? "Light mode" : "Dark mode";
-                suggestionsBox.scrollTop = 0;
-            };
-    
-            themeToggle.addEventListener("click", () => {
-            const newTheme = document.documentElement.dataset.theme === "dark" ? "light" : "dark";
-
-            // Check if the suggestion list is open before switching
-            const suggestionsWereVisible = window.getComputedStyle(suggestionsBox).display !== "none";
-
-            localStorage.setItem(storageKey, newTheme);
-            applyTheme(newTheme);
-
-            // Keep the suggestion list open if it was visible before
-            if (suggestionsWereVisible && suggestionsBox.children.length > 0) {
-                setTimeout(() => {
-                    suggestionsBox.style.display = "block";
-                    searchInput.focus(); // Makes the keyboard continue to work
-                }, 100);
-            }
-        });
-    
-            applyTheme(getThemePreference());
-        });
-    </script>
+</body>
 </html>

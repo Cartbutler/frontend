@@ -1,27 +1,27 @@
 :root {
     /* Core Colors */
-    --primary: #8AD167; /* Vibrant green */
-    --primary-variant: #1E6D5C; /* Dark green */
-    --secondary: #90A4AE; /* Light bluish gray */
-    --secondary-variant: #607D8B; /* Dark bluish gray */
+    --primary: #8AD167; 
+    --primary-variant: #1E6D5C; 
+    --secondary: #90A4AE; 
+    --secondary-variant: #607D8B; 
 
     /* Backgrounds and Surfaces */
-    --background: #FFFFFF; /* General white background */
-    --surface: #f2f2f2; /* Slightly highlighted surface for contrast */
+    --background: #FFFFFF; 
+    --surface: #f2f2f2;
 
     /* Error Colors */
-    --error: #B00020; /* Red for errors and alerts */
+    --error: #B00020; 
 
     /* On-* Colors (Text and Iconography) */
-    --on-primary: #ffffff; /* Text and icons on primary (white for contrast) */
-    --on-secondary: #37474f; /* Text and icons on secondary (dark gray for contrast) */
-    --on-background: #212121; /* Dark text on light background */
-    --on-surface: #424242; /* Slightly softer text for better readability */
-    --on-error: #FFFFFF; /* White text on error for maximum contrast */
+    --on-primary: #ffffff; 
+    --on-secondary: #37474f; 
+    --on-background: #212121; 
+    --on-surface: #424242; 
+    --on-error: #FFFFFF; 
 
     /* Borders and Interaction */
-    --border: var(--primary-variant); /* Dark green as border color */
-    --hover: var(--secondary-variant); /* Dark gray for hover effect */
+    --border: var(--primary-variant); 
+    --hover: var(--secondary-variant); 
 }
 
 /* CSS with semantic variables */
@@ -135,7 +135,7 @@ body {
 .suggestions {
     position: absolute;
     width: auto; /* JavaScript will define the exact width */
-    min-width: 80%;
+    min-width: 83%;
     background-color: var(--background); /* Keeps light background */
     color: var(--on-background); /* Dark text for contrast */
     border: 1px solid var(--border); /* Border color, i.e., --primary-variant */
@@ -188,19 +188,56 @@ body {
 .market-card:hover {
     background-color: var(--background);
     color: var(--on-background);
-    box-shadow: 4px 8px 15px var(--on-background); 
-} 
+    box-shadow: 0px 0px 30px 8px var(--on-background); 
+    transform: scale(1.07); 
+    transition: all 0.3s ease-in-out; 
+}
 
-/* Grid Adjustments */
+/* ========================== */
+/* === Market Cards - STRUCTURE === */
+/* ========================== */
 main {
     flex: 1;
     display: grid;
-    grid-template-columns: repeat(6, 1fr);
-    grid-template-rows: repeat(2, 1fr);
+    grid-template-columns: repeat(6, 1fr); 
+    grid-template-rows: repeat(2, auto); 
     gap: 20px;
     padding: 20px;
     justify-items: center;
     align-items: center;
+}
+
+/* ========================== */
+/* === Market Cards - STRUCTURE === */
+/* ========================== */
+#category-container {
+    display: grid;
+    grid-template-columns: repeat(6, 1fr); 
+    gap: 50px;
+    padding: 20px;
+    margin-left: -90px;
+    justify-items: center;
+    align-items: center;
+}
+
+.market-card {
+    background-color: var(--surface);
+    color: var(--on-surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    width: 150px; 
+    height: 150px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    transition: all 0.3s ease;
+}
+
+.market-card:hover {
+    background-color: var(--background);
+    color: var(--on-background);
+    box-shadow: 0px 4px 10px var(--on-background);
 }
 
 /* Responsiveness for smaller screens */

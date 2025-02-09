@@ -107,19 +107,19 @@ html, body {
     transition: all 0.3s ease;
 }
 
-/* 🔹 Light theme */
+/* Light theme */
 [data-theme="light"] .btn-primary {
     background-color: var(--primary-variant);
     color: var(--on-primary);
 }
 
-/* 🔹 Dark theme */
+/* Dark theme */
 [data-theme="dark"] .btn-primary {
     background-color: var(--secondary);
     color: var(--on-secondary);
 }
 
-/* 🔹 Hover adjusted for each theme */
+/* Hover adjusted for each theme */
 [data-theme="light"] .btn-primary:hover {
     background-color: var(--background);
     color: var(--on-background);
@@ -155,7 +155,7 @@ html, body {
     border: 1px solid var(--border);
 }
 
-/* Itents list */
+/* Itens list */
 .suggestions li {
     padding: 10px;
     cursor: pointer;
@@ -241,9 +241,9 @@ h2 {
     color: var(--error);
 }
 
-/* ========================== */
+/* ================== */
 /* === Footer === */
-/* ========================== */
+/* ================== */
 footer {
     background-color: var(--primary);
     color: var(--on-primary);

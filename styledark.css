@@ -24,9 +24,7 @@
     --hover: var(--secondary-variant); 
 }
    
-/* ========================== */
-/* === Global Styling === */
-/* ========================== */
+/* CSS with semantic variables */
 html, body {
     height: 100%;
     margin: 0;
@@ -40,11 +38,8 @@ body {
     flex-direction: column;
 }
 
-/* ========================== */
-/* === Navbar Styling === */
-/* ========================== */
 .navbar {
-    background-color: var(--primary); 
+    background-color: var(--primary);
     color: var(--on-primary);
     padding-left: 0px;
 }
@@ -53,14 +48,15 @@ body {
     display: flex;
     align-items: center;
     gap: 10px;
-    color: var(--on-primary); /* Cartbluter name color*/
+    color: var(--on-primary);
     text-decoration: none;
     margin-left: -80px;
 }
 
-.navbar-brand:hover {
-    color: var(--on-primary); /* Cartbluter name color - keeps the same color*/
-}
+/* Navbar Brand - Prevents the name from changing color */
+.navbar-brand:hover { 
+    color: var(--on-primary);
+} 
 
 .navbar-brand img {
     height: 130px;
@@ -75,73 +71,110 @@ body {
     position: relative;
 }
 
+.search-container .form-control,
+.navbar .form-control {
+    height: 50px;
+    background-color: var(--surface);
+    color: var(--on-surface);
+    border: 1px solid var(--border);
+    border-radius: 5px;
+}
+
+.search-container .form-control::placeholder,
+.navbar .form-control::placeholder {
+    color: var(--on-surface);
+    opacity: 0.8;
+}
+
+.search-container .btn,
+.navbar .btn-outline-primary {
+    height: 50px;
+    border-radius: 5px;
+}
+
+/* Search Button */
 .search-container .btn {
-    background-color: var(--secondary); 
+    background-color: var(--secondary);
     color: var(--on-secondary);
     border: 1px solid var(--border);
-    height: 50px;
     display: flex;
     align-items: center;
     justify-content: center;
     white-space: nowrap;
     padding: 0 15px;
     margin-right: 10px;
-    border-radius: 5px;
     transition: all 0.3s ease;
 }
 
 .search-container .btn:hover {
     background-color: var(--background);
     color: var(--on-background);
-    border-color: var(--border);
+    border-color: var(--border); 
 }
 
-/* ========================== */
-/* === Sugestions Styling List === */
-/* ========================== */
+/* Sign Up Button */
+.navbar .btn-outline-primary {
+    background-color: var(--secondary);
+    color: var(--on-secondary);
+    border: 1px solid var(--border); 
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    white-space: nowrap;
+    padding: 0 15px;
+    transition: all 0.3s ease;
+}
+
+.navbar .btn-outline-primary:hover {
+    background-color: var(--background); 
+    color: var(--on-background);
+    border-color: var(--border); 
+}
+
+/* Dark Theme (Default) */
 .suggestions {
     position: absolute;
-    width: auto;
-    min-width: 80%;
-    background-color: var(--background);
-    color: var(--on-background);
-    border: 1px solid var(--border);
+    width: auto; /* JavaScript will define the exact width */
+    min-width: 83%;
+    background-color: var(--background); /* Keeps Dark background */
+    color: var(--on-background); /* Dark text for contrast */
+    border: 1px solid var(--border); /* Border color, i.e., --primary-variant */
     max-height: 200px;
     overflow-y: auto;
     display: none;
     z-index: 1000;
 }
 
-/* Dark Mode: dark background */
-[data-theme="dark"] .suggestions {
-    background-color: var(--background); 
-    color: var(--on-background); 
-    border: 1px solid var(--border);
+.suggestions li {
+    padding: 8px;
+    cursor: pointer;
+    background-color: var(--surface);
+    color: var(--on-surface);
 }
 
-/* fixing the list items */
+/* Hover for each theme */
+[data-theme="Dark"] .suggestions li:hover {
+    
+    
+    background-color: var(--primary); 
+    
+    color: var(--on-background);
+}
+
+[data-theme="dark"] .suggestions li:hover {
+    background-color: var(--secondary); 
+    color: var(--on-secondary);
+}
+
 .suggestions li {
     padding: 8px;
     cursor: pointer;
 }
 
-/* Dark mode of sugestions list */
-[data-theme="dark"] .suggestions li {
-    background-color: var(--background); 
-    color: var(--on-background); 
-}
-
-[data-theme="dark"] .suggestions li:hover { 
-    
-    background-color: var(--secondary); 
-    color: var(--on-secondary);
-}
-
-/* ========================== */
-/* === Market Cards === */
-/* ========================== */
+/* Category Cards */
 .market-card {
-    color: var(--primary); /* Keep or delete this? */
+    background-color: var(--surface);
+    color: var(--on-surface);
     border: 1px solid var(--border);
     border-radius: 8px;
     width: 150px;
@@ -155,75 +188,41 @@ body {
 .market-card:hover {
     background-color: var(--background);
     color: var(--on-background);
-    box-shadow: var(--on-background); 
+    box-shadow: 0px 0px 30px 8px var(--on-background); 
+    transform: scale(1.07); /* grow by 7% */
+    transition: all 0.3s ease-in-out; /* animation duration and easing */
 }
-
-/* ========================== */
-/* === Responsivity === */
-/* ========================== */
-@media (max-width: 768px) {
-    main {
-        grid-template-columns: repeat(2, 1fr);
-    }
-}
-
-footer {
-    background-color: var(--primary); 
-    color: var(--on-primary);
-    padding: 10px 0;
-    text-align: center;
-    line-height: 40px;
-    height: 60px;
-}
-
-/* Inputs color */
-.navbar .form-control {
-    height: 50px;
-    background-color: var(--background);
-    color: var(--on-background);
-    border: 1px solid var(--border);
-}
-
-/* Sign Up button */
-.navbar .btn-outline-primary {
-    background-color: var(--secondary); 
-    color: var(--on-secondary);
-    border: 1px solid var(--border);
-    height: 50px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    white-space: nowrap;
-    padding: 0 15px;
-    border-radius: 5px;
-    transition: all 0.3s ease;
-}
-
-.navbar .btn-outline-primary:hover {
-    background-color: var(--background);
-    color: var(--on-background);
-    border-color: var(--border);
-}
-/* ========================== */
-/* === Market Cards - Dark Mode STRUCTURE === */
-/* ========================== */
-[data-theme="dark"] main {
+/* Main Content - Categories */
+main {
     flex: 1;
     display: grid;
-    grid-template-columns: repeat(6, 1fr);
-    grid-template-rows: repeat(2, 1fr);
+    grid-template-columns: repeat(6, 1fr); 
+    grid-template-rows: repeat(2, auto); 
     gap: 20px;
     padding: 20px;
     justify-items: center;
     align-items: center;
 }
 
-[data-theme="dark"] .market-card {
-    background-color: var(--background);
-    color: var(--on-background);
+/* ========================== */
+/* === Market Cards - STRUCTURE === */
+/* ========================== */
+#category-container {
+    display: grid;
+    grid-template-columns: repeat(6, 1fr); 
+    gap: 50px;
+    padding: 20px;
+    margin-left: -90px;
+    justify-items: center;
+    align-items: center;
+}
+
+.market-card {
+    background-color: var(--surface);
+    color: var(--on-surface);
     border: 1px solid var(--border);
     border-radius: 8px;
-    width: 150px;
+    width: 150px; 
     height: 150px;
     display: flex;
     align-items: center;
@@ -232,31 +231,35 @@ footer {
     transition: all 0.3s ease;
 }
 
-[data-theme="dark"] .market-card:hover {
+.market-card:hover {
     background-color: var(--background);
     color: var(--on-background);
-    box-shadow: 0px 4px 10px var(--on-background); /* Shading of suggestion boxes */
+    box-shadow: 0px 4px 10px var(--on-background);
 }
 
-/* ========================== */
-/* === Inputs Dark Mode === */
-/* ========================== */
-[data-theme="dark"] .form-control {
-    color: var(--on-background) !important; /* Ensures text is white */
+/* Responsiveness for smaller screens */
+@media (max-width: 768px) {
+    main {
+        grid-template-columns: repeat(2, 1fr);
+    }
 }
 
-[data-theme="dark"] .form-control::placeholder {
-    color: var(--on-background) !important; /* Keeps placeholders visible */
-    opacity: 0.7; /* Make it a little softer */
+footer {
+    background-color: var(--primary); 
+    color: var(--on-primary); 
+    padding: 10px 0;
+    text-align: center;
+    line-height: 40px;
+    height: 60px;
 }
 
-/* Swtich Theme Button Dark Mode */
+/* Modern theme toggle button */ 
 .theme-toggle {
     display: flex;
     align-items: center;
     justify-content: center;
-    width: 50px; 
-    height: 50px; 
+    width: 50px; /* Same size as other buttons */
+    height: 50px; /* Ensuring alignment */
     border-radius: 8px;
     background-color: var(--secondary); 
     color: var(--on-secondary);
@@ -266,13 +269,13 @@ footer {
     margin-left: 15px; 
 }
 
-/* Hover effect using mouse */
+/* Hover effect */
 .theme-toggle:hover {
     background-color: var(--background);
     color: var(--on-background);
 }
 
-/* Icon size inside the button */
+/* Responsive theme icon */
 .theme-toggle svg {
     width: 24px;
     height: 24px;
@@ -281,7 +284,7 @@ footer {
 /* Removing pixelated border */
 .theme-toggle:focus {
     outline: none;
-    box-shadow: 0 0 10px var(--background);
+    /* box-shadow: 0 0 10px var(--on-primary); */
 }
 
 /* Dark Mode: Hover & Active (Keyboard Navigation) */
