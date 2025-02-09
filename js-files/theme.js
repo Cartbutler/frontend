@@ -4,23 +4,19 @@ document.addEventListener("DOMContentLoaded", () => {
     const storageKey = "theme-preference"; // Local storage key
     const suggestionsBox = document.getElementById("suggestions"); // Suggestions box
 
-    // Force theme to be light on initial load (regardless of localStorage)
+    // Get theme preference from local storage, default to light if not found
     function getThemePreference() {
-        // Always use light theme on initial load
-        return "light"; // Set default to light theme, ignore localStorage here
+        return localStorage.getItem(storageKey) || "light"; // Default to light theme
     }
 
     // Apply theme to the page
     function applyTheme(theme) {
-        // Set the correct CSS file based on the theme
         themeStyle.setAttribute("href", theme === "dark" ? "styledark.css" : "stylelight.css");
-        // Apply theme to document element to change the dataset attribute
         document.documentElement.dataset.theme = theme;
-        // Update the title of the theme toggle button
         themeToggle.title = theme === "dark" ? "Light mode" : "Dark mode";
     }
 
-    // Apply the saved or default theme preference (always light for initial load)
+    // Apply the saved or default theme preference (will start with the current theme from localStorage)
     applyTheme(getThemePreference());
 
     // Event listener for theme toggle
@@ -42,4 +38,14 @@ document.addEventListener("DOMContentLoaded", () => {
             }, 100);
         }
     });
+
+    // Ensure the theme is applied when searching or navigating between pages
+    const searchForm = document.getElementById("search-form");
+    if (searchForm) {
+        searchForm.addEventListener("submit", (event) => {
+            event.preventDefault();
+            // Reapply the theme (whether dark or light) when performing a search
+            applyTheme(getThemePreference());
+        });
+    }
 });
