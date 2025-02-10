@@ -1,0 +1,46 @@
+/* ========================== */
+/* === Theme Variables === */
+/* ========================== */
+:root {
+    --primary: #8AD167; 
+    --primary-variant: #1E6D5C;
+    --secondary: #90A4AE;
+    --secondary-variant: #607D8B;
+
+    /* Backgrounds and Surfaces */
+    --background: #FFFFFF;
+    --surface: #f2f2f2;
+
+    /* Error Color */
+    --error: #B00020;
+
+    /* Text */
+    --on-primary: #ffffff;
+    --on-secondary: #37474f;
+    --on-background: #212121;
+    --on-surface: #424242;
+    --on-error: #FFFFFF;
+
+    /* Borders and Interaction */
+    --border: var(--primary-variant);
+    --hover: var(--secondary-variant);
+}
+
+/* ========================== */
+/* === Dark Mode === */
+/* ========================== */
+[data-theme="dark"] {
+    --primary: #191568;
+    --primary-variant: #3D33C2;
+    --secondary: #0091EA;
+    --secondary-variant: #0277BD;
+
+    --background: #161313;
+    --surface: #2A2A2A;
+
+    --on-primary: #FFFFFF;
+    --on-secondary: #EDE7F6;
+    --on-background: #E0E0E0;
+    --on-surface: #F5F5F5;
+    --on-error: #FFCDD2;
+}

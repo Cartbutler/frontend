@@ -1,0 +1,112 @@
+/* Import global styles to avoid duplication */
+@import url('stylelight.css'); /* stylelight.css is the main css */
+@import url('theme.css'); /* import theme colors - light/dark */
+
+/* ========================== */
+/* === Search Results Styling === */
+/* ========================== */
+.search-results-container {
+    max-width: 1000px;
+    margin: 20px auto;
+    padding: 20px;
+    background-color: var(--surface);
+    border-radius: 10px;
+}
+
+/* Search Cards */
+.search-card {
+    background-color: var(--background);
+    color: var(--on-background);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 10px;
+    transition: 0.3s ease;
+}
+
+.search-card:hover {
+    background-color: var(--surface);
+}
+
+/* Results Grid */
+#search-results {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 15px;
+}
+
+/* Error Message */
+#no-results {
+    font-size: 18px;
+    text-align: center;
+    margin-top: 20px;
+    color: var(--error);
+}
+
+/* ========================== */
+/* === Search Page Specific Button Fix === */
+/* ========================== */
+#search-form .btn-primary {
+    background-color: var(--primary-variant);
+    color: var(--on-primary);
+    border: 1px solid var(--border);
+    transition: all 0.3s ease;
+}
+
+/* Light Theme */
+[data-theme="light"] #search-form .btn-primary {
+    background-color: var(--primary-variant);
+    color: var(--on-primary);
+}
+
+[data-theme="light"] #search-form .btn-primary:hover {
+    background-color: var(--background);
+    color: var(--on-background);
+}
+
+/* Dark Theme */
+[data-theme="dark"] #search-form .btn-primary {
+    background-color: var(--secondary);
+    color: var(--on-secondary);
+}
+
+[data-theme="dark"] #search-form .btn-primary:hover {
+    background-color: var(--background);
+    color: var(--on-background);
+}
+
+/* ========================== */
+/* === Theme Toggle Fix (Only for search page) === */
+/* ========================== */
+.theme-toggle {
+    width: 45px;
+    height: 50px;
+    border: 2px solid var(--border);
+    transition: all 0.3s ease-in-out;
+    cursor: pointer;
+    margin-left: 15px;
+    padding: 0;
+    margin: 0;
+}
+
+/* Light Theme */
+[data-theme="light"] .theme-toggle {
+    background-color: var(--primary-variant);
+    color: var(--on-primary);
+}
+
+/* Dark Theme */
+[data-theme="dark"] .theme-toggle {
+    background-color: var(--secondary);
+    color: var(--on-secondary);
+}
+
+/* Hover adjusted for each theme */
+[data-theme="light"] .theme-toggle:hover {
+    background-color: var(--background);
+    color: var(--on-background);
+}
+
+[data-theme="dark"] .theme-toggle:hover {
+    background-color: var(--background);
+    color: var(--on-background);
+}
