@@ -135,7 +135,7 @@ body {
 .suggestions {
     position: absolute;
     width: auto; /* JavaScript will define the exact width */
-    min-width: 83%;
+    min-width: 80%;
     background-color: var(--background); /* Keeps Dark background */
     color: var(--on-background); /* Dark text for contrast */
     border: 1px solid var(--border); /* Border color, i.e., --primary-variant */
@@ -210,7 +210,7 @@ main {
 #category-container {
     display: grid;
     grid-template-columns: repeat(6, 1fr); 
-    gap: 50px;
+    gap: 20px;
     padding: 20px;
     margin-left: -90px;
     justify-items: center;
