@@ -1,6 +1,25 @@
 const API_BASE_URL = "https://southern-shard-449119-d4.nn.r.appspot.com";
 
 /**
+ * Fetches category data from the API.
+ * @returns {Promise<Array>} - List of categories.
+ */ 
+async function fetchCategories() {
+    try {
+        const response = await fetch(`${API_BASE_URL}/categories`);
+
+        if (!response.ok) {
+            throw new Error(`API error: ${response.status}`);
+        }
+
+        return await response.json();
+    } catch (error) {
+        console.error("Error fetching categories:", error);
+        return []; // Return an empty array in case of error
+    }
+}
+
+/**
  * Fetches suggestions based on the user's input.
  * @param {string} query - The search term.
  * @returns {Promise<Array>} - List of suggestions.
@@ -29,14 +48,12 @@ async function fetchSearchResults(query) {
         // Fetch search results from the API
         const response = await fetch(`${API_BASE_URL}/search?query=${encodeURIComponent(query)}`);
 
-        // Check if the response is not OK (e.g., 404 or server error)
         if (!response.ok) {
             throw new Error(`API error: ${response.status}`);
         }
 
         const results = await response.json();
 
-        // If no results are found, display the "No results found" message
         if (!results || results.length === 0) {
             console.log("No results found for:", query);
             document.getElementById("no-results").style.display = "block"; // Show the message
@@ -48,8 +65,6 @@ async function fetchSearchResults(query) {
 
     } catch (error) {
         console.error("Error fetching results:", error);
-        
-        // If an error occurs (e.g., network issue), ensure the message is displayed
         document.getElementById("no-results").style.display = "block"; 
         return [];
     }

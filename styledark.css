@@ -183,6 +183,9 @@ body {
     align-items: center;
     justify-content: center;
     transition: all 0.3s ease;
+    text-decoration: none;
+    font-weight: bold; 
+    color: var(--on-surface); 
 }
 
 .market-card:hover {

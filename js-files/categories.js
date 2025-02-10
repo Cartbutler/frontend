@@ -1,22 +1,38 @@
-document.addEventListener("DOMContentLoaded", function () {
-    // List of categories - body content
-    const categories = [
-        "Fruits", "Vegetables", "Dairy", "Meat", "Beverages", "Snacks",
-        "Frozen", "Bakery", "Seafood", "Spices", "Household", "Personal Care"
-    ];
-
+document.addEventListener("DOMContentLoaded", async function () {
     const container = document.getElementById("category-container");
 
-    categories.forEach(category => {
-        const div = document.createElement("div");
-        div.classList.add("col-md-2", "category-card"); // 6 columns per row
+    // Show loading message
+    container.innerHTML = `<p>Loading categories...</p>`;
 
-        div.innerHTML = `
-            <div class="market-card">
-                <h5>${category}</h5>
-            </div>
-        `;
+    try {
+        // Fetch categories from API
+        const categories = await fetchCategories();
 
-        container.appendChild(div);
-    });
+        // Clear loading message
+        container.innerHTML = "";
+
+        if (categories.length === 0) {
+            container.innerHTML = `<p>No categories available.</p>`;
+            return;
+        }
+
+        // Dynamically create clickable category elements
+        categories.forEach(category => {
+            const div = document.createElement("div");
+            div.classList.add("col-md-2", "category-card");
+
+            // Each category is now a clickable link to search results
+            div.innerHTML = `
+                <a href="/search?category=${encodeURIComponent(category.category_name)}" class="market-card">
+                    <h5>${category.category_name}</h5>
+                </a>
+            `;
+
+            container.appendChild(div);
+        });
+
+    } catch (error) {
+        console.error("Error loading categories:", error);
+        container.innerHTML = `<p>Failed to load categories. Please try again later.</p>`;
+    }
 });
