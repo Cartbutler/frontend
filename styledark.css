@@ -166,7 +166,6 @@ body {
     color: var(--on-secondary);
 }
 
-/* Hover for keyboard on suggestions list */
 .suggestions li {
     padding: 8px;
     cursor: pointer;
@@ -279,7 +278,6 @@ footer {
     color: var(--on-background);
 }
 
-/* Icon size inside the button */
 /* Responsive theme icon */
 .theme-toggle svg {
     width: 24px;
