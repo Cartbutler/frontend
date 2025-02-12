@@ -166,6 +166,7 @@ body {
     color: var(--on-secondary);
 }
 
+/* Hover for keyboard on suggestions list */
 .suggestions li {
     padding: 8px;
     cursor: pointer;
