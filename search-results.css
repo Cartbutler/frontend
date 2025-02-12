@@ -13,100 +13,157 @@
     border-radius: 10px;
 }
 
-/* Search Cards */
+/* ========================== */
+/* === Standardized Search Result Cards === */
+/* ========================== */
 .search-card {
-    background-color: var(--background);
-    color: var(--on-background);
-    border: 1px solid var(--border);
-    border-radius: 8px;
-    padding: 10px;
-    transition: 0.3s ease;
+    width: 200px !important;
+    max-width: 200px !important;
+    height: 250px !important;
+    max-height: 250px !important;
+    display: flex !important;
+    flex-direction: column !important;
+    justify-content: space-between !important;
+    align-items: center !important;
+    text-align: center !important;
+    border-radius: 12px !important;
+    padding: 15px !important;
+    transition: 0.3s ease !important;
 }
 
-.search-card:hover {
-    background-color: var(--surface);
+/* Force Bootstrap to respect these styles */
+.card.search-card {
+    width: 200px !important;
+    max-width: 200px !important;
+    height: 250px !important;
+    max-height: 250px !important;
+    display: flex !important;
+    flex-direction: column !important;
+    justify-content: space-between !important;
+    align-items: center !important;
+    text-align: center !important;
+    margin-bottom: 10px !important;
 }
 
-/* Results Grid */
+/* ========================== */
+/* === Grid Adjustments === */
+/* ========================== */
 #search-results {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 15px;
+    display: flex !important;
+    flex-wrap: wrap !important;
+    gap: 30px !important; /* adjusted gap to create more space between cards results */
+    justify-content: center !important;
+    align-items: stretch !important;
 }
 
-/* Error Message */
+#search-results .card {
+    display: flex !important;
+    flex-direction: column !important;
+    justify-content: space-between !important;
+    align-items: center !important;
+    text-align: center !important;
+    height: 250px !important; /* Adjusted height of result cards */
+    max-width: 220px !important; /* Adjusted width of result cards */
+}
+
+/* ========================== */
+/* === Light & Dark Theme Adjustments === */
+/* ========================== */
+[data-theme="light"] .search-card {
+    background-color: var(--surface) !important;
+    color: var(--on-surface) !important;
+    border: 2px solid var(--primary) !important;
+}
+
+[data-theme="dark"] .search-card {
+    background-color: var(--secondary-dark) !important;
+    color: var(--on-primary) !important;
+    border: 2px solid var(--on-background) !important;
+}
+
+/* ========================== */
+/* === No Results Message === */
+/* ========================== */
 #no-results {
-    font-size: 18px;
-    text-align: center;
-    margin-top: 20px;
-    color: var(--error);
+    font-size: 18px !important;
+    text-align: center !important;
+    margin-top: 20px !important;
+    padding: 10px 15px !important;
+    border-radius: 6px !important;
+    border: 1px solid var(--border) !important;
+    max-width: 400px !important;
+    margin-left: auto !important;
+    margin-right: auto !important;
+    font-weight: bold !important;
+}
+
+/* Light Theme */
+[data-theme="light"] #no-results {
+    background-color: var(--surface) !important;
+    color: var(--on-background) !important;
+    border: 2px solid var(--primary) !important;
+}
+
+/* Dark Theme */
+[data-theme="dark"] #no-results {
+    background-color: var(--primary) !important;
+    color: var(--on-primary) !important;
+    border: 2px solid var(--on-background) !important;
 }
 
 /* ========================== */
 /* === Search Page Specific Button Fix === */
 /* ========================== */
 #search-form .btn-primary {
-    background-color: var(--primary-variant);
-    color: var(--on-primary);
-    border: 1px solid var(--border);
-    transition: all 0.3s ease;
+    background-color: var(--primary-variant) !important;
+    color: var(--on-primary) !important;
+    border: 1px solid var(--border) !important;
+    transition: all 0.3s ease !important;
 }
 
 /* Light Theme */
-[data-theme="light"] #search-form .btn-primary {
-    background-color: var(--primary-variant);
-    color: var(--on-primary);
-}
-
 [data-theme="light"] #search-form .btn-primary:hover {
-    background-color: var(--background);
-    color: var(--on-background);
+    background-color: var(--background) !important;
+    color: var(--on-background) !important;
 }
 
 /* Dark Theme */
 [data-theme="dark"] #search-form .btn-primary {
-    background-color: var(--secondary);
-    color: var(--on-secondary);
+    background-color: var(--secondary) !important;
+    color: var(--on-secondary) !important;
 }
 
 [data-theme="dark"] #search-form .btn-primary:hover {
-    background-color: var(--background);
-    color: var(--on-background);
+    background-color: var(--background) !important;
+    color: var(--on-background) !important;
 }
 
 /* ========================== */
-/* === Theme Toggle Fix (Only for search page) === */
+/* === Theme Toggle (Specific to this page) === */
 /* ========================== */
 .theme-toggle {
-    width: 45px;
-    height: 50px;
-    border: 2px solid var(--border);
-    transition: all 0.3s ease-in-out;
-    cursor: pointer;
-    margin-left: 15px;
-    padding: 0;
-    margin: 0;
+    width: 45px !important; /* Provisional adjustment - check later */
+    height: 50px !important;
+    border: 2px solid var(--border) !important;
+    transition: all 0.3s ease-in-out !important;
+    cursor: pointer !important;
+    margin-left: 15px !important;
 }
 
 /* Light Theme */
 [data-theme="light"] .theme-toggle {
-    background-color: var(--primary-variant);
-    color: var(--on-primary);
+    background-color: var(--primary-variant) !important;
+    color: var(--on-primary) !important;
 }
 
 /* Dark Theme */
 [data-theme="dark"] .theme-toggle {
-    background-color: var(--secondary);
-    color: var(--on-secondary);
+    background-color: var(--secondary) !important;
+    color: var(--on-secondary) !important;
 }
 
-/* Hover adjusted for each theme */
-[data-theme="light"] .theme-toggle:hover {
-    background-color: var(--background);
-    color: var(--on-background);
-}
-
-[data-theme="dark"] .theme-toggle:hover {
-    background-color: var(--background);
-    color: var(--on-background);
+/* Hover Effect */
+.theme-toggle:hover {
+    background-color: var(--background) !important;
+    color: var(--on-background) !important;
 }
