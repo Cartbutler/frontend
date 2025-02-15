@@ -43,7 +43,6 @@ document.addEventListener("DOMContentLoaded", async () => {
                      onerror="this.onerror=null; this.src='images/default.jpg';">
                 <div class="card-body">
                     <h5 class="card-title">${product.product_name}</h5>
-                    <p class="card-text">${product.description}</p>
                     <p class="price">$${parseFloat(product.price || 0).toFixed(2)}</p>
                 </div>
             `;
