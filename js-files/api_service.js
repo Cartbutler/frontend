@@ -3,33 +3,14 @@ const API_BASE_URL = "https://southern-shard-449119-d4.nn.r.appspot.com";
 /**
  * Fetches category data from the API.
  * @returns {Promise<Array>} - List of categories.
- */ 
+ */
 async function fetchCategories() {
     try {
         const response = await fetch(`${API_BASE_URL}/categories`);
-
-        if (!response.ok) {
-            throw new Error(`API error: ${response.status}`);
-        }
-
+        if (!response.ok) throw new Error(`API error: ${response.status}`);
         return await response.json();
     } catch (error) {
         console.error("Error fetching categories:", error);
-        return []; // Return an empty array in case of error
-    }
-}
-
-/**
- * Fetches suggestions based on the user's input.
- * @param {string} query - The search term.
- * @returns {Promise<Array>} - List of suggestions.
- */
-async function fetchSuggestions(query) {
-    try {
-        const response = await fetch(`${API_BASE_URL}/suggestions?query=${query}`);
-        return await response.json();
-    } catch (error) {
-        console.error("Error fetching suggestions:", error);
         return [];
     }
 }
@@ -40,32 +21,71 @@ async function fetchSuggestions(query) {
  * @returns {Promise<Array>} - List of products.
  */
 async function fetchSearchResults(query) {
-    if (!query) return []; // If no query is provided, return an empty array.
+    if (!query) return []; 
 
     try {
         console.log("Searching for:", query);
-        
-        // Fetch search results from the API
         const response = await fetch(`${API_BASE_URL}/search?query=${encodeURIComponent(query)}`);
+        if (!response.ok) throw new Error(`API error: ${response.status}`);
+        return await response.json();
+    } catch (error) {
+        console.error("Error fetching results:", error);
+        return [];
+    }
+}
+
+/**
+ * Fetches suggestions based on the user's input.
+ * @param {string} query - The search term.
+ * @returns {Promise<Array>} - List of suggestions.
+ */
+async function fetchSuggestions(query) {
+    if (!query) return [];
+
+    try {
+        console.log("Fetching suggestions for:", query);
+        const response = await fetch(`${API_BASE_URL}/suggestions?query=${encodeURIComponent(query)}`);
+        
+        if (!response.ok) throw new Error(`API error: ${response.status}`);
+
+        return await response.json();
+    } catch (error) {
+        console.error("Error fetching suggestions:", error);
+        return [];
+    }
+}
+
+/**
+ * Fetches products based on category ID.
+ * @param {string} categoryId - The category ID.
+ * @returns {Promise<Array>} - List of products filtered by category.
+ */
+async function fetchProductsByCategory(categoryId) {
+    try {
+        console.log(`Fetching products for category ID: ${categoryId}`);
+
+        // Check if category ID is provided before making the request
+        if (!categoryId) {
+            console.error("Error: No category ID provided.");
+            return [];
+        }
+
+        // Make the request to the API using category_id
+        const response = await fetch(`${API_BASE_URL}/products?category_id=${encodeURIComponent(categoryId)}`);
 
         if (!response.ok) {
             throw new Error(`API error: ${response.status}`);
         }
 
-        const results = await response.json();
+        const data = await response.json();
 
-        if (!results || results.length === 0) {
-            console.log("No results found for:", query);
-            document.getElementById("no-results").style.display = "block"; // Show the message
-        } else {
-            document.getElementById("no-results").style.display = "none"; // Hide the message if results exist
-        }
+        // If the API returns all products, filter manually to ensure correct category
+        const filteredProducts = data.filter(product => product.category_id == categoryId);
 
-        return results;
-
+        console.log("Filtered Products:", filteredProducts);
+        return filteredProducts;
     } catch (error) {
-        console.error("Error fetching results:", error);
-        document.getElementById("no-results").style.display = "block"; 
+        console.error("Error fetching category products:", error);
         return [];
     }
 }

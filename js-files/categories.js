@@ -21,9 +21,9 @@ document.addEventListener("DOMContentLoaded", async function () {
             const div = document.createElement("div");
             div.classList.add("col-md-2", "category-card");
 
-            // Each category is now a clickable link to search results
+            // Add category name as a link to search-results.html
             div.innerHTML = `
-                <a href="/search?category=${encodeURIComponent(category.category_name)}" class="market-card">
+                <a href="search-results.html?category=${encodeURIComponent(category.category_name)}&category_id=${category.category_id}" class="market-card">
                     <h5>${category.category_name}</h5>
                 </a>
             `;
