@@ -1,39 +1,55 @@
 document.addEventListener("DOMContentLoaded", async () => {
     const searchResultsContainer = document.getElementById("search-results");
     const noResultsMessage = document.getElementById("no-results");
+    const categoryTitle = document.getElementById("category-title");
 
-    // Get the query parameter from the URL (e.g., ?query=banana)
+    // Get query parameters from the URL (?query=banana OR ?category=Fruits&category_id=1)
     const urlParams = new URLSearchParams(window.location.search);
     const searchTerm = urlParams.get("query");
+    const category = urlParams.get("category"); // Category name for display
+    const categoryId = urlParams.get("category_id"); // Category ID for fetching data
 
-    if (!searchTerm) {
-        console.error("No search term provided.");
-        return;
-    }
+    let results = [];
 
-    // Show a loading message while fetching data
-    searchResultsContainer.innerHTML = "<p>Loading results ⏳</p>";
+    // Display loading message
+    searchResultsContainer.innerHTML = "<p>Loading results...</p>";
 
     try {
-        // Call the API to fetch search results
-        const results = await fetchSearchResults(searchTerm);
+        const pageTitle = document.getElementById("page-title");
+    
+        if (categoryId) {
+            console.log(`Fetching products for category ID: ${categoryId}`);
+    
+            if (category && pageTitle) {
+                pageTitle.textContent = category; // Show only category name
+            }
+    
+            results = await fetchProductsByCategory(categoryId);
+        } else if (searchTerm) {
+            console.log(`Searching for: ${searchTerm}`);
+    
+            if (pageTitle) {
+                pageTitle.textContent = `Searching for "${searchTerm}"`; // Show search term
+            }
+    
+            results = await fetchSearchResults(searchTerm);
+        }
 
-        // Clear the previous content
+        // Clear previous content
         searchResultsContainer.innerHTML = "";
 
         if (!results || results.length === 0) {
-            noResultsMessage.style.display = "block"; // Show "No results found" message
+            noResultsMessage.style.display = "block";
             return;
         } else {
-            noResultsMessage.style.display = "none"; // Hide message
+            noResultsMessage.style.display = "none";
         }
 
-        // Render the products on the screen
+        // Render products on the screen
         results.forEach(product => {
             const productCard = document.createElement("div");
             productCard.classList.add("card");
 
-            // Check and fix image path
             let imageUrl = product.image_path && product.image_path.startsWith("http") 
                 ? product.image_path 
                 : `${window.location.origin}/${product.image_path || "images/default.jpg"}`;
@@ -47,14 +63,13 @@ document.addEventListener("DOMContentLoaded", async () => {
                 </div>
             `;
 
-            // Add click event (Example: Redirect to product details page)
             productCard.addEventListener("click", () => {
                 alert(`Clicked on ${product.product_name}`);
-                // Example: window.location.href = `product-details.html?id=${product.product_id}`;
             });
 
             searchResultsContainer.appendChild(productCard);
         });
+
     } catch (error) {
         console.error("Error fetching search results:", error);
         noResultsMessage.style.display = "block";

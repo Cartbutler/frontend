@@ -62,8 +62,18 @@
     justify-content: space-between !important;
     align-items: center !important;
     text-align: center !important;
-    height: 250px !important; /* Adjusted height of result cards */
+    height: 230px !important; /* Adjusted height of result cards */
     max-width: 220px !important; /* Adjusted width of result cards */
+}
+
+/* Adjust image size inside cards results */ 
+/* CHECK IF THIS ONE IS NEEDED AFTER BACKEND "FIX" THE IMAGES */ 
+#search-results .card img {
+    width: 100% !important;  
+    height: 140px !important; 
+    object-fit: contain !important; 
+    border-radius: 8px !important; 
+    padding: 5px !important; 
 }
 
 /* ========================== */
