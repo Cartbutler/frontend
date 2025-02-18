@@ -70,8 +70,8 @@ async function fetchProductsByCategory(categoryId) {
             return [];
         }
 
-        // Make the request to the API using category_id
-        const response = await fetch(`${API_BASE_URL}/products?category_id=${encodeURIComponent(categoryId)}`);
+        // Make the request to the search endpoint using category_id
+        const response = await fetch(`${API_BASE_URL}/search?categoryID=${encodeURIComponent(categoryId)}`);
 
         if (!response.ok) {
             throw new Error(`API error: ${response.status}`);
@@ -79,11 +79,8 @@ async function fetchProductsByCategory(categoryId) {
 
         const data = await response.json();
 
-        // If the API returns all products, filter manually to ensure correct category
-        const filteredProducts = data.filter(product => product.category_id == categoryId);
-
-        console.log("Filtered Products:", filteredProducts);
-        return filteredProducts;
+        console.log("Fetched Products:", data);
+        return data;
     } catch (error) {
         console.error("Error fetching category products:", error);
         return [];

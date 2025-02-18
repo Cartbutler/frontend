@@ -15,17 +15,23 @@ document.addEventListener("DOMContentLoaded", async () => {
     searchResultsContainer.innerHTML = "<p>Loading results...</p>";
 
     try {
+        const pageTitle = document.getElementById("page-title");
+    
         if (categoryId) {
             console.log(`Fetching products for category ID: ${categoryId}`);
-
-            if (category && categoryTitle) {
-                categoryTitle.style.display = "block"; // Ensure the title is visible
-                categoryTitle.textContent = category; // Set category name in the title
+    
+            if (category && pageTitle) {
+                pageTitle.textContent = category; // Show only category name
             }
-
+    
             results = await fetchProductsByCategory(categoryId);
         } else if (searchTerm) {
             console.log(`Searching for: ${searchTerm}`);
+    
+            if (pageTitle) {
+                pageTitle.textContent = `Searching for "${searchTerm}"`; // Show search term
+            }
+    
             results = await fetchSearchResults(searchTerm);
         }
 
@@ -70,23 +76,3 @@ document.addEventListener("DOMContentLoaded", async () => {
         searchResultsContainer.innerHTML = "<p>Failed to load search results. Please try again later.</p>";
     }
 });
-
-/**
- * Fetches products by category ID from the API.
- * @param {string} categoryId - The category ID.
- * @returns {Promise<Array>} - List of products.
- */
-async function fetchProductsByCategory(categoryId) {
-    try {
-        const response = await fetch(`${API_BASE_URL}/products?category_id=${encodeURIComponent(categoryId)}`);
-
-        if (!response.ok) {
-            throw new Error(`API error: ${response.status}`);
-        }
-
-        return await response.json();
-    } catch (error) {
-        console.error("Error fetching category products:", error);
-        return [];
-    }
-}
