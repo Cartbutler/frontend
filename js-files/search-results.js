@@ -64,7 +64,7 @@ document.addEventListener("DOMContentLoaded", async () => {
             `;
 
             productCard.addEventListener("click", () => {
-                alert(`Clicked on ${product.product_name}`);
+                window.location.href = `product-screen.html?id=${product.product_id}`;
             });
 
             searchResultsContainer.appendChild(productCard);

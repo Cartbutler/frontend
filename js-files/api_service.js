@@ -86,3 +86,20 @@ async function fetchProductsByCategory(categoryId) {
         return [];
     }
 }
+
+/**
+ * Fetches product details by ID.
+ * @param {string} productId - The ID of the product.
+ * @returns {Promise<Object>} - The product details.
+ */
+async function fetchProductById(productId) { 
+    try {
+        console.log(`Fetching product details for ID: ${productId}`);
+        const response = await fetch(`${API_BASE_URL}/products?id=${encodeURIComponent(productId)}`);
+        if (!response.ok) throw new Error(`API error: ${response.status}`);
+        return await response.json();
+    } catch (error) {
+        console.error("Error fetching product by ID:", error);
+        return null;
+    }
+}
