@@ -6,14 +6,17 @@ document.addEventListener("DOMContentLoaded", async () => {
     const productDescription = document.getElementById("product-description");
     const buyButton = document.getElementById("buy-button");
 
+    // Get the product ID from the URL parameters (e.g.,?id=1)
     const urlParams = new URLSearchParams(window.location.search);
     const productId = urlParams.get("id");
 
+    // Check if the product ID is present
     if (!productId) {
         console.error("Product ID not found in URL parameters!");
         return;
     }
 
+    // Fetch the product details from the API based on the ID
     try {
         const product = await fetchProductById(productId);
 
@@ -23,20 +26,20 @@ document.addEventListener("DOMContentLoaded", async () => {
             return;
         }
 
-        console.log("Product found:", product);
+        console.log("Product found:", product); // Log the product details for debugging
 
-        //  Agora atribui a imagem corretamente
+        // Now correctly assigns the image
         productImage.src = product.image_path;
         productImage.alt = product.product_name || "Product Image";
 
-        // Atualiza os textos
+        // Updates the texts
         productName.textContent = product.product_name || "Unknown Product";
         productPrice.textContent = product.price 
             ? `$${parseFloat(product.price).toFixed(2)}` 
             : "Price unavailable";        
         productDescription.textContent = product.description || "Description not available";
 
-        // Evento de clique no botão
+        // Click event for the button
         buyButton.addEventListener("click", () => {
             alert(`Buying ${product.product_name} for $${product.price}`);
         });
