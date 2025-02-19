@@ -10,31 +10,20 @@ document.addEventListener("DOMContentLoaded", async () => {
     const productId = urlParams.get("id");
 
     if (!productId) {
-        console.error(" Product ID not found in URL parameters!");
+        console.error("Product ID not found in URL parameters!");
         return;
     }
 
     try {
-        const products = await fetchProductById(productId);
+        const product = await fetchProductById(productId);
 
-        if (!products || products.length === 0) {
-            console.error(" No product data received!");
+        if (!product) {
+            console.error("No product data received!");
             productContainer.innerHTML = "<p>Product details not available.</p>";
             return;
         }
 
-        // Pegando apenas o primeiro item do array
-        const product = products[0];
-
-        console.log(" Produto encontrado:", product);
-        console.log("🔍 Image Path do Backend:", product.image_path);
-
-        // Verifica se a imagem é válida
-        if (!product.image_path || !product.image_path.startsWith("http")) {
-            console.error(" Imagem inválida recebida do backend!");
-            productContainer.innerHTML = "<p>Product details not available.</p>";
-            return;
-        }
+        console.log("Product found:", product);
 
         //  Agora atribui a imagem corretamente
         productImage.src = product.image_path;
@@ -53,7 +42,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         });
 
     } catch (error) {
-        console.error(" Error fetching product details:", error);
+        console.error("Error fetching product details:", error);
         productContainer.innerHTML = "<p>Failed to load product details. Please try again later.</p>";
     }
 });
