@@ -86,3 +86,36 @@ async function fetchProductsByCategory(categoryId) {
         return [];
     }
 }
+
+/**
+ * Fetches product details by ID.
+ * @param {string} productId - The ID of the product.
+ * @returns {Promise<Object>} - The product details.
+ */
+async function fetchProductById(productId) {
+    try {
+        const response = await fetch(`${API_BASE_URL}/products?id=${encodeURIComponent(productId)}`);
+        const products = await response.json();
+
+        console.log("API response:", products); // Log the response
+
+        if (!products || products.length === 0) {
+            throw new Error(`Product with ID ${productId} not found`);
+        }
+
+        // Convert productId to a number for comparison
+        const numericProductId = Number(productId);
+
+        // Find the product with the matching ID using the index as the ID
+        const product = products[numericProductId - 1]; // Assuming IDs start from 1
+
+        if (!product) {
+            throw new Error(`Product with ID ${productId} not found`);
+        }
+
+        return product; // Return the single product object
+    } catch (error) {
+        console.error('Error fetching product details:', error);
+        throw error;
+    }
+}

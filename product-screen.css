@@ -1,0 +1,183 @@
+@import url('stylelight.css');
+@import url('theme.css');
+
+/* Ensures the container occupies the screen correctly */
+main {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100vh; /* Occupies the full height of the screen */
+}
+
+/* Container */
+#product-container {
+    max-width: 700px; /* To limit width */
+    max-height: 700px;
+    margin: 20px auto;
+    padding: 20px; /* internal spacing */
+    background-color: var(--surface);
+    border-radius: 10px;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+    text-align: center;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;  /* horizontal center */
+    justify-content: center; /* vertical center */
+    min-height: 500px; /* Avoid overflow of content */
+}
+
+/* Product Image */
+#product-image {
+    max-height: 200px; 
+    width: auto; /* Avoid distortion of image */
+    object-fit: contain;
+    border-radius: 8px;
+    margin-bottom: 15px;
+}
+
+/* Product Name */
+#product-name {
+    font-size: 28px; 
+    font-weight: bold;
+    color: var(--on-surface);
+}
+
+/* Price */
+#product-price {
+    font-size: 20px;
+    color: var(--primary);
+    font-weight: bold;
+}
+
+/* Description */
+#product-description {
+    font-size: 18px; 
+    max-width: 600px;
+    text-align: center;
+    color: var(--on-background);
+    margin-bottom: 20px;
+}
+
+/* Buy Button */
+#buy-button {
+    background-color: var(--primary);
+    color: var(--on-primary);
+    border: none;
+    padding: 10px 20px;
+    font-size: 18px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+#buy-button:hover {
+    background-color: var(--primary-variant);
+}
+
+/* Ensures the screen has full height and centers the content */
+body, html {
+    height: 100%;
+}
+
+#product-container {
+    min-width: 300px !important; /* Larger for better visualization */
+    min-height: 200px; /* Ensures it doesn't get too small */
+    padding: 20px;
+    background-color: var(--surface);
+    border-radius: 10px;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    margin-bottom: 40px !important;
+    background-color: var(--background);
+
+    /* Center on the screen */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center; /* Centers vertically */
+    margin: auto; /* Centers horizontally */
+}
+
+/* Light Theme */
+[data-theme="light"] #product-container {
+    background-color: var(--surface) !important;
+    color: var(--text-color) !important;
+    box-shadow: var(--box-shadow) !important;
+    border: 2px solid var(--primary) !important;
+}
+
+/* Dark Theme */
+[data-theme="dark"] #product-container {
+    background-color: var(--primary) !important;
+    color: var(--primary-variant) !important;
+    box-shadow: 0px 4px 10px rgba(255, 255, 255, 0.1) !important;
+    border: 2px solid var(--on-background) !important;
+}
+
+/* Light Theme */
+[data-theme="light"] #product-price {
+    color: var(--primary-variant) !important; 
+}
+
+/* Dark Theme */
+[data-theme="dark"] #product-price {
+    color: var(--on-primary) !important; 
+}
+
+/* Buy Now Button Style */
+#buy-button {
+    padding: 10px 20px;
+    font-size: 18px;
+    font-weight: bold;
+    border-radius: 8px;
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.3s ease-in-out, transform 0.2s ease-in-out;
+}
+
+/* Light Theme */
+[data-theme="light"] #buy-button {
+    background-color: var(--primary-variant);
+    color: var(--on-primary);
+}
+
+[data-theme="light"] #buy-button:hover {
+    background-color: var(--background);
+    color: var(--on-background) ;
+    transform: scale(1.05); 
+    border: 1px solid var(--on-background);
+}
+
+/* Dark Theme */
+[data-theme="dark"] #buy-button {
+    background-color: var(--secondary);
+    color: var(--on-secondary);
+}
+
+[data-theme="dark"] #buy-button:hover {
+    background-color: var(--background);
+    transform: scale(1.05); 
+    border: 1px solid var(--primary-variant);
+}
+
+/* Default Description Style */
+#product-description {
+    font-size: 18px;
+    font-weight: 400;
+    text-align: center;
+    margin-top: 10px;
+    transition: color 0.3s ease-in-out;
+    font-style: italic;
+}
+
+/* Light Theme */
+[data-theme="light"] #product-description {
+    color: var(--on-background) !important;
+}
+
+/* Dark Theme */
+[data-theme="dark"] #product-description {
+    color: var(--on-background) !important;
+  
+}
+
