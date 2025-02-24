@@ -1,4 +1,4 @@
-const API_BASE_URL = "http://localhost:5000";
+const API_BASE_URL = "https://southern-shard-449119-d4.nn.r.appspot.com";
 
 /**
  * Fetches category data from the API.
