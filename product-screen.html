@@ -25,35 +25,46 @@
 <body class="d-flex flex-column min-vh-100">
 
     <!-- Navbar -->
-<nav class="navbar navbar-expand-lg">
-    <div class="container">
-        <a class="navbar-brand" href="index.html">
-            <img src="images/CartBluterLogo.png" alt="CartBluter Logo">
-            <span>CartBluter</span>
-        </a>
+    <nav class="navbar navbar-expand-lg">
+        <div class="container d-flex justify-content-between align-items-center">
+            <!-- Left Side: Logo -->
+            <a class="navbar-brand" href="index.html">
+                <img src="images/CartBluterLogo.png" alt="CartBluter Logo">
+                <span>CartBluter</span>
+            </a>
 
-        <!-- Button Toggle Theme -->
-        <button id="theme-toggle" class="theme-toggle" title="Toggle theme">
-            <svg class="theme-icon" width="24" height="24" viewBox="0 0 24 24">
-                <circle class="sun" cx="12" cy="12" r="6" fill="currentColor"></circle>
-                <g class="sun-beams" stroke="currentColor">
-                    <line x1="12" y1="1" x2="12" y2="3" />
-                    <line x1="12" y1="21" x2="12" y2="23" />
-                    <line x1="4.22" y1="4.22" x2="5.64" y2="5.64" />
-                    <line x1="18.36" y1="18.36" x2="19.78" y2="19.78" />
-                    <line x1="1" y1="12" x2="3" y2="12" />
-                    <line x1="21" y1="12" x2="23" y2="12" />
-                    <line x1="4.22" y1="19.78" x2="5.64" y2="18.36" />
-                    <line x1="18.36" y1="5.64" x2="19.78" y2="4.22" />
-                </g>
-            </svg>
-        </button>
-    </div>
-</nav>
+            <!-- Right Side: Theme Toggle & Cart -->
+            <div class="d-flex align-items-center gap-3">
+                <!-- Cart Icon (Opens Sidebar) -->
+                <button href="#" id="cart-btn" class="cart-btn btn btn-outline-dark position-relative">
+                    🛒
+                    <span id="cart-count" class="cart-badge position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger d-none">
+                        0
+                    </span>
+                </button>
+
+                <!-- Button Toggle Theme -->
+                <button id="theme-toggle" class="theme-toggle btn btn-outline-secondary" title="Toggle theme">
+                    <svg class="theme-icon" width="24" height="24" viewBox="0 0 24 24">
+                        <circle class="sun" cx="12" cy="12" r="6" fill="currentColor"></circle>
+                        <g class="sun-beams" stroke="currentColor">
+                            <line x1="12" y1="1" x2="12" y2="3" />
+                            <line x1="12" y1="21" x2="12" y2="23" />
+                            <line x1="4.22" y1="4.22" x2="5.64" y2="5.64" />
+                            <line x1="18.36" y1="18.36" x2="19.78" y2="19.78" />
+                            <line x1="1" y1="12" x2="3" y2="12" />
+                            <line x1="21" y1="12" x2="23" y2="12" />
+                            <line x1="4.22" y1="19.78" x2="5.64" y2="18.36" />
+                            <line x1="18.36" y1="5.64" x2="19.78" y2="4.22" />
+                        </g>
+                    </svg>
+                </button>
+            </div>
+        </div>
+    </nav>
 
     <!-- Main Content -->
     <main class="container mt-4">
-        <!-- <h2 class="text-center">Product Details</h2> -->
         <div id="product-container" class="card shadow-lg p-4 mt-4 mx-auto text-center">
             <img id="product-image" class="card-img-top" src="" alt="Product Image">
             <div class="card-body">
@@ -70,11 +81,35 @@
         <p>&copy; 2025 CartBluter - Revolutionizing Grocery Shopping</p>
     </footer>
 
+    <!-- Sidebar Cart (Initially Hidden) -->
+    <div id="cart-sidebar" class="cart-sidebar">
+        <div class="cart-header">
+            <h4>Shopping Cart</h4>
+            <button id="close-cart" class="close-cart">&times;</button>
+        </div>
+        <div id="cart-items" class="cart-items">
+            <!-- Cart items will be dynamically added here -->
+        </div>
+        <div class="cart-footer">
+            <button id="checkout-button" class="btn btn-success w-100">Checkout</button>
+        </div>
+    </div>
+
+    <!-- Custom Cart Modal -->
+    <div id="cart-modal" class="cart-modal">
+        <div class="cart-modal-content">
+            <p>Item already added to cart. Increase quantity by 1?</p>
+            <button id="cart-modal-yes" class="btn btn-success">Yes</button>
+            <button id="cart-modal-no" class="btn btn-danger">No</button>
+        </div>
+    </div>
+
     <!-- External Scripts -->
     <script src="js-files/api_service.js"></script>
     <script src="js-files/suggestions.js"></script>
     <script src="js-files/theme.js"></script>
     <script src="js-files/product-screen.js"></script>
-    
+    <script src="js-files/cart.js"></script> 
+
 </body>
 </html>

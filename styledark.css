@@ -1,28 +1,4 @@
-/* ========================== */
-/* === Colors Definition === */
-/* ========================== */
-:root {
-    --primary: #191568; 
-    --primary-variant: #3D33C2; 
-    --secondary: #0091EA; 
-    --secondary-variant: #0277BD; 
-
-    /* === Background & Surfaces === */
-    --background: #161313; 
-    --surface: #2A2A2A; 
-
-    /* === Error Colors === */
-    --error: #B00020;
-    
-    --on-primary: #FFFFFF; 
-    --on-secondary: #EDE7F6; 
-    --on-background: #E0E0E0; 
-    --on-surface: #F5F5F5; 
-    --on-error: #FFCDD2; 
-     
-    --border: var(--primary-variant); 
-    --hover: var(--secondary-variant); 
-}
+@import url("theme.css");
    
 /* CSS with semantic variables */
 html, body {
@@ -153,7 +129,7 @@ body {
 }
 
 /* Hover for each theme */
-[data-theme="Dark"] .suggestions li:hover {
+[data-theme="dark"] .suggestions li:hover {
     
     
     background-color: var(--primary); 
@@ -215,11 +191,17 @@ main {
     grid-template-columns: repeat(6, 1fr); 
     gap: 20px;
     padding: 20px;
+    margin-left: 5px;
     justify-items: center;
     align-items: center;
-    margin-left: 5px;
 }
 
+
+@media (max-width: 768px) {
+    #category-container {
+        grid-template-columns: repeat(2, 1fr); /* reposonsive structure for smaller screens */
+    }
+}
 .market-card {
     background-color: var(--surface);
     color: var(--on-surface);
@@ -247,6 +229,7 @@ main {
     }
 }
 
+
 footer {
     background-color: var(--primary); 
     color: var(--on-primary); 
@@ -254,39 +237,6 @@ footer {
     text-align: center;
     line-height: 40px;
     height: 60px;
-}
-
-/* Modern theme toggle button */ 
-.theme-toggle {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 50px; /* Same size as other buttons */
-    height: 50px; /* Ensuring alignment */
-    border-radius: 8px;
-    background-color: var(--secondary); 
-    color: var(--on-secondary);
-    border: 1px solid var(--border);
-    transition: all 0.3s ease-in-out;
-    cursor: pointer;
-    margin-left: 15px; 
-}
-
-/* Hover effect */
-.theme-toggle:hover {
-    background-color: var(--background);
-    color: var(--on-background);
-}
-
-/* Responsive theme icon */
-.theme-toggle svg {
-    width: 24px;
-    height: 24px;
-}
-
-/* Removing pixelated border */
-.theme-toggle:focus {
-    outline: none;
 }
 
 /* Dark Mode: Hover & Active (Keyboard Navigation) */

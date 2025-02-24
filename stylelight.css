@@ -1,28 +1,4 @@
-:root {
-    /* Core Colors */
-    --primary: #8AD167; 
-    --primary-variant: #1E6D5C; 
-    --secondary: #90A4AE; 
-    --secondary-variant: #607D8B; 
-
-    /* Backgrounds and Surfaces */
-    --background: #FFFFFF; 
-    --surface: #f2f2f2;
-
-    /* Error Colors */
-    --error: #B00020; 
-
-    /* On-* Colors (Text and Iconography) */
-    --on-primary: #ffffff; 
-    --on-secondary: #37474f; 
-    --on-background: #212121; 
-    --on-surface: #424242; 
-    --on-error: #FFFFFF; 
-
-    /* Borders and Interaction */
-    --border: var(--primary-variant); 
-    --hover: var(--secondary-variant); 
-}
+@import url('theme.css');
 
 /* CSS with semantic variables */
 html, body {
@@ -264,40 +240,6 @@ footer {
     text-align: center;
     line-height: 40px;
     height: 60px;
-}
-
-/* Modern theme toggle button */ 
-.theme-toggle {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 50px; /* Same size as other buttons */
-    height: 50px; /* Ensuring alignment */
-    border-radius: 8px;
-    background-color: var(--primary-variant); 
-    color: var(--on-primary);
-    border: 1px solid var(--border);
-    transition: all 0.3s ease-in-out;
-    cursor: pointer;
-    margin-left: 15px; /* Moves the button slightly to the right */
-}
-
-/* Hover effect */
-.theme-toggle:hover {
-    background-color: var(--background);
-    color: var(--on-background);
-}
-
-/* Responsive theme icon */
-.theme-toggle svg {
-    width: 24px;
-    height: 24px;
-}
-
-/* Removing pixelated border */
-.theme-toggle:focus {
-    outline: none;
-    /* box-shadow: 0 0 10px var(--on-primary); */
 }
 
 /* Light Mode: Hover & Active (Keyboard Navigation) */

@@ -39,11 +39,6 @@ document.addEventListener("DOMContentLoaded", async () => {
             : "Price unavailable";        
         productDescription.textContent = product.description || "Description not available";
 
-        // Click event for the button
-        buyButton.addEventListener("click", () => {
-            alert(`Buying ${product.product_name} for $${product.price}`);
-        });
-
     } catch (error) {
         console.error("Error fetching product details:", error);
         productContainer.innerHTML = "<p>Failed to load product details. Please try again later.</p>";
