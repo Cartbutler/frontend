@@ -160,8 +160,14 @@ body {
 }
 
 /* ========================== */
+/* === Market Cards - STRUCTURE === */
 /* === Category Card Styling === */
 /* ========================== */
+#category-container {
+    display: grid;
+    grid-template-columns: repeat(6, 1fr); 
+    gap: 20px;
+    padding: 20px;
 .category-card {
     background-color: var(--on-surface);
     color: var(--background);
@@ -246,6 +252,7 @@ body {
         height: 80px;
     }
 }
+
 
 footer {
     background-color: var(--primary); 
