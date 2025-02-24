@@ -1,4 +1,4 @@
-const API_BASE_URL = "https://southern-shard-449119-d4.nn.r.appspot.com";
+const API_BASE_URL = "http://localhost:5000";
 
 /**
  * Fetches category data from the API.
@@ -93,26 +93,33 @@ async function fetchProductsByCategory(categoryId) {
  * @returns {Promise<Object>} - The product details.
  */
 async function fetchProductById(productId) {
+    console.log(`Fetching product with ID: ${productId}`); // Log the product ID being fetched
+
     try {
         const response = await fetch(`${API_BASE_URL}/products?id=${encodeURIComponent(productId)}`);
         const products = await response.json();
 
-        console.log("API response:", products); // Log the response
+        console.log("API response:", products); // Log the API response
 
         if (!products || products.length === 0) {
+            console.error(`Product with ID ${productId} not found in the response`);
             throw new Error(`Product with ID ${productId} not found`);
         }
 
-        // Convert productId to a number for comparison
-        const numericProductId = Number(productId);
+        // Log each product's ID in the response
+        products.forEach(product => {
+            console.log(`Product ID in response: ${product.product_id}`);
+        });
 
-        // Find the product with the matching ID using the index as the ID
-        const product = products[numericProductId - 1]; // Assuming IDs start from 1
+        // Find the product with the matching ID
+        const product = products.find(p => p.product_id == productId); // Use loose equality to handle type differences
 
         if (!product) {
+            console.error(`Product with ID ${productId} not found after filtering`);
             throw new Error(`Product with ID ${productId} not found`);
         }
 
+        console.log("Found product:", product); // Log the found product
         return product; // Return the single product object
     } catch (error) {
         console.error('Error fetching product details:', error);
