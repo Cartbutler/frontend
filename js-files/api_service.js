@@ -1,4 +1,4 @@
-const API_BASE_URL = "https://southern-shard-449119-d4.nn.r.appspot.com";
+const API_BASE_URL = "http://localhost:5000";
 
 /**
  * Fetches category data from the API.
@@ -103,35 +103,10 @@ async function fetchProductById(productId) {
             throw new Error(`Product with ID ${productId} not found`);
         }
 
-        const products = await response.json();
+        const product = await response.json();
+        console.log("API response:", product); // Log the API response
 
-        // Check if the response is an array or a single object
-        if (Array.isArray(products)) {
-            if (products.length === 0) {
-                console.error(`Product with ID ${productId} not found in the response`);
-                throw new Error(`Product with ID ${productId} not found`);
-            }
-
-            // Assuming the API returns a list of products, find the product with the matching ID
-            const product = products.find(p => p.product_id == productId); // Use loose equality to handle type differences
-
-            if (!product) {
-                console.error(`Product with ID ${productId} not found after filtering`);
-                throw new Error(`Product with ID ${productId} not found`);
-            }
-
-            console.log("Found product:", product); // Log the found product
-            return product; // Return the single product object
-        } else {
-            // If the response is a single object, return it directly
-            if (!products || Object.keys(products).length === 0) {
-                console.error(`Product with ID ${productId} not found in the response`);
-                throw new Error(`Product with ID ${productId} not found`);
-            }
-
-            console.log("Found product:", products); // Log the found product
-            return products; // Return the single product object
-        }
+        return product; // Return the single product object
     } catch (error) {
         console.error('Error fetching product details:', error);
         throw error;

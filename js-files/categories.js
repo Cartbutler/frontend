@@ -55,7 +55,7 @@ function isValidUrl(urlString) {
     const baseUrl = "https://storage.googleapis.com/";
     try {
         const url = new URL(urlString);
-        return url.href.startsWith(baseUrl) ? url.href : `${baseUrl}${urlString}`;
+        return url.href;
     } catch (error) {
         return `${baseUrl}${urlString}`;
     }
