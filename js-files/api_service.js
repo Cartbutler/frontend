@@ -96,7 +96,7 @@ async function fetchProductById(productId) {
     console.log(`Fetching product with ID: ${productId}`); // Log the product ID being fetched
 
     try {
-        const response = await fetch(`${API_BASE_URL}/products?id=${encodeURIComponent(productId)}`);
+        const response = await fetch(`${API_BASE_URL}/product?id=${encodeURIComponent(productId)}`);
         
         if (!response.ok) {
             console.error(`Product with ID ${productId} not found in the response`);
