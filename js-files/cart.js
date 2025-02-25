@@ -143,4 +143,14 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // Initialize cart count on page load
     updateCartCount();
+
+    // Load cart items on page load
+    document.addEventListener("DOMContentLoaded", function () {
+        fetch('cart.html')
+            .then(response => response.text())
+            .then(html => {
+                document.body.insertAdjacentHTML('beforeend', html); // Insere o carrinho no final do body
+            })
+            .catch(error => console.error('Error loading cart:', error));
+    });
 });

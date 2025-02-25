@@ -20,6 +20,7 @@
 
     <!-- CSS link for this page -->
     <link rel="stylesheet" href="product-screen.css">
+    <link rel="stylesheet" href="cart.css">
 </head>
 
 <body class="d-flex flex-column min-vh-100">
@@ -81,34 +82,15 @@
         <p>&copy; 2025 CartBluter - Revolutionizing Grocery Shopping</p>
     </footer>
 
-    <!-- Sidebar Cart (Initially Hidden) -->
-    <div id="cart-sidebar" class="cart-sidebar">
-        <div class="cart-header">
-            <h4>Shopping Cart</h4>
-            <button id="close-cart" class="close-cart">&times;</button>
-        </div>
-        <div id="cart-items" class="cart-items">
-            <!-- Cart items will be dynamically added here -->
-        </div>
-        <div class="cart-footer">
-            <button id="checkout-button" class="btn btn-success w-100">Checkout</button>
-        </div>
-    </div>
-
-    <!-- Custom Cart Modal -->
-    <div id="cart-modal" class="cart-modal">
-        <div class="cart-modal-content">
-            <p>Item already added to cart. Increase quantity by 1?</p>
-            <button id="cart-modal-yes" class="btn btn-success">Yes</button>
-            <button id="cart-modal-no" class="btn btn-danger">No</button>
-        </div>
-    </div>
+    <!-- Cart will be dynamically loaded here -->
+    <div id="cart-container"></div>
 
     <!-- External Scripts -->
     <script src="js-files/api_service.js"></script>
     <script src="js-files/suggestions.js"></script>
     <script src="js-files/theme.js"></script>
     <script src="js-files/product-screen.js"></script>
+    <script src="js-files/cart-loader.js"></script>
     <script src="js-files/cart.js"></script> 
 
 </body>
