@@ -90,7 +90,7 @@
     position: fixed;
     top: 0;
     right: -350px;
-    width: 300px; 
+    width: 200px; 
     height: 100vh;
     background-color: var(--surface);
     box-shadow: -6px 0 10px var(--primary-variant);
@@ -107,18 +107,35 @@
 .close-cart {
     background: none;
     border: none;
-    font-size: 24px;
-    font-weight: bold;
+    font-size: 22px;
     cursor: pointer;
     position: absolute;
     top: 10px;
-    right: 10px;
+    right: 5px;
     color: var(--on-surface);
     transition: color 0.2s ease-in-out;
+    margin-top: 11px;
+    margin-right: 2px;
+    border: 1px solid var(--on-surface);
+    width: 22px;
+    height: 22px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%; /* Turns it into a circle */
+    padding-bottom: 5px;
 }
 
+/* Hover Effect - Changes color when hovered */
 .close-cart:hover {
-    color: var(--error);
+    background: var(--error); /* Change background on hover */
+    color: var(--on-primary);
+    border-color: var(--error); /* Change border color on hover */
+}
+
+/* Active Click Effect */
+.close-cart:active {
+    transform: scale(0.95); /* Slightly reduce size when clicked */
 }
 
 .cart-items-container {
@@ -130,7 +147,6 @@
     align-items: center;
     border-bottom: 1px solid var(--on-surface);
     padding: 10px 0;
-    padding-left: 20px;
 }
 
 .cart-item-img {
@@ -189,15 +205,6 @@
     background-color: var(--secondary) !important;
 }
 
-
-/* Checkout button */
-.cart-footer {
-    margin-top: auto;
-    text-align: center;
-    padding-top: 10px;
-    border-top: 1px solid var(--on-surface);
-}
-
 /* Cart Modal Styles */
 .cart-modal {
     display: none;
@@ -221,4 +228,61 @@
     border: 1px solid var(--on-background);
     box-shadow: var(--on-surface);
     transition: transform 0.3s ease-in-out;
+}
+
+/* ===========================
+   General Styles for "Go to Cart" Button (Common for Both Themes)
+   =========================== */
+   #go-to-cart {
+    display: block;
+    width: 100%;
+    padding: 12px;
+    font-size: 16px;
+    text-align: center;
+    border-radius: 10px;
+    border: 1px solid var(--primary-variant);
+    cursor: pointer;
+    transition: all 0.3s ease-in-out;
+}
+
+/* ===========================
+   Light Theme - Colors
+   =========================== */
+[data-theme="light"] #go-to-cart {
+    background-color: var(--primary-variant);
+    color: var(--on-primary);
+}
+
+/* Light Theme - Hover */
+[data-theme="light"] #go-to-cart:hover {
+    background-color: var(--background);
+    color: var(--on-background);
+}
+
+/* Light Theme - Active (Click) */
+[data-theme="light"] #go-to-cart:active {
+    background-color: var(--secondary);
+    color: var(--on-secondary);
+    transform: scale(0.9);
+}
+
+/* ===========================
+   Dark Theme - Colors
+   =========================== */
+[data-theme="dark"] #go-to-cart {
+    background-color: var(--secondary);
+    color: var(--on-secondary);
+}
+
+/* Dark Theme - Hover */
+[data-theme="dark"] #go-to-cart:hover {
+    background-color: var(--background);
+    color: var(--on-background);
+}
+
+/* Dark Theme - Active (Click) */
+[data-theme="dark"] #go-to-cart:active {
+    background-color: var(--secondary);
+    color: var(--on-secondary);
+    transform: scale(0.9);
 }
