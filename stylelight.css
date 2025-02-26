@@ -9,6 +9,10 @@ html, body {
     color: var(--on-background);
 }
 
+main {
+    flex: 1;
+}
+
 body {
     display: flex;
     flex-direction: column;

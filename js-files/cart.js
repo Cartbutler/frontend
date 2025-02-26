@@ -38,12 +38,9 @@ function initializeCartEventListeners() {
     function loadCartItems() {
         let cartItems = JSON.parse(localStorage.getItem("cart")) || [];
         if (cartItemsContainer) {
-            cartItemsContainer.innerHTML = "";
-
-            if (cartItems.length === 0) {
-                cartItemsContainer.innerHTML = "<p class='text-center'>Your cart is empty.</p>";
-                return;
-            }
+            cartItemsContainer.innerHTML = cartItems.length === 0
+                ? "<p class='text-center'>Your cart is empty.</p>"
+                : "";
 
             cartItems.forEach((item, index) => {
                 const cartItem = document.createElement("div");
@@ -61,12 +58,12 @@ function initializeCartEventListeners() {
                         <button class="remove-item btn btn-danger btn-sm" data-index="${index}">Remove</button>
                     </div>
                 `;
-                cartItemsContainer.appendChild(cartItem);
+                cartItemsContainer.prepend(cartItem);
             });
 
             // Add events to buttons only if elements exist
             document.querySelectorAll(".increase-qty").forEach(button => {
-                button.addEventListener("click", (event) => {
+                button.addEventListener("click", event => {
                     let cartItems = JSON.parse(localStorage.getItem("cart")) || [];
                     const index = event.target.dataset.index;
                     cartItems[index].quantity++;
@@ -77,7 +74,7 @@ function initializeCartEventListeners() {
             });
 
             document.querySelectorAll(".decrease-qty").forEach(button => {
-                button.addEventListener("click", (event) => {
+                button.addEventListener("click", event => {
                     let cartItems = JSON.parse(localStorage.getItem("cart")) || [];
                     const index = event.target.dataset.index;
 
@@ -94,7 +91,7 @@ function initializeCartEventListeners() {
             });
 
             document.querySelectorAll(".remove-item").forEach(button => {
-                button.addEventListener("click", (event) => {
+                button.addEventListener("click", event => {
                     let cartItems = JSON.parse(localStorage.getItem("cart")) || [];
                     const index = event.target.dataset.index;
                     cartItems.splice(index, 1);
@@ -145,20 +142,27 @@ function initializeCartEventListeners() {
             updateCartCount();
             loadCartItems();
         }
+
+        // Open the cart sidebar after adding to cart automatically
+        openCartSidebar();
     }
 
-    if (buyButton) buyButton.addEventListener("click", addToCart);
-    if (cartBtn) cartBtn.addEventListener("click", () => {
+    function openCartSidebar() {
         if (cartSidebar) {
             cartSidebar.classList.add("open");
             loadCartItems();
         }
-    });
-    if (closeCartBtn) closeCartBtn.addEventListener("click", () => {
+    }
+
+    function closeCartSidebar() {
         if (cartSidebar) {
             cartSidebar.classList.remove("open");
         }
-    });
+    }
+
+    if (buyButton) buyButton.addEventListener("click", addToCart);
+    if (cartBtn) cartBtn.addEventListener("click", openCartSidebar);
+    if (closeCartBtn) closeCartBtn.addEventListener("click", closeCartSidebar);
 
     updateCartCount();
 
