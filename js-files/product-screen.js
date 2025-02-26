@@ -43,4 +43,20 @@ document.addEventListener("DOMContentLoaded", async () => {
         console.error("Error fetching product details:", error);
         productContainer.innerHTML = "<p>Failed to load product details. Please try again later.</p>";
     }
+
+    // Ensure search functionality works the same as in index.html
+document.getElementById("search-form").addEventListener("submit", function (event) {
+    event.preventDefault();
+    let query = document.getElementById("search-input").value.trim(); // Trim to remove spaces
+
+    console.log("Search query sent:", query); // Debugging to verify correct query
+
+    if (!query) {
+        alert("Please enter a search term.");
+        return;
+    }
+
+    // Redirect to search-results.html with the query
+    window.location.href = `search-results.html?query=${encodeURIComponent(query)}`;
+});
 });

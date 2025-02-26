@@ -147,88 +147,105 @@ body {
     cursor: pointer;
 }
 
-/* Category Cards */
-.market-card {
-    background-color: var(--surface);
-    color: var(--on-surface);
-    border: 1px solid var(--border);
-    border-radius: 8px;
-    width: 150px;
-    height: 150px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    transition: all 0.3s ease;
-    text-decoration: none;
-    font-weight: bold; 
-    color: var(--on-surface); 
-}
-
-.market-card:hover {
-    background-color: var(--background);
-    color: var(--on-background);
-    box-shadow: 0px 0px 30px 8px var(--on-background); 
-    transform: scale(1.07); /* grow by 7% */
-    transition: all 0.3s ease-in-out; /* animation duration and easing */
-}
-/* Main Content - Categories */
-main {
-    flex: 1;
-    display: grid;
-    grid-template-columns: repeat(6, 1fr); 
-    grid-template-rows: repeat(2, auto); 
-    gap: 20px;
-    padding: 20px;
-    justify-items: center;
-    align-items: center;
-}
-
 /* ========================== */
-/* === Market Cards - STRUCTURE === */
+/* === Category Container === */
 /* ========================== */
 #category-container {
     display: grid;
-    grid-template-columns: repeat(6, 1fr); 
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); /* Keeps cards side by side */
     gap: 20px;
     padding: 20px;
-    margin-left: 5px;
-    justify-items: center;
+    justify-content: center;
     align-items: center;
 }
 
-
-@media (max-width: 768px) {
-    #category-container {
-        grid-template-columns: repeat(2, 1fr); /* reposonsive structure for smaller screens */
-    }
-}
-.market-card {
-    background-color: var(--surface);
-    color: var(--on-surface);
-    border: 1px solid var(--border);
-    border-radius: 8px;
-    width: 150px; 
-    height: 150px;
+/* ========================== */
+/* === Category Card Styling === */
+/* ========================== */
+.category-card {
+    background-color: var(--on-surface);
+    color: var(--background);
+    border: 1px solid var(--border); /* Ensures only one border */
+    border-radius: 12px;
+    width: 220px; 
+    height: 230px;
     display: flex;
+    flex-direction: column; /* Keeps image on top and text below */
     align-items: center;
     justify-content: center;
     text-align: center;
     transition: all 0.3s ease;
+    padding: 10px;
+    overflow: hidden;
+    cursor: pointer; /* Makes it feel interactive */
 }
 
-.market-card:hover {
-    background-color: var(--background);
-    color: var(--on-background);
-    box-shadow: 0px 4px 10px var(--on-background);
+/* Hover Effect - More intense */
+.category-card:hover {
+    transform: scale(1.07);
+    box-shadow: 0px 10px 20px var(--primary-variant); /* Stronger shadow */
+    background-color: var(--background); /* Slightly darker background on hover */
 }
 
-/* Responsiveness for smaller screens */
+/* ========================== */
+/* === Image Styling === */
+/* ========================== */
+.category-card img {
+    width: 160px;  /* Ensures uniform size */
+    height: 160px;
+    object-fit: contain;  /* Prevents the image from being cropped */
+}
+
+/* ========================== */
+/* === Category Name Styling === */
+/* ========================== */
+.category-card h5 {
+    font-size: 14px;
+    font-weight: bold;
+    margin: 0;
+    text-align: center; /* Ensures proper text alignment */
+    width: 100%; /* Makes sure text occupies full width */
+    white-space: nowrap; /* Prevents text from breaking into multiple lines */
+    color: var(--secondary);
+}
+
+/* ========================== */
+/* === Remove Background Effects from Market Card === */
+/* ========================== */
+.market-card {
+    background: none !important; /* Removes background */
+    border: none !important; /* Removes border */
+    box-shadow: none !important; /* Removes shadow */
+    text-decoration: none !important; /* Removes default link underline */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Hover Effect - Slight Scale on Hover */
+.category-card:hover {
+    transform: scale(1.05);
+}
+
+/* ========================== */
+/* === Responsiveness: Adjusts the grid on smaller screens === */
+/* ========================== */
 @media (max-width: 768px) {
-    main {
-        grid-template-columns: repeat(2, 1fr);
+    #category-container {
+        grid-template-columns: repeat(2, 1fr); /* Keeps 2 columns on small screens */
+    }
+
+    .category-card {
+        width: 140px;
+        height: 180px;
+    }
+
+    .category-card img {
+        width: 80px;
+        height: 80px;
     }
 }
-
 
 footer {
     background-color: var(--primary); 

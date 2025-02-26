@@ -1,6 +1,59 @@
 @import url('theme.css');
 
 /* ===========================
+    Cart Button Styles
+   =========================== */
+
+   .cart-btn {
+    position: relative;
+    font-size: 30px !important; /* Bigger icon */
+    color: var(--text-color) !important;
+    text-decoration: none;
+    margin-left: 20px;
+    padding: 15px 20px !important; /* Adjusted padding */
+    background-color: var(--primary) !important;
+    border-radius: 12px !important; /* Rounded corners */
+    transition: transform 0.2s ease-in-out, background-color 0.3s ease-in-out;
+    width: 45px !important; /* Force width */
+    height: 50px !important; /* Force height */
+    display: flex !important;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid var(--on-background) !important;
+}
+
+/* Cart Icon */
+.cart-btn::before {
+    font-size: 30px !important; /* Bigger cart icon */
+    /* color: white !important; */
+}
+
+/* Cart Badge (Item Counter) */
+.cart-badge {
+    position: absolute;
+    top: -5px;
+    right: -5px;
+    background-color: var(--error) !important;
+    color: var(--on-primary) !important;
+    font-size: 18px !important;
+    font-weight: bold;
+    border-radius: 50% !important;
+    width: 30px !important;
+    height: 30px !important;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 2px solid var(--background) !important;
+}
+
+/* Hover Effect */
+.cart-btn:hover {
+    transform: scale(1.2) !important;
+    background-color: var(--primary-variant) !important;
+}
+
+
+/* ===========================
     Responsive Cart Adjustments
    =========================== */
 
@@ -111,6 +164,31 @@
 .remove-item {
     margin-top: 5px;
 }
+
+/* ===========================
+   Theme-Specific Styles
+   =========================== */
+
+/* Light Theme - Cart */
+[data-theme="light"] .cart-btn {
+    background-color: var(--background) !important;
+    color: var(--on-background) !important;
+}
+
+[data-theme="light"] .cart-badge {
+    background-color: var(--primary-variant) !important;
+}
+
+/* Dark Theme - Cart */
+[data-theme="dark"] .cart-btn {
+    background-color: var(--on-primary) !important;
+    color: var(--on-surface) !important;
+}
+
+[data-theme="dark"] .cart-badge {
+    background-color: var(--secondary) !important;
+}
+
 
 /* Checkout button */
 .cart-footer {
