@@ -1,3 +1,6 @@
+/* Provisional code for cart events */
+/* For demo purposes - waiting for BE endpoint cart */
+
 document.addEventListener("DOMContentLoaded", function () {
     // Load cart.html before adding events
     fetch('cart.html')
@@ -158,4 +161,22 @@ function initializeCartEventListeners() {
     });
 
     updateCartCount();
+
+    window.cart = window.cart || {}; // Ensure cart object exists globally
+    console.log("Cart object initialized:", window.cart);
+
+    console.log("cart.js is loaded!");
+
+    window.cart = {
+        items: [],
+        
+        addItem: function (product) {
+            this.items.push(product);
+            console.log("Item added to cart:", product);
+        },
+    
+        getItems: function () {
+            return this.items;
+        }
+    };
 }

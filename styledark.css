@@ -191,7 +191,7 @@ body {
 /* === Image Styling === */
 /* ========================== */
 .category-card img {
-    width: 160px;  /* Ensures uniform size */
+    width: 200px;  /* Ensures uniform size */
     height: 160px;
     object-fit: contain;  /* Prevents the image from being cropped */
 }
