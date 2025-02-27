@@ -97,18 +97,19 @@ async function fetchProductById(productId) {
 
     try {
         const response = await fetch(`${API_BASE_URL}/product?id=${encodeURIComponent(productId)}`);
-        
+
+        // Check if response is not OK (e.g., 404 or 500 errors)
         if (!response.ok) {
-            console.error(`Product with ID ${productId} not found in the response`);
+            console.error(`Product with ID ${productId} not found (HTTP ${response.status})`);
             throw new Error(`Product with ID ${productId} not found`);
         }
 
         const product = await response.json();
         console.log("API response:", product); // Log the API response
 
-        return product; // Return the single product object
+        return product; // Return the product object
     } catch (error) {
-        console.error('Error fetching product details:', error);
+        console.error("Error fetching product details:", error);
         throw error;
     }
 }

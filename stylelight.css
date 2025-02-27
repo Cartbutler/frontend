@@ -1,28 +1,4 @@
-:root {
-    /* Core Colors */
-    --primary: #8AD167; 
-    --primary-variant: #1E6D5C; 
-    --secondary: #90A4AE; 
-    --secondary-variant: #607D8B; 
-
-    /* Backgrounds and Surfaces */
-    --background: #FFFFFF; 
-    --surface: #f2f2f2;
-
-    /* Error Colors */
-    --error: #B00020; 
-
-    /* On-* Colors (Text and Iconography) */
-    --on-primary: #ffffff; 
-    --on-secondary: #37474f; 
-    --on-background: #212121; 
-    --on-surface: #424242; 
-    --on-error: #FFFFFF; 
-
-    /* Borders and Interaction */
-    --border: var(--primary-variant); 
-    --hover: var(--secondary-variant); 
-}
+@import url('theme.css');
 
 /* CSS with semantic variables */
 html, body {
@@ -171,89 +147,106 @@ body {
     cursor: pointer;
 }
 
-/* Category Cards */
-.market-card {
-    background-color: var(--surface);
-    color: var(--on-surface);
-    border: 1px solid var(--border);
-    border-radius: 8px;
-    width: 150px;
-    height: 150px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    transition: all 0.3s ease;
-    text-decoration: none; 
-    font-weight: bold; 
-    color: var(--on-surface); 
-
-}
-
-.market-card:hover {
-    background-color: var(--background);
-    color: var(--on-background);
-    box-shadow: 0px 0px 30px 8px var(--on-background); 
-    transform: scale(1.07); 
-    transition: all 0.3s ease-in-out; 
-}
-
 /* ========================== */
-/* === Market Cards - STRUCTURE === */
-/* ========================== */
-main {
-    flex: 1;
-    display: grid;
-    grid-template-columns: repeat(6, 1fr); 
-    grid-template-rows: repeat(2, auto); 
-    gap: 20px;
-    padding: 20px;
-    justify-items: center;
-    align-items: center;
-}
-
-/* ========================== */
-/* === Market Cards - STRUCTURE === */
+/* === Category Container === */
 /* ========================== */
 #category-container {
     display: grid;
-    grid-template-columns: repeat(6, 1fr); 
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); /* Keeps cards side by side */
     gap: 20px;
     padding: 20px;
-    margin-left: 5px;
-    justify-items: center;
+    justify-content: center;
     align-items: center;
 }
 
-
-@media (max-width: 768px) {
-    #category-container {
-        grid-template-columns: repeat(2, 1fr); /* reposonsive structure for smaller screens */
-    }
-}
-.market-card {
+/* ========================== */
+/* === Category Card Styling === */
+/* ========================== */
+.category-card {
     background-color: var(--surface);
     color: var(--on-surface);
-    border: 1px solid var(--border);
-    border-radius: 8px;
-    width: 150px; 
-    height: 150px;
+    border: 1px solid var(--border); /* Ensures only one border */
+    border-radius: 12px;
+    width: 220px; 
+    height: 230px;
     display: flex;
+    flex-direction: column; /* Keeps image on top and text below */
     align-items: center;
     justify-content: center;
     text-align: center;
     transition: all 0.3s ease;
+    padding: 10px;
+    overflow: hidden;
+    cursor: pointer; /* Makes it feel interactive */
+    
+    /* Stronger shadow for more contrast */
+    /* box-shadow: 0px 6px 14px var(--on-background); */
 }
 
-.market-card:hover {
-    background-color: var(--background);
-    color: var(--on-background);
-    box-shadow: 0px 4px 10px var(--on-background);
+/* Hover Effect - More intense */
+.category-card:hover {
+    transform: scale(1.07);
+    box-shadow: 0px 10px 20px var(--on-background); /* Stronger shadow */
+    background-color: var(--surface); /* Slight darker background on hover */
 }
 
-/* Responsiveness for smaller screens */
+/* ========================== */
+/* === Image Styling === */
+/* ========================== */
+.category-card img {
+    width: 200px;  /* Ensures uniform size */
+    height: 160px;
+    object-fit: contain;  /* Prevents the image from being cropped */
+}
+
+/* ========================== */
+/* === Category Name Styling === */
+/* ========================== */
+.category-card h5 {
+    font-size: 14px;
+    font-weight: bold;
+    margin: 0;
+    text-align: center; /* Ensures proper text alignment */
+    width: 100%; /* Makes sure text occupies full width */
+    white-space: nowrap; /* Prevents text from breaking into multiple lines */
+    color: var(--primary-variant);
+}
+
+/* ========================== */
+/* === Remove Background Effects from Market Card === */
+/* ========================== */
+.market-card {
+    background: none !important; 
+    border: none !important;
+    box-shadow: none !important; 
+    text-decoration: none !important; 
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Hover Effect - Slight Scale on Hover */
+.category-card:hover {
+    transform: scale(1.05);
+}
+
+/* ========================== */
+/* === Responsiveness: Adjusts the grid on smaller screens === */
+/* ========================== */
 @media (max-width: 768px) {
-    main {
-        grid-template-columns: repeat(2, 1fr);
+    #category-container {
+        grid-template-columns: repeat(2, 1fr); /* Keeps 2 columns on small screens */
+    }
+
+    .category-card {
+        width: 140px;
+        height: 180px;
+    }
+
+    .category-card img {
+        width: 80px;
+        height: 80px;
     }
 }
 
@@ -264,40 +257,6 @@ footer {
     text-align: center;
     line-height: 40px;
     height: 60px;
-}
-
-/* Modern theme toggle button */ 
-.theme-toggle {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 50px; /* Same size as other buttons */
-    height: 50px; /* Ensuring alignment */
-    border-radius: 8px;
-    background-color: var(--primary-variant); 
-    color: var(--on-primary);
-    border: 1px solid var(--border);
-    transition: all 0.3s ease-in-out;
-    cursor: pointer;
-    margin-left: 15px; /* Moves the button slightly to the right */
-}
-
-/* Hover effect */
-.theme-toggle:hover {
-    background-color: var(--background);
-    color: var(--on-background);
-}
-
-/* Responsive theme icon */
-.theme-toggle svg {
-    width: 24px;
-    height: 24px;
-}
-
-/* Removing pixelated border */
-.theme-toggle:focus {
-    outline: none;
-    /* box-shadow: 0 0 10px var(--on-primary); */
 }
 
 /* Light Mode: Hover & Active (Keyboard Navigation) */

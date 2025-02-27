@@ -1,6 +1,10 @@
 document.addEventListener("DOMContentLoaded", () => {
     const searchInput = document.getElementById("search-input");
     const suggestionsBox = document.getElementById("suggestions");
+
+    // Check if the elements exist
+    if (!searchInput || !suggestionsBox) return;
+
     let selectedIndex = -1;
     let suggestionsList = [];
 
