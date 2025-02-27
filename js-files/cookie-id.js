@@ -19,6 +19,7 @@ function generateSessionId() {
 function setCookie(name, value) {
     const date = new Date();
     date.setFullYear(date.getFullYear() + 10); // Expiration set for 10 years even though user closes browser
+
     document.cookie = `${name}=${value}; expires=${date.toUTCString()}; path=/; SameSite=Lax`;
 }
 
@@ -45,6 +46,7 @@ function getOrCreateCartSessionId() {
     if (!sessionId) {
         sessionId = generateSessionId();
         setCookie(COOKIE_NAME, sessionId); // Now persistent at least 10 years
+
         console.log("New cart session ID created:", sessionId);
     } else {
         console.log("Existing cart session ID:", sessionId);
