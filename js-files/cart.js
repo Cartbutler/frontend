@@ -183,4 +183,3 @@ function initializeCartEventListeners() {
             return this.items;
         }
     };
-}
