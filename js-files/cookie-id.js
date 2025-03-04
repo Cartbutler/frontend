@@ -1,25 +1,20 @@
 const COOKIE_NAME = "cart_session_id"; // Cookie name for cart session ID
 
 /**
- * Generates a unique session ID (UUID v4-like).
+ * Generates a unique session ID using `crypto.randomUUID()`.
  * @returns {string} - A unique session ID.
  */
 function generateSessionId() {
-    return 'xxxx-xxxx-4xxx-yxxx-xxxx'.replace(/[xy]/g, function (c) {
-        const r = Math.random() * 16 | 0;
-        return (c === 'x' ? r : (r & 0x3 | 0x8)).toString(16);
-    });
+    return crypto.randomUUID(); // Use crypto.randomUUID() to generate a unique session ID
 }
 
 /**
- * Sets a persistent cookie with a very long expiration time (10 years).
- * @param {string} name 
- * @param {string} value 
+ * Sets a cookie with no expiration time (it will be a session cookie).
+ * @param {string} name - Cookie name.
+ * @param {string} value - Cookie value.
  */
 function setCookie(name, value) {
-    const date = new Date();
-    date.setFullYear(date.getFullYear() + 10); // Expiration set for 10 years even though user closes browser
-    document.cookie = `${name}=${value}; expires=${date.toUTCString()}; path=/; SameSite=Lax`;
+    document.cookie = `${name}=${value}; path=/; SameSite=Lax`;
 }
 
 /**
@@ -44,7 +39,7 @@ function getOrCreateCartSessionId() {
     let sessionId = getCookie(COOKIE_NAME);
     if (!sessionId) {
         sessionId = generateSessionId();
-        setCookie(COOKIE_NAME, sessionId); // Now persistent at least 10 years
+        setCookie(COOKIE_NAME, sessionId); // No expiration, making it a session cookie
         console.log("New cart session ID created:", sessionId);
     } else {
         console.log("Existing cart session ID:", sessionId);
