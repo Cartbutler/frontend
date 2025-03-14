@@ -1,0 +1,377 @@
+@import url('stylelight.css');
+@import url('theme.css');
+
+/* ============================= */
+/* === Shopping Results Page === */
+/* ============================= */
+
+#shopping-results-container {
+    max-width: 600px;
+    margin: 40px auto;
+    padding: 20px;
+    border-radius: 10px;
+    text-align: center;
+    border: 1px solid var(--border);
+}
+
+/* Light Theme */
+[data-theme="light"] #shopping-results-container {
+    background: var(--surface);
+    color: var(--on-surface);
+    box-shadow: 0 4px 10px var(--primary-variant);
+}
+
+/* Dark Theme */
+[data-theme="dark"] #shopping-results-container {
+    background: var(--primary);
+    color: var(--on-primary);
+    border-color: var(--primary-variant);
+    box-shadow: 0 4px 10px var(--on-primary);
+}
+
+/* Title */
+#shopping-results h2 {
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+/* Light Theme */
+[data-theme="light"] #shopping-results h2 {
+    color: var(--primary);
+}
+
+/* Dark Theme */
+[data-theme="dark"] #shopping-results h2 {
+    color: var(--on-primary);
+}
+
+/* Subtext */
+#shopping-results p {
+    font-size: 20px;
+}
+
+/* Light Theme */
+[data-theme="light"] #shopping-results p {
+    color: var(--secondary);
+}
+
+/* Dark Theme */
+[data-theme="dark"] #shopping-results p {
+    color: var(--on-secondary);
+}
+
+/* ============================= */
+/* === Store Ranking Styles === */
+/* ============================= */
+
+.store-ranking {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    margin-top: 20px;
+}
+
+/* Store Item Box */
+.store-item {
+    padding: 15px;
+    border-radius: 8px;
+    text-align: left;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Light Theme */
+[data-theme="light"] .store-item {
+    background: var(--background);
+    border: 1px solid var(--border);
+    color: var(--on-surface);
+    box-shadow: 2px 2px 8px var(--primary-variant);
+}
+
+/* Dark Theme */
+[data-theme="dark"] .store-item {
+    background: var(--primary-variant);
+    border: 1px solid var(--on-primary);
+    color: var(--on-primary);
+    box-shadow: 2px 2px 8px var(--on-primary);
+}
+
+/* ============================= */
+/* === Subtext (DEFAULT) === */
+/* ============================= */
+
+#shopping-results p {
+    font-size: 20px;
+}
+
+/* Light Theme */
+[data-theme="light"] #shopping-results p {
+    color: var(--background);
+}
+
+/* Dark Theme */
+[data-theme="dark"] #shopping-results p {
+    color: var(--background);
+}
+
+/* ============================= */
+/* === First-ranked store (highlighted) === */
+/* ============================= */
+
+.store-item:first-child {
+    font-size: 28px;
+    font-weight: bold;
+    padding: 35px;
+    transform: scale(1.05);
+}
+
+/* Light Theme */
+[data-theme="light"] .store-item:first-child {
+    border: 3px solid var(--primary);
+    box-shadow: 0px 6px 15px var(--primary-variant);
+    background: var(--surface);
+    color: var(--on-surface);
+}
+
+/* Dark Theme */
+[data-theme="dark"] .store-item:first-child {
+    border: 3px solid var(--on-primary);
+    box-shadow: 0px 6px 15px var(--on-primary);
+    background: var(--primary);
+    color: var(--on-background);
+}
+
+/* First-ranked store name */
+.store-item:first-child h5 {
+    font-size: 3rem;
+}
+
+/* Light Theme */
+[data-theme="light"] .store-item:first-child h5 {
+    color: var(--on-background);
+}
+
+/* Dark Theme */
+[data-theme="dark"] .store-item:first-child h5 {
+    color: var(--on-secondary);
+}
+
+/* First-ranked price */
+.store-item:first-child .price {
+    font-size: 2.2rem;
+    font-weight: bold;
+}
+
+/* Light Theme */
+[data-theme="light"] .store-item:first-child .price {
+    color: var(--secondary);
+}
+
+/* Dark Theme */
+[data-theme="dark"] .store-item:first-child .price {
+    color: var(--on-secondary);
+}
+
+/* First-ranked description (fix for paragraph color) */
+.store-item:first-child p {
+    font-size: 1.2rem;
+}
+
+/* Light Theme */
+[data-theme="light"] .store-item:first-child p {
+    color: var(--primary-variant);
+}
+
+/* Dark Theme */
+[data-theme="dark"] .store-item:first-child p {
+    color: var(--on-primary);
+}
+
+/* ============================= */
+/* === Other stores (2nd & 3rd place) === */
+/* ============================= */
+
+.store-item:nth-child(2),
+.store-item:nth-child(3) {
+    font-size: 1rem;
+    padding: 15px;
+}
+
+/* Store name */
+.store-item h5 {
+    margin: 0;
+    font-size: 1.4rem;
+    font-weight: bold;
+}
+
+/* Light Theme */
+[data-theme="light"] .store-item h5 {
+    color: var(--on-background);
+}
+
+/* Dark Theme */
+[data-theme="dark"] .store-item h5 {
+    color: var(--on-primary);
+}
+
+/* Store details */
+.store-item p {
+    margin: 0;
+    font-size: 1.1rem;
+}
+
+/* Light Theme */
+[data-theme="light"] .store-item p {
+    color: var(--on-surface);
+}
+
+/* Dark Theme */
+[data-theme="dark"] .store-item p {
+    color: var(--on-primary);
+}
+
+/* Store price */
+.store-item .price {
+    font-weight: bold;
+    font-size: 1.3rem;
+}
+
+/* Light Theme */
+[data-theme="light"] .store-item .price {
+    color: var(--primary);
+}
+
+/* Dark Theme */
+[data-theme="dark"] .store-item .price {
+    color: var(--on-secondary);
+}
+
+/* Location & Total Price for First Place */
+.store-item:first-child .store-location,
+.store-item:first-child .store-total {
+    font-weight: bold;
+}
+
+/* Light Theme */
+[data-theme="light"] .store-item:first-child .store-location {
+    color: var(--primary);
+}
+
+[data-theme="light"] .store-item:first-child .store-total {
+    color: var(--secondary);
+}
+
+/* Dark Theme */
+[data-theme="dark"] .store-item:first-child .store-location {
+    color: var(--on-primary);
+}
+
+[data-theme="dark"] .store-item:first-child .store-total {
+    color: var(--on-secondary);
+}
+
+/* ============================= */
+/* === Responsive Design === */
+/* ============================= */
+
+@media (max-width: 768px) {
+    #shopping-results-container {
+        padding: 15px;
+    }
+
+    .store-item {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .store-item .price {
+        font-size: 1.2rem;
+        margin-top: 5px;
+    }
+
+    /* First-ranked store in mobile */
+    .store-item:first-child {
+        font-size: 1.4rem;
+        padding: 25px;
+    }
+
+    .store-item:first-child h5 {
+        font-size: 1.8rem;
+    }
+}
+
+/* ============================= */
+/* === Fix Footer Position === */
+/* ============================= */
+
+footer {
+    padding: 10px 0;
+    text-align: center;
+    line-height: 40px;
+    height: 60px;
+}
+
+/* Light Theme */
+[data-theme="light"] footer {
+    background-color: var(--primary);
+    color: var(--on-primary);
+}
+
+/* Dark Theme */
+[data-theme="dark"] footer {
+    background-color: var(--on-surface);
+    color: var(--primary);
+}
+
+/* Highlight the first store result */
+.store-result:first-child {
+    padding: 25px;
+    font-size: 38px;
+    font-weight: bold;
+    border-radius: 12px;
+}
+
+/* Light Theme */
+[data-theme="light"] .store-result:first-child {
+    border: 2px solid var(--background);
+    background: var(--primary-variant);
+    color: var(--on-primary);
+    box-shadow: 0 5px 15px var(--primary-variant);
+}
+
+/* Dark Theme */
+[data-theme="dark"] .store-result:first-child {
+    border: 2px solid var(--primary);
+    background: var(--on-surface);
+    color: var(--primary);
+    box-shadow: 0 5px 15px var(--on-primary);
+}
+
+/* Adjust the store name for the first item */
+.store-result:first-child h4 {
+    font-size: 28px;
+    font-weight: 800;
+}
+
+/* Keep other stores the same */
+.store-result {
+    padding: 15px;
+    font-size: 28px;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    margin-bottom: 10px;
+}
+
+/* Light Theme */
+[data-theme="light"] .store-result {
+    background: var(--background);
+    color: var(--on-background);
+}
+
+/* Dark Theme */
+[data-theme="dark"] .store-result {
+    background: var(--primary-variant);
+    color: var(--on-primary);
+}
