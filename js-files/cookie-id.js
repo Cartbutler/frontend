@@ -26,7 +26,7 @@ function getCookie(name) {
     const cookies = document.cookie.split("; ");
     for (let cookie of cookies) {
         let [cookieName, cookieValue] = cookie.split("=");
-        if (cookieName === name) return cookieValue;
+        if (cookieName === name) return decodeURIComponent(cookieValue);
     }
     return null;
 }
@@ -45,6 +45,22 @@ function getOrCreateCartSessionId() {
         console.log("Existing cart session ID:", sessionId);
     }
     return sessionId;
+}
+
+/**
+ * Retrieves the cart session ID from cookies.
+ * @returns {string|null} - The cart session ID or null if not found.
+ */
+function getCartSessionId() {
+    return getCookie(COOKIE_NAME) || null;
+}
+
+/**
+ * Retrieves the userId from cookies.
+ * @returns {string|null} - The userId or null if not found.
+ */
+function getUserId() {
+    return getCookie("userId") || null; // Fixed cookie name
 }
 
 // Ensure the session ID exists on page load
