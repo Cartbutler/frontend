@@ -2,7 +2,10 @@ document.addEventListener("DOMContentLoaded", async () => {
     const shoppingResultsContainer = document.getElementById("shopping-results");
     const noResultsMessage = document.getElementById("no-results-message");
     const cartButton = document.getElementById("cart-btn");
-
+    
+    // Ensure user ID is created
+    const userId = getOrCreateUserId();
+    
     // Redirect to the cart when clicking the cart icon
     if (cartButton) {
         cartButton.addEventListener("click", () => {
@@ -11,8 +14,8 @@ document.addEventListener("DOMContentLoaded", async () => {
     }
 
     try {
-        // Simulated data until the backend is ready (remove when the BE is ready)
-        const shoppingResults = await fetchShoppingResults(); 
+        // Fetch shopping results from backend API
+        const shoppingResults = await fetchShoppingResults();
 
         if (!shoppingResults || shoppingResults.length === 0) {
             noResultsMessage.style.display = "block"; // Displays "No results" message
@@ -25,7 +28,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         // Define the correct ranking labels
         const rankingLabels = ["1º", "2º", "3º"];
 
-        // Render the results
+        // Render the results dynamically
         shoppingResultsContainer.innerHTML = shoppingResults.map((store, index) => `
             <div class="store-result card shadow-sm p-3 mb-3">
                 <h4 class="store-name">
@@ -33,8 +36,19 @@ document.addEventListener("DOMContentLoaded", async () => {
                 </h4>
                 <p><strong>Location:</strong> ${store.location || "Not available"}</p>
                 <p><strong>Total Price:</strong> $${store.total_price.toFixed(2)}</p>
+                <button class="add-to-cart btn btn-primary btn-sm" data-product-id="${store.product_id}">
+                    Add to Cart
+                </button>
             </div>
         `).join("");
+
+        // Attach event listeners for "Add to Cart"
+        document.querySelectorAll(".add-to-cart").forEach(button => {
+            button.addEventListener("click", async (e) => {
+                const productId = e.target.dataset.productId;
+                await addToCart(productId);
+            });
+        });
 
     } catch (error) {
         console.error(" Error fetching shopping results:", error);
@@ -42,12 +56,31 @@ document.addEventListener("DOMContentLoaded", async () => {
     }
 });
 
-// Just to simulate a backend response - remove when the BE is ready
-// Simulated function that will return price comparison results between stores
+// Fetch shopping results from backend API
 async function fetchShoppingResults() {
-    return [
-        { store_name: "Walmart", location: "Toronto, ON", total_price: 45.99 },
-        { store_name: "Sobeys", location: "Mississauga, ON", total_price: 50.25 },
-        { store_name: "No Frills", location: "Brampton, ON", total_price: 55.10 }
-    ];
+    const API_BASE_URL = "https://southern-shard-449119-d4.nn.r.appspot.com";
+    
+    try {
+        const response = await fetch(`${API_BASE_URL}/shopping-results`);
+        if (!response.ok) {
+            throw new Error(`Error fetching shopping results: ${response.status}`);
+        }
+        return await response.json();
+    } catch (error) {
+        console.error("API fetch error:", error);
+        return [];
+    }
+}
+
+// Add item to cart (using backend API)
+async function addToCart(productId) {
+    const userId = getOrCreateUserId();
+
+    await fetch("https://southern-shard-449119-d4.nn.r.appspot.com/cart", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ userId, productId, quantity: 1 })
+    });
+
+    console.log(`Added product ID ${productId} to cart.`);
 }
