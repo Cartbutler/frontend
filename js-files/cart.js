@@ -16,12 +16,9 @@ document.addEventListener("DOMContentLoaded", function () {
         return userId;
     }
 
-    // Run automatically on page load
-    getOrCreateUserId();
-});
+    // Get the user ID immediately when the page loads
+    const userId = getOrCreateUserId();
 
-// Cart functions on cart.html
-document.addEventListener("DOMContentLoaded", function () {
     const API_BASE_URL = "https://southern-shard-449119-d4.nn.r.appspot.com";
     let cartSidebarLoaded = false;
 
@@ -34,7 +31,7 @@ document.addEventListener("DOMContentLoaded", function () {
             
             const sidebar = document.getElementById("cart-sidebar");
             if(sidebar) sidebar.style.display = "none"; // Keep sidebar hidden
-    
+
             initializeSidebarEvents();
             cartSidebarLoaded = true;
             await updateCart();
@@ -43,15 +40,8 @@ document.addEventListener("DOMContentLoaded", function () {
         }
     }
 
-    // Get user ID from localStorage or cookies
-    function getUserId() {
-        return localStorage.getItem("userId") || 
-            document.cookie.split('; ').find(row => row.startsWith('userId='))?.split('=')[1];
-    }
-
     // Fetch cart items
     async function fetchCartItems() {
-        const userId = getUserId();
         if (!userId) return [];
 
         const res = await fetch(`${API_BASE_URL}/cart?userId=${userId}`);
@@ -66,7 +56,6 @@ document.addEventListener("DOMContentLoaded", function () {
 
     // Add product to cart
     async function addToCart(product) {
-        const userId = getUserId();
         if (!userId) {
             console.error("No user ID found.");
             return;
@@ -85,7 +74,6 @@ document.addEventListener("DOMContentLoaded", function () {
 
     // Update cart item quantity
     async function updateCartItem(productId, quantityChange) {
-        const userId = getUserId();
         await fetch(`${API_BASE_URL}/cart`, {
             method: "PUT",
             headers: {"Content-Type": "application/json"},
@@ -96,7 +84,6 @@ document.addEventListener("DOMContentLoaded", function () {
 
     // Remove cart item
     async function removeCartItem(productId) {
-        const userId = getUserId();
         await fetch(`${API_BASE_URL}/cart`, {
             method: "DELETE",
             headers: {"Content-Type": "application/json"},
@@ -163,7 +150,6 @@ document.addEventListener("DOMContentLoaded", function () {
         document.getElementById("close-cart")?.addEventListener("click", closeSidebar);
         
         document.getElementById("go-to-cart")?.addEventListener("click", () => {
-            const userId = getUserId();
             location.href = `cart.html?userId=${userId}`;
         });
 
@@ -193,7 +179,6 @@ document.addEventListener("DOMContentLoaded", function () {
         const cartIconBtn = document.getElementById("cart-btn");
         if (cartIconBtn) {
             cartIconBtn.addEventListener("click", () => {
-                const userId = getUserId();
                 location.href = `cart.html?userId=${userId}`;
             });
         }
