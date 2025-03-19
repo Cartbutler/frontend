@@ -213,11 +213,11 @@ body {
 .category-card h5 {
     font-size: 14px;
     font-weight: bold;
-    margin: 0;
-    text-align: center; /* Ensures proper text alignment */
-    width: 100%; /* Makes sure text occupies full width */
-    white-space: nowrap; /* Prevents text from breaking into multiple lines */
-    color: var(--secondary) !important;
+    text-align: center;
+    width: 100%;
+    color: var(--secondary)!important;
+    margin: 0px;
+    white-space: nowrap;
 }
 
 /* ========================== */
