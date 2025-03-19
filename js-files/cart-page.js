@@ -9,7 +9,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 
     // Fetch cart items
     async function fetchCartItems() {
-        const userId = getUserId();
+        const userId = getOrCreateUserId(); // Get or create user ID
         if (!userId) return [];
 
         const res = await fetch(`${API_BASE_URL}/cart?userId=${userId}`);
