@@ -1,233 +1,151 @@
-document.addEventListener("DOMContentLoaded", function () {
-    // Create or retrieve a user ID and store it in localStorage
-    function getOrCreateUserId() {
-        let userId = localStorage.getItem("userId") || 
-            document.cookie.split('; ').find(row => row.startsWith('userId='))?.split('=')[1];
-        if (!userId) {
-            userId = crypto.randomUUID(); // Create a new user ID using crypto.randomUUID()
-            localStorage.setItem("userId", userId);
-            document.cookie = `userId=${userId}; path=/; SameSite=Lax`;
-            console.log("Generated new userId:", userId);
-        } else {
-            console.log("Existing userId found:", userId);
-        }
-        return userId;
-    }
+import {
+    debounce, updateCartItem, removeCartItem, addToCart, updateCartIcon,
+    getOrCreateUserId, fetchCartItems, getCurrentQuantity, loadCartSidebar} from './utils.js';
+  
+  document.addEventListener("DOMContentLoaded", function () {
     const API_BASE_URL = "https://southern-shard-449119-d4.nn.r.appspot.com";
     let cartSidebarLoaded = false;
-    let cartItems = []; // Added to store data locally
-
-    async function loadCartSidebar() {
-        if (cartSidebarLoaded) return;
-        try {
-            const res = await fetch("cart-sidebar.html");
-            const html = await res.text();
-            document.body.insertAdjacentHTML("beforeend", html);
-            const sidebar = document.getElementById("cart-sidebar");
-            if(sidebar) sidebar.style.display = "none"; // Keep sidebar hidden
-            initializeSidebarEvents();
-            cartSidebarLoaded = true;
-        } catch (error) {
-            console.error("Error loading sidebar:", error);
-        }
-    }
-
-    async function fetchCartItems() {
-        const userId = getOrCreateUserId();
-        if (!userId) {
-            console.error("fetchCartItems: No user ID found.");
-            return [];
-        }
-        console.log("Fetching cart items for userId:", userId);
-        const res = await fetch(`${API_BASE_URL}/cart?userId=${userId}`);
-        if (!res.ok) {
-            console.error("Failed fetching cart items:", res.status);
-            return [];
-        }
-        const data = await res.json();
-        cartItems = data.cartItems || []; // Update local state
-        return cartItems;
-    }
-
-    // Debounce function to limit API requests
-    function debounce(func, delay) {
-        let timer;
-        return (...args) => {
-            clearTimeout(timer);
-            timer = setTimeout(() => func(...args), delay);
-        };
-    }
-
-    function getCurrentQuantity(productId) {
-        const quantityElement = document.querySelector(`.quantity-controls span[data-id="${productId}"]`);
-        return quantityElement ? parseInt(quantityElement.textContent, 10) || 0 : 0;
-    }
-
+    let cart_items = []; // Added to store data locally
+  
     // Add item to cart
-    async function addToCart(productId) {
-        const userId = getOrCreateUserId();
-        if (!userId) {
-            console.error("addToCart: No user ID found.");
-            return;
-        }
-        console.log("Adding to cart:", { userId, productId });
-        try {
-            const res = await fetch(`${API_BASE_URL}/cart`, {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({
-                    userId: String(userId),
-                    productId: Number(productId),
-                    quantity: 1
-                })
-            });
-            if (!res.ok) {
-                const errorDetails = await res.text();
-                throw new Error(`HTTP error ${res.status}: ${errorDetails}`);
-            }
-            const data = await res.json();
-            cartItems = data.cartItems || []; // update local state
-            updateCartUI(); // Function to update UI without fetching
-            openSidebar(); 
-        } catch (error) {
-            console.error("Error adding to cart:", error.message);
-        }
+    async function addToCartHandler(product_id) {
+      const user_id = getOrCreateUserId();
+      if (!user_id) {
+        console.error("addToCart: No user ID found.");
+        return;
+      }
+      console.log("Adding to cart:", { user_id, product_id });
+      try {
+        cart_items = await addToCart(user_id, product_id, 1);
+        updateCartUI(); // Function to update UI without fetching
+        updateCartIcon(cart_items);
+        openSidebar();
+      } catch (error) {
+        console.error("Error adding to cart:", error.message);
+      }
     }
-
-    // Update cart item quantity
-    const debouncedUpdateCartItem = debounce(async (productId, quantityChange) => {
-        const userId = getOrCreateUserId();
-        if (!userId) {
-            console.error("updateCartItem: No user ID found.");
-            return;
-        }
-        const quantityElement = document.querySelector(`.quantity-controls span[data-id="${productId}"]`);
-        if (!quantityElement) return;
-        let currentQuantity = parseInt(quantityElement.textContent, 10) || 0;
-        let newQuantity = currentQuantity + quantityChange;
-        if (newQuantity <= 0) {
-            console.warn("Quantity is zero or negative. Removing item.");
-            await debouncedRemoveCartItem(productId);
-            return;
-        }
-        try {
-            const res = await fetch(`${API_BASE_URL}/cart`, {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({
-                    userId: String(userId),
-                    productId: Number(productId),
-                    quantity: newQuantity
-                })
-            });
-            if (!res.ok) {
-                const errorDetails = await res.text();
-                throw new Error(`HTTP error ${res.status}: ${errorDetails}`);
-            }
-            const data = await res.json();
-            cartItems = data.cartItems || []; // Update local state
-            updateCartUI(); // update UI without fetching
-        } catch (error) {
-            console.error("Error updating cart item:", error.message);
-            quantityElement.textContent = currentQuantity;
-        }
-    }, 500);
-
-    // Remove cart item with debounce
-    const debouncedRemoveCartItem = debounce(async (productId) => {
-        const userId = getOrCreateUserId();
-        if (!userId) {
-            console.error("removeCartItem: No user ID found.");
-            return;
-        }
-        console.log("Removing item from cart:", { userId, productId });
-        try {
-            const res = await fetch(`${API_BASE_URL}/cart`, {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ userId: String(userId), productId: Number(productId), quantity: 0 })
-            });
-            if (!res.ok) {
-                const errorDetails = await res.text();
-                throw new Error(`HTTP error ${res.status}: ${errorDetails}`);
-            }
-            const data = await res.json();
-            cartItems = data.cartItems || []; // Update local state
-            updateCartUI(); // Update UI without fetching
-        } catch (error) {
-            console.error("Error removing cart item:", error.message);
-        }
-    }, 500);
-
+  
+    // Remove cart item
+    async function removeCartItemHandler(product_id) {
+      const user_id = getOrCreateUserId();
+      if (!user_id) {
+        console.error("removeCartItem: No user ID found.");
+        return;
+      }
+      console.log("Removing item from cart:", { user_id, product_id });
+      try {
+        cart_items = await removeCartItem(user_id, product_id);
+        updateCartUI();
+        updateCartIcon(cart_items);
+      } catch (error) {
+        console.error("Error removing cart item:", error.message);
+      }
+    }
+  
     // Function to update cart UI without fetching
     function updateCartUI() {
-        const badge = document.getElementById("cart-count");
-        const container = document.getElementById("cart-items");
-        if (!container) return;
-        const totalItems = cartItems.reduce((acc, item) => acc + item.quantity, 0);
-        if (badge) {
-            badge.textContent = totalItems;
-            badge.classList.toggle("d-none", totalItems === 0);
+      const badge = document.getElementById("cart-count");
+      const container = document.getElementById("cart-items");
+      if (!container) return;
+      const totalItems = cart_items.reduce((acc, item) => acc + item.quantity, 0);
+      if (badge) {
+        badge.textContent = totalItems;
+        badge.classList.toggle("d-none", totalItems === 0);
+      }
+  
+      container.innerHTML = cart_items.length ? "" : "<p>Your cart is empty.</p>";
+      cart_items.forEach(item => {
+        const product = item.products || item;
+        let minPrice = null;
+        let maxPrice = null;
+        if (Array.isArray(product.product_store) && product.product_store.length > 0) {
+          const prices = product.product_store.map(store => store.price);
+          minPrice = Math.min(...prices);
+          maxPrice = Math.max(...prices);
         }
-        container.innerHTML = cartItems.length ? "" : "<p>Your cart is empty.</p>";
-        cartItems.forEach(item => {
-            container.insertAdjacentHTML("beforeend", `
-                <div class="cart-item">
-                    <img src="${item.products.image_path}" class="cart-item-img">
-                    <div class="cart-item-details">
-                        <h6>${item.products.product_name}</h6>
-                        <p>$${item.products.price}</p>
-                        <div class="quantity-controls">
-                            <button class="decrease-qty btn btn-sm btn-outline-secondary" data-id="${item.productId}">-</button>
-                            <span data-id="${item.productId}">${item.quantity}</span>
-                            <button class="increase-qty btn btn-sm btn-outline-secondary" data-id="${item.productId}">+</button>
-                        </div>
-                        <button class="remove-item btn btn-danger btn-sm" data-id="${item.productId}">Remove</button>
-                    </div>
-                </div>
-            `);
-        });
-        attachCartItemEvents();
+        const hasPriceRange = minPrice !== null && maxPrice !== null;
+        const hasPrice = typeof product.price === "number";
+        const priceDisplay = hasPriceRange
+          ? `$${minPrice.toFixed(2)} - $${maxPrice.toFixed(2)}`
+          : hasPrice
+            ? `$${product.price.toFixed(2)}`
+            : "Price unavailable";
+  
+        container.insertAdjacentHTML("beforeend", `
+          <div class="cart-item">
+            <img src="${product.image_path}" class="cart-item-img">
+            <div class="cart-item-details">
+              <h6>${product.product_name}</h6>
+              <p>${priceDisplay}</p>
+              <div class="quantity-controls">
+                <button class="decrease-qty btn btn-sm btn-outline-secondary" data-id="${item.product_id}">-</button>
+                <span data-id="${item.product_id}">${(typeof item.quantity === 'number' && item.quantity >= 0) ? item.quantity : 0}</span>
+                <button class="increase-qty btn btn-sm btn-outline-secondary" data-id="${item.product_id}">+</button>
+              </div>
+              <button class="remove-item btn btn-danger btn-sm" data-id="${item.product_id}">Remove</button>
+            </div>
+          </div>
+        `);
+      });
+      attachCartItemEvents();
     }
-
-    const debouncedUpdateCart = debounce(async () => {
-        await updateCart();
+    
+    const debouncedUpdateCartItem = debounce(async (product_id, quantityChange) => {
+      const user_id = getOrCreateUserId();
+      const currentQuantity = getCurrentQuantity(product_id);
+      const newQuantity = currentQuantity + quantityChange;
+      if (newQuantity <= 0) {
+        await removeCartItemHandler(product_id);
+        return;
+      }
+      cart_items = await updateCartItem(user_id, product_id, newQuantity);
+      updateCartUI();
+      updateCartIcon(cart_items);
     }, 500);
-
+  
+    const debouncedUpdateCart = debounce(async () => {
+      const user_id = getOrCreateUserId();
+      cart_items = await fetchCartItems(user_id);
+      updateCartUI();
+      updateCartIcon(cart_items);
+    }, 500);
     async function updateCart() {
-        cartItems = await fetchCartItems(); 
-        updateCartUI(); 
+      const user_id = getOrCreateUserId();
+      cart_items = await fetchCartItems(user_id);
+      updateCartUI();
+      updateCartIcon(cart_items);
     }
-
     // Event handlers for cart items
     function attachCartItemEvents() {
-        document.querySelectorAll(".increase-qty").forEach(button => {
-            button.addEventListener("click", (e) => {
-                const id = e.target.dataset.id;
-                debouncedUpdateCartItem(id, 1);
-            });
+      document.querySelectorAll(".increase-qty").forEach(button => {
+        button.addEventListener("click", (e) => {
+          const id = e.target.dataset.id;
+          debouncedUpdateCartItem(id, 1);
         });
-        document.querySelectorAll(".decrease-qty").forEach(button => {
-            button.addEventListener("click", (e) => {
-                const id = e.target.dataset.id;
-                debouncedUpdateCartItem(id, -1);
-            });
+      });
+  
+      document.querySelectorAll(".decrease-qty").forEach(button => {
+        button.addEventListener("click", (e) => {
+          const id = e.target.dataset.id;
+          debouncedUpdateCartItem(id, -1);
         });
-        document.querySelectorAll(".remove-item").forEach(button => {
-            button.addEventListener("click", (e) => {
-                const id = e.target.dataset.id;
-                debouncedRemoveCartItem(id);
-            });
+      });
+  
+      document.querySelectorAll(".remove-item").forEach(button => {
+        button.addEventListener("click", (e) => {
+          const id = e.target.dataset.id;
+          removeCartItemHandler(id);
         });
-        document.querySelectorAll(".add-to-cart-btn").forEach(button => {
-            button.addEventListener("click", async (e) => {
-                const productId = e.target.dataset.productId;
-                if (!productId) return;
-                await addToCart(productId);
-            });
+      });
+  
+      document.querySelectorAll(".add-to-cart-btn").forEach(button => {
+        button.addEventListener("click", async (e) => {
+          const product_id = e.target.dataset.product_id;
+          if (!product_id) return;
+          await addToCartHandler(product_id);
         });
+      });
     }
-
     // Open cart sidebar
     function openSidebar() {
         const sidebar = document.getElementById("cart-sidebar");
@@ -236,6 +154,7 @@ document.addEventListener("DOMContentLoaded", function () {
             sidebar.classList.add("open");
         }
     }
+  
     function closeSidebar() {
         const sidebar = document.getElementById("cart-sidebar");
         if (sidebar) {
@@ -243,39 +162,45 @@ document.addEventListener("DOMContentLoaded", function () {
             sidebar.style.display = "none"; // hide sidebar
         }
     }
+  
     function initializeSidebarEvents() {
         document.getElementById("close-cart")?.addEventListener("click", closeSidebar);
         document.getElementById("go-to-cart")?.addEventListener("click", () => {
-            location.href = `cart.html?userId=${getOrCreateUserId()}`;
+            location.href = `cart.html?user_id=${getOrCreateUserId()}`;
         });
         attachCartItemEvents();
     }
+  
     async function initializeBuyButtonEvent() {
         const buyBtn = document.getElementById("buy-button");
         if (buyBtn) {
             buyBtn.addEventListener("click", async () => {
-                const productId = buyBtn.dataset.productId;
-                if (!productId) return;
-                await addToCart(productId);
+                const product_id = buyBtn.dataset.product_id;
+                if (!product_id) return;
+                await addToCartHandler(product_id);
             });
         }
     }
-
+  
     // Cart icon event
     function initializeCartIconEvent() {
         const cartIconBtn = document.getElementById("cart-btn");
         if (cartIconBtn) {
             cartIconBtn.addEventListener("click", () => {
-                location.href = `cart.html?userId=${getOrCreateUserId()}`;
+                location.href = `cart.html?user_id=${getOrCreateUserId()}`;
             });
         }
     }
-
+  
     // Initialization function to be called on page load
     (async function init() {
-        await loadCartSidebar();
-        await updateCart();
-        initializeCartIconEvent();
-        initializeBuyButtonEvent();  // Ensure event after sidebar loaded
+      await loadCartSidebar();
+      initializeSidebarEvents();
+      const user_id = getOrCreateUserId();
+      cart_items = await fetchCartItems(user_id);
+      updateCartUI();
+      updateCartIcon(cart_items);
+      initializeCartIconEvent();
+      initializeBuyButtonEvent();  // Ensure event after sidebar loaded
     })();
 });

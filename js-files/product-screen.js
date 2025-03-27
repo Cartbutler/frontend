@@ -1,7 +1,7 @@
 // Fetch product details by ID
-async function fetchProductById(productId) {
+async function fetchProductById(product_id) {
     try {
-        const response = await fetch(`${API_BASE_URL}/product?id=${productId}`);
+        const response = await fetch(`${API_BASE_URL}/product?id=${product_id}`);
 
         if (!response.ok) throw new Error(`Error fetching product. Status: ${response.status}`);
 
@@ -16,24 +16,24 @@ async function fetchProductById(productId) {
 document.addEventListener("DOMContentLoaded", async () => {
     const productContainer = document.getElementById("product-container");
     const productImage = document.getElementById("product-image");
-    const productName = document.getElementById("product-name");
+    const product_name = document.getElementById("product-name");
     const productPrice = document.getElementById("product-price");
     const productDescription = document.getElementById("product-description");
     const buyButton = document.getElementById("buy-button");
 
     // Get the product ID from the URL parameters (e.g., ?id=1)
     const urlParams = new URLSearchParams(window.location.search);
-    const productId = urlParams.get("id");
+    const product_id = urlParams.get("id");
 
     // Check if the product ID is present
-    if (!productId) {
+    if (!product_id) {
         console.error("Product ID not found in URL parameters!");
         return;
     }
 
     // Fetch the product details from the API based on the ID
     try {
-        const product = await fetchProductById(productId);
+        const product = await fetchProductById(product_id);
 
         if (!product) {
             console.error("No product data received!");
@@ -48,10 +48,21 @@ document.addEventListener("DOMContentLoaded", async () => {
         productImage.alt = product.product_name || "Product Image";
 
         // Updates the texts
-        productName.textContent = product.product_name || "Unknown Product";
-        productPrice.textContent = product.price 
-            ? `$${parseFloat(product.price).toFixed(2)}` 
-            : "Price unavailable";        
+        product_name.textContent = product.product_name || "Unknown Product";
+        if (product.stores && product.stores.length > 0) {
+            const prices = product.stores
+                .filter(store => store.price !== undefined && store.price !== null)
+                .map(store => store.price);
+        
+            const minPrice = Math.min(...prices);
+            const maxPrice = Math.max(...prices);
+        
+            productPrice.textContent = (minPrice === maxPrice)
+                ? `$${minPrice.toFixed(2)}`
+                : `$${minPrice.toFixed(2)} - $${maxPrice.toFixed(2)}`;
+        } else {
+            productPrice.textContent = "Price unavailable";
+        }
         productDescription.textContent = product.description || "Description not available";
 
         // Get the store container
@@ -77,8 +88,8 @@ document.addEventListener("DOMContentLoaded", async () => {
 
         // Store the product ID inside the "Add to Cart" button
         if (product && product.product_id) {
-            buyButton.dataset.productId = product.product_id;
-            console.log(" Product ID stored:", buyButton.dataset.productId);
+            buyButton.dataset.product_id = product.product_id;
+            console.log(" Product ID stored:", buyButton.dataset.product_id);
         } else {
             console.error(" Error: Product ID not found!");
         }

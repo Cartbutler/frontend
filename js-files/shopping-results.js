@@ -1,10 +1,12 @@
+import { addToCart } from './utils.js';
+
 document.addEventListener("DOMContentLoaded", async () => {
     const shoppingResultsContainer = document.getElementById("shopping-results");
     const noResultsMessage = document.getElementById("no-results-message");
     const cartButton = document.getElementById("cart-btn");
     
     // Ensure user ID is created
-    const userId = getOrCreateUserId();
+    const user_id = getOrCreateuser_id();
     
     // Redirect to the cart when clicking the cart icon
     if (cartButton) {
@@ -45,8 +47,10 @@ document.addEventListener("DOMContentLoaded", async () => {
         // Attach event listeners for "Add to Cart"
         document.querySelectorAll(".add-to-cart").forEach(button => {
             button.addEventListener("click", async (e) => {
-                const productId = e.target.dataset.productId;
-                await addToCart(productId);
+                const product_id = e.target.dataset.product_id;
+                await addToCart(user_id, product_id);
+                await updateCart();
+                openSidebar();
             });
         });
 
@@ -70,17 +74,4 @@ async function fetchShoppingResults() {
         console.error("API fetch error:", error);
         return [];
     }
-}
-
-// Add item to cart (using backend API)
-async function addToCart(productId) {
-    const userId = getOrCreateUserId();
-
-    await fetch("https://southern-shard-449119-d4.nn.r.appspot.com/cart", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ userId, productId, quantity: 1 })
-    });
-
-    console.log(`Added product ID ${productId} to cart.`);
 }

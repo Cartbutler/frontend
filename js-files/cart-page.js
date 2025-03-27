@@ -1,100 +1,129 @@
-document.addEventListener("DOMContentLoaded", async () => {
-    const API_BASE_URL = "https://southern-shard-449119-d4.nn.r.appspot.com";
-
-    // Ensure user ID is created
-    const userId = getOrCreateUserId(); // Imported from cart.js
-
-    // Fetch cart items
-    async function fetchCartItems() {
-        if (!userId) return [];
-
-        const res = await fetch(`${API_BASE_URL}/cart?userId=${userId}`);
-        if (!res.ok) {
-            console.error("Failed fetching cart items:", res.status);
-            return [];
-        }
-
-        const data = await res.json();
-        return data.cartItems || [];
-    }
-
-    // Debounce function
-    function debounce(func, delay) {
-        let timer;
-        return (...args) => {
-            clearTimeout(timer);
-            timer = setTimeout(() => func(...args), delay);
-        };
-    }
-
-    // Function to update cart item
-    const debouncedUpdateCartItem = debounce(async (productId, quantityChange) => {
-        await fetch(`${API_BASE_URL}/cart`, {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ userId, productId, quantity: quantityChange })
-        });
-
-        await loadCartItemsData();
-    }, 500);
-
-    // Function to remove cart item
-    const debouncedRemoveCartItem = debounce(async (productId) => {
-        await fetch(`${API_BASE_URL}/cart`, {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ userId, productId, quantity: 0 }) // Send quantity 0
-        });
-
-        await loadCartItemsData();
-    }, 500);
-
-    // Render cart items
-    async function loadCartPageItems() {
-        const items = await fetchCartItems();
-        const container = document.getElementById("cart-items");
-        const emptyMessage = document.getElementById("cart-empty-message");
-
-        if (!container) return;
-
-        container.innerHTML = items.length ? "" : "<p>Your cart is empty.</p>";
-
-        items.forEach(item => {
-            container.insertAdjacentHTML("beforeend", `
-                <div class="cart-item">
-                    <img src="${item.products.image_path}" class="cart-item-img">
-                    <div class="cart-item-details">
-                        <h6>${item.products.product_name}</h6>
-                        <p>$${item.products.price}</p>
-                        <div class="quantity-controls">
-                            <button class="decrease-qty btn btn-sm btn-outline-secondary" data-id="${item.productId}">-</button>
-                            <span>${item.quantity}</span>
-                            <button class="increase-qty btn btn-sm btn-outline-secondary" data-id="${item.productId}">+</button>
-                        </div>
-                        <button class="remove-item btn btn-danger btn-sm" data-id="${item.productId}">Remove</button>
-                    </div>
-                </div>`);
-        });
-
-        if (emptyMessage) emptyMessage.style.display = items.length ? "none" : "block";
-    }
-
-    // Cart items events
-    function loadCartItemsEvents() {
-        document.getElementById("cart-items").onclick = (e) => {
-            const id = e.target.dataset.id;
-            if (e.target.matches(".increase-qty")) debouncedUpdateCartItem(id, 1);
-            if (e.target.matches(".decrease-qty")) debouncedUpdateCartItem(id, -1);
-            if (e.target.matches(".remove-item")) debouncedRemoveCartItem(id);
-        };
-    }
-
-    // Cart items data
-    async function loadCartItemsData() {
-        await loadCartPageItems();
-        loadCartItemsEvents();
-    }
-
-    // Initialize
-    await loadCartItemsData();
-});
+import {
+    debounce, updateCartItem as updateCartItemFromUtils, removeCartItem as removeCartItemFromUtils,
+    getOrCreateUserId,fetchCartItems,getCurrentQuantity,updateCartIcon,loadCartSidebar} from './utils.js';
+  
+  document.addEventListener("DOMContentLoaded", async () => {
+      // Render cart items dynamically into the DOM
+      function renderCartItems(items) {
+          const container = document.getElementById("cart-items");
+          const emptyMessage = document.getElementById("cart-empty-message");
+          const badge = document.getElementById("cart-count");
+  
+          const totalItems = items.reduce((acc, item) => acc + item.quantity, 0);
+  
+          if (badge) {
+              badge.textContent = totalItems;
+              badge.classList.toggle("d-none", totalItems === 0);
+          }
+  
+          if (!container) return;
+  
+          container.innerHTML = items.length ? "" : "<p>Your cart is empty.</p>";
+          items.forEach(item => {
+              const product = item.products || item;
+  
+              let minPrice = null;
+              let maxPrice = null;
+  
+              if (Array.isArray(product.product_store) && product.product_store.length > 0) {
+                  const prices = product.product_store.map(store => store.price);
+                  minPrice = Math.min(...prices);
+                  maxPrice = Math.max(...prices);
+              }
+  
+              const hasRange = minPrice !== null && maxPrice !== null;
+              const hasPrice = typeof product.price === "number";
+  
+              const priceDisplay = hasRange
+                  ? `$${minPrice.toFixed(2)} - $${maxPrice.toFixed(2)}`
+                  : hasPrice
+                      ? `$${product.price.toFixed(2)}`
+                      : "Price unavailable";
+  
+              container.insertAdjacentHTML("beforeend", `
+                  <div class="cart-item col-md-4">
+                      <img src="${product.image_path}" class="cart-item-img">
+                      <div class="cart-item-details">
+                          <h6>${product.product_name}</h6>
+                          <p>${priceDisplay}</p>
+                          <div class="quantity-controls">
+                              <button class="decrease-qty btn btn-sm btn-outline-secondary" data-id="${item.product_id}">-</button>
+                              <span data-id="${item.product_id}">${item.quantity || 0}</span>
+                              <button class="increase-qty btn btn-sm btn-outline-secondary" data-id="${item.product_id}">+</button>
+                          </div>
+                          <button class="remove-item btn btn-danger btn-sm" data-id="${item.product_id}">Remove</button>
+                      </div>
+                  </div>
+              `);
+          });
+  
+          if (emptyMessage) {
+              emptyMessage.style.display = items.length ? "none" : "block";
+          }
+  
+          attachCartItemEvents();
+          updateCartIcon(items);
+      }
+  
+      // Attach events to cart item buttons
+      function attachCartItemEvents() {
+          const debouncedUpdate = debounce((id, quantityChange) => {
+              updateCartItem(id, quantityChange);
+          }, 500);
+  
+          document.getElementById("cart-items")?.addEventListener("click", (e) => {
+              const id = e.target.dataset.id;
+              if (e.target.matches(".increase-qty")) debouncedUpdate(id, 1);
+              if (e.target.matches(".decrease-qty")) debouncedUpdate(id, -1);
+              if (e.target.matches(".remove-item")) removeCartItem(id);
+          });
+      }
+  
+      // Update cart item with new quantity
+      async function updateCartItem(productId, quantityChange) {
+          const userId = getOrCreateUserId();
+          if (!userId) return;
+  
+          const currentQuantity = getCurrentQuantity(productId);
+          const newQuantity = currentQuantity + quantityChange;
+  
+          if (newQuantity <= 0) {
+              await removeCartItem(productId);
+              return;
+          }
+  
+          const updatedItems = await updateCartItemFromUtils(userId, productId, newQuantity);
+          renderCartItems(updatedItems);
+      }
+  
+      // Remove item from cart
+      async function removeCartItem(productId) {
+          const userId = getOrCreateUserId();
+          if (!userId) return;
+  
+          const updatedItems = await removeCartItemFromUtils(userId, productId);
+          renderCartItems(updatedItems);
+      }
+  
+      // Initialization function to be called on page load
+      async function init() {
+          await loadCartSidebar(); 
+          const items = await fetchCartItems(getOrCreateUserId()); 
+          renderCartItems(items);
+          updateCartIcon(items); 
+  
+          const checkoutButton = document.getElementById("checkout-button");
+          if (checkoutButton) {
+              checkoutButton.addEventListener("click", async () => {
+                  if (items.length > 0) {
+                      window.location.href = "shopping-results.html";
+                  } else {
+                      alert("Your cart is empty! Add items before checking out.");
+                  }
+              });
+          }
+      }
+  
+      init();
+  });
+  

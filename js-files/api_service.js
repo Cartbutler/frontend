@@ -57,21 +57,21 @@ async function fetchSuggestions(query) {
 
 /**
  * Fetches products based on category ID.
- * @param {string} categoryId - The category ID.
+ * @param {string} category_id - The category ID.
  * @returns {Promise<Array>} - List of products filtered by category.
  */
-async function fetchProductsByCategory(categoryId) {
+async function fetchProductsByCategory(category_id) {
     try {
-        console.log(`Fetching products for category ID: ${categoryId}`);
+        console.log(`Fetching products for category ID: ${category_id}`);
 
         // Check if category ID is provided before making the request
-        if (!categoryId) {
+        if (!category_id) {
             console.error("Error: No category ID provided.");
             return [];
         }
 
         // Make the request to the search endpoint using category_id
-        const response = await fetch(`${API_BASE_URL}/search?categoryID=${encodeURIComponent(categoryId)}`);
+        const response = await fetch(`${API_BASE_URL}/search?category_id=${encodeURIComponent(category_id)}`);
 
         if (!response.ok) {
             throw new Error(`API error: ${response.status}`);
@@ -89,19 +89,19 @@ async function fetchProductsByCategory(categoryId) {
 
 /**
  * Fetches product details by ID.
- * @param {string} productId - The ID of the product.
+ * @param {string} product_id - The ID of the product.
  * @returns {Promise<Object>} - The product details.
  */
-async function fetchProductById(productId) {
-    console.log(`Fetching product with ID: ${productId}`); // Log the product ID being fetched
+async function fetchProductById(product_id) {
+    console.log(`Fetching product with ID: ${product_id}`); // Log the product ID being fetched
 
     try {
-        const response = await fetch(`${API_BASE_URL}/product?id=${encodeURIComponent(productId)}`);
+        const response = await fetch(`${API_BASE_URL}/product?id=${encodeURIComponent(product_id)}`);
 
         // Check if response is not OK (e.g., 404 or 500 errors)
         if (!response.ok) {
-            console.error(`Product with ID ${productId} not found (HTTP ${response.status})`);
-            throw new Error(`Product with ID ${productId} not found`);
+            console.error(`Product with ID ${product_id} not found (HTTP ${response.status})`);
+            throw new Error(`Product with ID ${product_id} not found`);
         }
 
         const product = await response.json();
