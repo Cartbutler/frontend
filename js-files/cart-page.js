@@ -21,24 +21,19 @@ import {
           container.innerHTML = items.length ? "" : "<p>Your cart is empty.</p>";
           items.forEach(item => {
               const product = item.products || item;
-  
-              let minPrice = null;
-              let maxPrice = null;
-  
-              if (Array.isArray(product.product_store) && product.product_store.length > 0) {
-                  const prices = product.product_store.map(store => store.price);
-                  minPrice = Math.min(...prices);
-                  maxPrice = Math.max(...prices);
-              }
-  
-              const hasRange = minPrice !== null && maxPrice !== null;
-              const hasPrice = typeof product.price === "number";
-  
-              const priceDisplay = hasRange
-                  ? `$${minPrice.toFixed(2)} - $${maxPrice.toFixed(2)}`
-                  : hasPrice
-                      ? `$${product.price.toFixed(2)}`
-                      : "Price unavailable";
+
+                // Use min_price and max_price directly from the backend response
+                let minPrice = product.min_price ?? null;
+                let maxPrice = product.max_price ?? null;
+
+                const hasRange = minPrice !== null && maxPrice !== null;
+                const hasPrice = typeof product.price === "number";
+
+                const priceDisplay = hasRange
+                    ? `$${minPrice.toFixed(2)} - $${maxPrice.toFixed(2)}`
+                    : hasPrice
+                        ? `$${product.price.toFixed(2)}`
+                        : "Price unavailable";
   
               container.insertAdjacentHTML("beforeend", `
                   <div class="cart-item col-md-4">
