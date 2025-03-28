@@ -55,14 +55,6 @@ function getCartSessionId() {
     return getCookie(COOKIE_NAME) || null;
 }
 
-/**
- * Retrieves the userId from cookies.
- * @returns {string|null} - The userId or null if not found.
- */
-function getUserId() {
-    return getCookie("userId") || null; // Fixed cookie name
-}
-
 // Ensure the session ID exists on page load
 document.addEventListener("DOMContentLoaded", () => {
     getOrCreateCartSessionId();
