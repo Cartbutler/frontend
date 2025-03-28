@@ -1,124 +1,198 @@
-import {
-    debounce, updateCartItem as updateCartItemFromUtils, removeCartItem as removeCartItemFromUtils,
-    getOrCreateUserId,fetchCartItems,getCurrentQuantity,updateCartIcon,loadCartSidebar} from './utils.js';
-  
-  document.addEventListener("DOMContentLoaded", async () => {
-      // Render cart items dynamically into the DOM
-      function renderCartItems(items) {
-          const container = document.getElementById("cart-items");
-          const emptyMessage = document.getElementById("cart-empty-message");
-          const badge = document.getElementById("cart-count");
-  
-          const totalItems = items.reduce((acc, item) => acc + item.quantity, 0);
-  
-          if (badge) {
-              badge.textContent = totalItems;
-              badge.classList.toggle("d-none", totalItems === 0);
-          }
-  
-          if (!container) return;
-  
-          container.innerHTML = items.length ? "" : "<p>Your cart is empty.</p>";
-          items.forEach(item => {
-              const product = item.products || item;
+import {debounce, getOrCreateUserId, getCurrentQuantity, updateCartIcon, loadCartSidebar, formatPrice} from './utils.js';
+import {fetchCartItems, updateCartItem, removeCartItem, addToCart} from './network.js';
 
-                // Use min_price and max_price directly from the backend response
-                let minPrice = product.min_price ?? null;
-                let maxPrice = product.max_price ?? null;
+  document.addEventListener("DOMContentLoaded", function () {
+    const API_BASE_URL = "https://southern-shard-449119-d4.nn.r.appspot.com";
+    let cartSidebarLoaded = false;
+    let cart_items = []; // Added to store data locally
+    const quantityTrackers = {}; // { [productId]: { delta, timer } }
 
-                const hasRange = minPrice !== null && maxPrice !== null;
-                const hasPrice = typeof product.price === "number";
+    // Add item to cart
+    async function addToCartHandler(product_id) {
+        const user_id = getOrCreateUserId();
+        if (!user_id) {
+            console.error("addToCart: No user ID found.");
+            return;
+        }
+        console.log("Adding to cart:", { user_id, product_id });
+        try {
+            cart_items = await addToCart(user_id, product_id, 1);
+            updateCartUI();
+            updateCartIcon(cart_items);
+            openSidebar();
+        } catch (error) {
+            console.error("Error adding to cart:", error.message);
+        }
+    }
 
-                const priceDisplay = hasRange
-                    ? `$${minPrice.toFixed(2)} - $${maxPrice.toFixed(2)}`
-                    : hasPrice
-                        ? `$${product.price.toFixed(2)}`
-                        : "Price unavailable";
-  
-              container.insertAdjacentHTML("beforeend", `
-                  <div class="cart-item col-md-4">
-                      <img src="${product.image_path}" class="cart-item-img">
-                      <div class="cart-item-details">
-                          <h6>${product.product_name}</h6>
-                          <p>${priceDisplay}</p>
-                          <div class="quantity-controls">
-                              <button class="decrease-qty btn btn-sm btn-outline-secondary" data-id="${item.product_id}">-</button>
-                              <span data-id="${item.product_id}">${item.quantity || 0}</span>
-                              <button class="increase-qty btn btn-sm btn-outline-secondary" data-id="${item.product_id}">+</button>
-                          </div>
-                          <button class="remove-item btn btn-danger btn-sm" data-id="${item.product_id}">Remove</button>
-                      </div>
-                  </div>
-              `);
-          });
-  
-          if (emptyMessage) {
-              emptyMessage.style.display = items.length ? "none" : "block";
-          }
-  
-          attachCartItemEvents();
-          updateCartIcon(items);
-      }
-  
-      // Attach events to cart item buttons
-      function attachCartItemEvents() {
-          const debouncedUpdate = debounce((id, quantityChange) => {
-              updateCartItem(id, quantityChange);
-          }, 500);
-  
-          document.getElementById("cart-items")?.addEventListener("click", (e) => {
-              const id = e.target.dataset.id;
-              if (e.target.matches(".increase-qty")) debouncedUpdate(id, 1);
-              if (e.target.matches(".decrease-qty")) debouncedUpdate(id, -1);
-              if (e.target.matches(".remove-item")) removeCartItem(id);
-          });
-      }
-  
-      // Update cart item with new quantity
-      async function updateCartItem(productId, quantityChange) {
-          const userId = getOrCreateUserId();
-          if (!userId) return;
-  
-          const currentQuantity = getCurrentQuantity(productId);
-          const newQuantity = currentQuantity + quantityChange;
-  
-          if (newQuantity <= 0) {
-              await removeCartItem(productId);
-              return;
-          }
-  
-          const updatedItems = await updateCartItemFromUtils(userId, productId, newQuantity);
-          renderCartItems(updatedItems);
-      }
-  
-      // Remove item from cart
-      async function removeCartItem(productId) {
-          const userId = getOrCreateUserId();
-          if (!userId) return;
-  
-          const updatedItems = await removeCartItemFromUtils(userId, productId);
-          renderCartItems(updatedItems);
-      }
-  
-      // Initialization function to be called on page load
-      async function init() {
-          await loadCartSidebar(); 
-          const items = await fetchCartItems(getOrCreateUserId()); 
-          renderCartItems(items);
-          updateCartIcon(items); 
-  
-          const checkoutButton = document.getElementById("checkout-button");
-          if (checkoutButton) {
-              checkoutButton.addEventListener("click", async () => {
-                  if (items.length > 0) {
-                      window.location.href = "shopping-results.html";
-                  } else {
-                      alert("Your cart is empty! Add items before checking out.");
-                  }
-              });
-          }
-      }
-  
-      init();
-  });
-  
+    // Remove cart item
+    async function removeCartItemHandler(product_id) {
+        const user_id = getOrCreateUserId();
+        if (!user_id) {
+            console.error("removeCartItem: No user ID found.");
+            return;
+        }
+        console.log("Removing item from cart:", { user_id, product_id });
+        try {
+            await removeCartItem(user_id, product_id);
+            cart_items = await fetchCartItems(user_id);
+            updateCartUI();
+            updateCartIcon(cart_items);
+        } catch (error) {
+            console.error("Error removing cart item:", error.message);
+        }
+    }
+
+    // Function to update cart UI without fetching
+    function updateCartUI() {
+        const badge = document.getElementById("cart-count");
+        const container = document.getElementById("cart-items");
+        if (!container) return;
+        const totalItems = cart_items.reduce((acc, item) => acc + item.quantity, 0);
+        if (badge) {
+            badge.textContent = totalItems;
+            badge.classList.toggle("d-none", totalItems === 0);
+        }
+
+        container.innerHTML = cart_items.length ? "" : "<p>Your cart is empty.</p>";
+        cart_items.forEach(item => {
+            const product = item.products || item;
+            
+            const priceDisplay = formatPrice(product);
+
+            container.insertAdjacentHTML("beforeend", `
+                <div class="cart-item">
+                    <img src="${product.image_path}" class="cart-item-img">
+                    <div class="cart-item-details">
+                        <h6>${product.product_name}</h6>
+                        <p>${priceDisplay}</p>
+                        <div class="quantity-controls">
+                            <button class="decrease-qty btn btn-sm btn-outline-secondary" data-id="${item.product_id}">-</button>
+                            <span data-id="${item.product_id}">${(typeof item.quantity === 'number' && item.quantity >= 0) ? item.quantity : 0}</span>
+                            <button class="increase-qty btn btn-sm btn-outline-secondary" data-id="${item.product_id}">+</button>
+                        </div>
+                        <button class="remove-item btn btn-danger btn-sm" data-id="${item.product_id}">Remove</button>
+                    </div>
+                </div>
+            `);
+        });
+        attachCartItemEvents();
+    }
+
+    function attachCartItemEvents() {
+        document.querySelectorAll(".increase-qty").forEach(button => {
+            button.addEventListener("click", (e) => handleQuantityChange(e, 1));
+        });
+
+        document.querySelectorAll(".decrease-qty").forEach(button => {
+            button.addEventListener("click", (e) => handleQuantityChange(e, -1));
+        });
+
+        document.querySelectorAll(".remove-item").forEach(button => {
+            button.addEventListener("click", (e) => {
+                const id = e.target.dataset.id;
+                removeCartItemHandler(id);
+            });
+        });
+    }
+
+    function handleQuantityChange(e, delta) {
+        const id = e.target.dataset.id;
+        const span = document.querySelector(`.quantity-controls span[data-id="${id}"]`);
+        if (span) {
+            const current = parseInt(span.textContent, 10) || 0;
+            span.textContent = Math.max(0, current + delta);
+        }
+
+        if (!quantityTrackers[id]) {
+            quantityTrackers[id] = { delta: 0, timer: null };
+        }
+
+        quantityTrackers[id].delta += delta;
+        clearTimeout(quantityTrackers[id].timer);
+        quantityTrackers[id].timer = setTimeout(async () => {
+            const change = quantityTrackers[id].delta;
+            delete quantityTrackers[id];
+
+            const user_id = getOrCreateUserId();
+            const currentQuantity = getCurrentQuantity(id);
+            const newQuantity = currentQuantity;
+
+            if (newQuantity <= 0) {
+                await removeCartItem(user_id, id);
+                cart_items = await fetchCartItems(user_id);
+            } else {
+                await updateCartItem(user_id, id, newQuantity);
+                cart_items = await fetchCartItems(user_id);
+            }
+
+            updateCartUI();
+            updateCartIcon(cart_items);
+        }, 500);
+    }
+
+    async function initializeBuyButtonEvent() {
+        const buyBtn = document.getElementById("buy-button");
+        if (buyBtn) {
+            buyBtn.addEventListener("click", async () => {
+                const product_id = buyBtn.dataset.product_id;
+                if (!product_id) return;
+                await addToCartHandler(product_id);
+            });
+        }
+    }
+
+    function openSidebar() {
+        const sidebar = document.getElementById("cart-sidebar");
+        if (sidebar) {
+            sidebar.style.display = "block"; 
+            sidebar.classList.add("open");
+        }
+    }
+
+    function closeSidebar() {
+        const sidebar = document.getElementById("cart-sidebar");
+        if (sidebar) {
+            sidebar.classList.remove("open");
+            sidebar.style.display = "none";
+        }
+    }
+
+    function initializeSidebarEvents() {
+        document.getElementById("close-cart")?.addEventListener("click", closeSidebar);
+        document.getElementById("go-to-cart")?.addEventListener("click", () => {
+            location.href = `cart.html?user_id=${getOrCreateUserId()}`;
+        });
+        attachCartItemEvents();
+    }
+
+    function initializeCartIconEvent() {
+        const cartIconBtn = document.getElementById("cart-btn");
+        if (cartIconBtn) {
+            cartIconBtn.addEventListener("click", () => {
+                location.href = `cart.html?user_id=${getOrCreateUserId()}`;
+            });
+        }
+    }
+
+    function initializeCheckoutButtonEvent() {
+        const checkoutBtn = document.getElementById("checkout-button");
+        if (checkoutBtn) {
+            checkoutBtn.addEventListener("click", () => {
+                window.location.href = "shopping-results.html";
+            });
+        }
+    }
+
+    (async function init() {
+        await loadCartSidebar();
+        initializeSidebarEvents();
+        const user_id = getOrCreateUserId();
+        cart_items = await fetchCartItems(user_id);
+        updateCartUI();
+        updateCartIcon(cart_items);
+        initializeCartIconEvent();
+        initializeBuyButtonEvent();
+        initializeCheckoutButtonEvent()
+    })();
+});

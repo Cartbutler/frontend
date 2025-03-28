@@ -54,8 +54,8 @@ document.addEventListener("DOMContentLoaded", async () => {
                 .filter(store => store.price !== undefined && store.price !== null)
                 .map(store => store.price);
         
-            const minPrice = Math.min(...prices);
-            const maxPrice = Math.max(...prices);
+            const minPrice = product.min_price; 
+            const maxPrice = product.max_price;
         
             productPrice.textContent = (minPrice === maxPrice)
                 ? `$${minPrice.toFixed(2)}`

@@ -1,12 +1,12 @@
-import {
-    debounce, updateCartItem, removeCartItem, addToCart, updateCartIcon,
-    getOrCreateUserId, fetchCartItems, getCurrentQuantity, loadCartSidebar} from './utils.js';
-  
+import {debounce, getOrCreateUserId, getCurrentQuantity, updateCartIcon, loadCartSidebar, formatPrice} from './utils.js';
+import {fetchCartItems, updateCartItem, removeCartItem, addToCart} from './network.js';
+
   document.addEventListener("DOMContentLoaded", function () {
     const API_BASE_URL = "https://southern-shard-449119-d4.nn.r.appspot.com";
     let cartSidebarLoaded = false;
     let cart_items = []; // Added to store data locally
-  
+    const quantityTrackers = {}; // Track debounce per product ID
+
     // Add item to cart
     async function addToCartHandler(product_id) {
       const user_id = getOrCreateUserId();
@@ -63,13 +63,7 @@ import {
           minPrice = Math.min(...prices);
           maxPrice = Math.max(...prices);
         }
-        const hasPriceRange = minPrice !== null && maxPrice !== null;
-        const hasPrice = typeof product.price === "number";
-        const priceDisplay = hasPriceRange
-          ? `$${minPrice.toFixed(2)} - $${maxPrice.toFixed(2)}`
-          : hasPrice
-            ? `$${product.price.toFixed(2)}`
-            : "Price unavailable";
+        const priceDisplay = formatPrice(product);
   
         container.insertAdjacentHTML("beforeend", `
           <div class="cart-item">
@@ -89,45 +83,20 @@ import {
       });
       attachCartItemEvents();
     }
-    
-    const debouncedUpdateCartItem = debounce(async (product_id, quantityChange) => {
-      const user_id = getOrCreateUserId();
-      const currentQuantity = getCurrentQuantity(product_id);
-      const newQuantity = currentQuantity + quantityChange;
-      if (newQuantity <= 0) {
-        await removeCartItemHandler(product_id);
-        return;
-      }
-      cart_items = await updateCartItem(user_id, product_id, newQuantity);
-      updateCartUI();
-      updateCartIcon(cart_items);
-    }, 500);
-  
-    const debouncedUpdateCart = debounce(async () => {
-      const user_id = getOrCreateUserId();
-      cart_items = await fetchCartItems(user_id);
-      updateCartUI();
-      updateCartIcon(cart_items);
-    }, 500);
-    async function updateCart() {
-      const user_id = getOrCreateUserId();
-      cart_items = await fetchCartItems(user_id);
-      updateCartUI();
-      updateCartIcon(cart_items);
-    }
+
     // Event handlers for cart items
     function attachCartItemEvents() {
       document.querySelectorAll(".increase-qty").forEach(button => {
         button.addEventListener("click", (e) => {
           const id = e.target.dataset.id;
-          debouncedUpdateCartItem(id, 1);
+          updateLocalQuantity(id, 1);
         });
       });
   
       document.querySelectorAll(".decrease-qty").forEach(button => {
         button.addEventListener("click", (e) => {
           const id = e.target.dataset.id;
-          debouncedUpdateCartItem(id, -1);
+          updateLocalQuantity(id, -1);
         });
       });
   
@@ -146,6 +115,40 @@ import {
         });
       });
     }
+
+  function updateLocalQuantity(product_id, delta) {
+    const span = document.querySelector(`.quantity-controls span[data-id="${product_id}"]`);
+    if (span) {
+      const current = parseInt(span.textContent, 10) || 0;
+      span.textContent = Math.max(0, current + delta);
+    }
+
+    if (!quantityTrackers[product_id]) {
+      quantityTrackers[product_id] = { delta: 0, timer: null };
+    }
+
+    quantityTrackers[product_id].delta += delta;
+
+    clearTimeout(quantityTrackers[product_id].timer);
+    quantityTrackers[product_id].timer = setTimeout(async () => {
+      const change = quantityTrackers[product_id].delta;
+      delete quantityTrackers[product_id];
+
+      const user_id = getOrCreateUserId();
+      const currentQty = getCurrentQuantity(product_id);
+      const newQuantity = currentQty;
+
+      if (newQuantity <= 0) {
+        cart_items = await removeCartItem(user_id, product_id);
+      } else {
+        cart_items = await updateCartItem(user_id, product_id, newQuantity);
+      }
+
+      updateCartUI();
+      updateCartIcon(cart_items);
+    }, 500);
+  }
+
     // Open cart sidebar
     function openSidebar() {
         const sidebar = document.getElementById("cart-sidebar");
@@ -154,7 +157,8 @@ import {
             sidebar.classList.add("open");
         }
     }
-  
+
+    // Close cart sidebar
     function closeSidebar() {
         const sidebar = document.getElementById("cart-sidebar");
         if (sidebar) {
