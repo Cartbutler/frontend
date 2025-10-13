@@ -1,4 +1,4 @@
-const API_BASE_URL = "https://southern-shard-449119-d4.nn.r.appspot.com";
+const API_BASE_URL = "http://ec2-18-223-114-11.us-east-2.compute.amazonaws.com:5000";
 
 /**
  * Fetches category data from the API.

@@ -2,7 +2,7 @@ import {debounce, getOrCreateUserId, getCurrentQuantity, updateCartIcon, loadCar
 import {fetchCartItems, updateCartItem, removeCartItem, addToCart} from './network.js';
 
   document.addEventListener("DOMContentLoaded", function () {
-    const API_BASE_URL = "https://southern-shard-449119-d4.nn.r.appspot.com";
+    const API_BASE_URL = "hhttp://ec2-18-223-114-11.us-east-2.compute.amazonaws.com:5000";
     let cartSidebarLoaded = false;
     let cart_items = []; // Added to store data locally
     const quantityTrackers = {}; // { [productId]: { delta, timer } }
