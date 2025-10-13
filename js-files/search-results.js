@@ -7,7 +7,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     const urlParams = new URLSearchParams(window.location.search);
     const searchTerm = urlParams.get("query");
     const category = urlParams.get("category"); // Category name for display
-    const categoryId = urlParams.get("category_id"); // Category ID for fetching data
+    const category_id = urlParams.get("category_id"); // Category ID for fetching data
 
     let results = [];
 
@@ -17,14 +17,14 @@ document.addEventListener("DOMContentLoaded", async () => {
     try {
         const pageTitle = document.getElementById("page-title");
     
-        if (categoryId) {
-            console.log(`Fetching products for category ID: ${categoryId}`);
+        if (category_id) {
+            console.log(`Fetching products for category ID: ${category_id}`);
     
             if (category && pageTitle) {
                 pageTitle.textContent = category; // Show only category name
             }
     
-            results = await fetchProductsByCategory(categoryId);
+            results = await fetchProductsByCategory(category_id);
         } else if (searchTerm) {
             console.log(`Searching for: ${searchTerm}`);
     
@@ -59,7 +59,8 @@ document.addEventListener("DOMContentLoaded", async () => {
                      onerror="this.onerror=null; this.src='images/default.jpg';">
                 <div class="card-body">
                     <h5 class="card-title">${product.product_name}</h5>
-                    <p class="price">$${parseFloat(product.price || 0).toFixed(2)}</p>
+                    <p class="price-range">$${parseFloat(product.min_price || product.price || 0).toFixed(2)} - $${parseFloat(product.max_price || product.price || 0).toFixed(2)}
+                    </p>
                 </div>
             `;
 
