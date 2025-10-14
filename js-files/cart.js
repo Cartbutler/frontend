@@ -2,7 +2,7 @@ import {debounce, getOrCreateUserId, getCurrentQuantity, updateCartIcon, loadCar
 import {fetchCartItems, updateCartItem, removeCartItem, addToCart} from './network.js';
 
   document.addEventListener("DOMContentLoaded", function () {
-    const API_BASE_URL = "http://ec2-18-223-114-11.us-east-2.compute.amazonaws.com:5000";
+    const API_BASE_URL = "https://cartbutler.duckdns.org/api";
     let cartSidebarLoaded = false;
     let cart_items = []; // Added to store data locally
     const quantityTrackers = {}; // Track debounce per product ID

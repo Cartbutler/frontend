@@ -1,4 +1,4 @@
-const API_BASE_URL = "http://ec2-18-223-114-11.us-east-2.compute.amazonaws.com:5000";
+const API_BASE_URL = "https://cartbutler.duckdns.org/api";
 
 /**
  * Fetches category data from the API.

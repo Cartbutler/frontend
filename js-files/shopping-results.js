@@ -62,7 +62,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 
 // Fetch shopping results from backend API
 async function fetchShoppingResults() {
-    const API_BASE_URL = "http://ec2-18-223-114-11.us-east-2.compute.amazonaws.com:5000";
+    const API_BASE_URL = "https://cartbutler.duckdns.org/api";
     
     try {
         const response = await fetch(`${API_BASE_URL}/shopping-results`);
