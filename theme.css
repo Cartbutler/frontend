@@ -148,3 +148,73 @@ body {
     background-color: var(--background);
     color: var(--on-background);
 }
+
+/* ========================== */
+/* === Language Dropdown === */
+/* ========================== */
+
+.language-toggle-container .dropdown-toggle {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 50px;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    transition: all 0.3s ease-in-out;
+    cursor: pointer;
+    padding: 0 15px;
+    box-shadow: none;
+}
+
+/* Light Mode - Button */
+[data-theme="light"] .language-toggle-container .dropdown-toggle {
+    background-color: var(--primary-variant);
+    color: var(--on-primary);
+}
+
+/* Dark Mode - Button */
+[data-theme="dark"] .language-toggle-container .dropdown-toggle {
+    background-color: var(--secondary);
+    color: var(--on-secondary);
+}
+
+/* Hover Effect for Button */
+.language-toggle-container .dropdown-toggle:hover {
+    background-color: var(--background);
+    color: var(--on-background);
+}
+
+.language-toggle-container .dropdown-toggle:focus {
+    outline: none;
+    box-shadow: none;
+}
+
+/* Dropdown Menu */
+.language-toggle-container .dropdown-menu {
+    background-color: var(--surface);
+    border: 1px solid var(--border);
+    width: 100%; /* Match dropdown menu width to button */
+    min-width: 100%;
+    box-sizing: border-box;
+}
+
+.language-toggle-container .dropdown-item {
+    color: var(--on-surface);
+    transition: background-color 0.3s ease;
+}
+
+/* ========================== */
+/* === Dropdown Item Hover === */
+/* ========================== */
+
+/* Light Mode - Item Hover */
+[data-theme="light"] .language-toggle-container .dropdown-item:hover {
+    background-color: var(--primary);
+    color: var(--on-primary);
+}
+
+/* Dark Mode - Item Hover */
+[data-theme="dark"] .language-toggle-container .dropdown-item:hover {
+    background-color: var(--secondary);
+    color: var(--on-secondary);
+}

@@ -62,8 +62,7 @@
     justify-content: space-between !important;
     align-items: center !important;
     text-align: center !important;
-    height: 230px !important; /* Adjusted height of result cards */
-    max-width: 220px !important; /* Adjusted width of result cards */
+    max-width: 240px !important; /* Adjusted width of result cards */
 }
 
 /* Adjust image size inside cards results */ 

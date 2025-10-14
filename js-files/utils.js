@@ -52,6 +52,11 @@ export async function loadCartSidebar() {
       const res = await fetch("cart-sidebar.html");
       const html = await res.text();
       document.body.insertAdjacentHTML("beforeend", html);
+    
+      if (typeof applyLocalization === "function") {
+        applyLocalization();
+      }
+
   } catch (error) {
       console.error("Sidebar loading error:", error);
   }
@@ -66,7 +71,14 @@ export function formatPrice(product) {
   const price = product.price;
 
   if (typeof min === 'number' && typeof max === 'number') {
-      return `$${min.toFixed(2)} - $${max.toFixed(2)}`;
+    return `$${min.toFixed(2)} - $${max.toFixed(2)}`;
+  }
+
+  if (Array.isArray(product.product_store) && product.product_store.length > 0) {
+    const prices = product.product_store.map(p => p.price);
+    const fallbackMin = Math.min(...prices);
+    const fallbackMax = Math.max(...prices);
+    return `$${fallbackMin.toFixed(2)} - $${fallbackMax.toFixed(2)}`;
   }
 
   if (typeof price === 'number') {
@@ -74,4 +86,11 @@ export function formatPrice(product) {
   }
 
   return "Price unavailable";
+}
+
+export function getBackendLanguageId() {
+  const lang = localStorage.getItem("preferred-language") || "en";
+  if (lang === "pt") return "pt-BR";
+  if (lang === "en") return "en-US";
+  return "en-US"; // fallback seguro
 }

@@ -87,3 +87,16 @@ async function fetchShoppingResults(user_id, cart_id) {
         return [];
     }
 }
+
+// Function to navigate to the store details page
+window.goToStore = function(store_id) {
+    const user_id = getOrCreateUserId();
+
+    if (!cart_id) {
+        console.error("Missing cart_id for store-details redirect.");
+        return;
+    }
+
+    const url = `store-details.html?store_id=${store_id}&user_id=${user_id}&cart_id=${cart_id}`;
+    window.location.href = url;
+};
