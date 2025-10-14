@@ -1,6 +1,6 @@
 import { addToCart } from './network.js';
 import { getOrCreateUserId } from './utils.js';
-import { updateCartUI, openSidebar, cart_id, cart_items } from './cart.js';
+import { updateCartUI, openSidebar, cartDataPromise } from './cart.js';
 
 document.addEventListener("DOMContentLoaded", async () => {
     const shoppingResultsContainer = document.getElementById("shopping-results");
@@ -18,11 +18,15 @@ document.addEventListener("DOMContentLoaded", async () => {
     }
 
     try {
-        if (!cart_id) {
+
+        // Wait for cart data to be loaded from cart.js
+        const cart_data = await cartDataPromise;
+
+        if (!cart_data.cart_id) {
             throw new Error("Unable to retrieve cart_id");
         }
         
-        const shoppingResults = await fetchShoppingResults(user_id, cart_id);
+        const shoppingResults = await fetchShoppingResults(user_id, cart_data.cart_id);
 
         if (!shoppingResults || shoppingResults.length === 0) {
             noResultsMessage.style.display = "block"; // Displays "No results" message

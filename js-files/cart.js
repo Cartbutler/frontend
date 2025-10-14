@@ -7,6 +7,31 @@ export let cart_items = []; // Store data locally
 export let cart_id = null;
 const quantityTrackers = {}; // Track debounce per product ID
 
+// Export a promise that resolves when cart data is loaded
+export const cartDataPromise = new Promise((resolve) => {
+  document.addEventListener("DOMContentLoaded", async function () {
+    await loadCartSidebar();
+    initializeSidebarEvents();
+    const user_id = getOrCreateUserId();
+    const cart_data = await fetchCartItems(user_id);
+    cart_items = cart_data.cart_items;
+    cart_id = cart_data.cart_id;
+    
+    // Store cart_id in localStorage as backup
+    if (cart_id) {
+      localStorage.setItem('cart_id', cart_id);
+    }
+    
+    updateCartUI();
+    updateCartIcon(cart_items);
+    initializeCartIconEvent();
+    initializeBuyButtonEvent();
+    
+    // Resolve the promise with cart data
+    resolve({ cart_items, cart_id });
+  });
+});
+
 // Add item to cart
 async function addToCartHandler(product_id) {
   const user_id = getOrCreateUserId();
