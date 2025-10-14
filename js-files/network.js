@@ -7,7 +7,7 @@ export async function fetchCartItems(user_id) {
         const data = await res.json();
         return {
             cart_items: data.cart_items || [],
-            cart_id: data.cart_id // Include cart_id in the return
+            cart_id: data.id // Include cart_id in the return
         };
     } catch (err) {
         console.error("Error fetching cart items:", err.message);
