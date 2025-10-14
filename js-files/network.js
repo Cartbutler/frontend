@@ -1,14 +1,20 @@
-const API_BASE_URL = "https://southern-shard-449119-d4.nn.r.appspot.com";
+const API_BASE_URL = "https://cartbutler.duckdns.org/api";
 
 export async function fetchCartItems(user_id) {
     try {
         const res = await fetch(`${API_BASE_URL}/cart?user_id=${String(user_id)}`);
         if (!res.ok) throw new Error(`Fetch error: ${res.status}`);
         const data = await res.json();
-        return data.cart_items || [];
+        return {
+            cart_items: data.cart_items || [],
+            cart_id: data.cart_id // Include cart_id in the return
+        };
     } catch (err) {
         console.error("Error fetching cart items:", err.message);
-        return [];
+        return {
+            cart_items: [],
+            cart_id: null
+        };
     }
 }
 

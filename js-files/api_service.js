@@ -1,4 +1,4 @@
-const API_BASE_URL = "https://southern-shard-449119-d4.nn.r.appspot.com";
+const API_BASE_URL = "https://cartbutler.duckdns.org/api";
 
 /**
  * Fetches category data from the API.

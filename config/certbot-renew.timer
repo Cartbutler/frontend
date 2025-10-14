@@ -1,0 +1,11 @@
+[Unit]
+Description=Run Certbot Renewal twice daily
+Requires=certbot-renew.service
+
+[Timer]
+OnCalendar=03:00
+OnCalendar=15:00
+Persistent=true
+
+[Install]
+WantedBy=timers.target
