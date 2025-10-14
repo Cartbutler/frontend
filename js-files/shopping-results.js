@@ -1,6 +1,6 @@
 import { addToCart } from './network.js';
 import { getOrCreateUserId } from './utils.js';
-import { updateCartUI, openSidebar } from './cart.js';
+import { updateCartUI, openSidebar, cart_id, cart_items } from './cart.js';
 
 document.addEventListener("DOMContentLoaded", async () => {
     const shoppingResultsContainer = document.getElementById("shopping-results");
@@ -18,8 +18,11 @@ document.addEventListener("DOMContentLoaded", async () => {
     }
 
     try {
-        // Fetch shopping results from backend API
-        const shoppingResults = await fetchShoppingResults();
+        if (!cart_id) {
+            throw new Error("Unable to retrieve cart_id");
+        }
+        
+        const shoppingResults = await fetchShoppingResults(user_id, cart_id);
 
         if (!shoppingResults || shoppingResults.length === 0) {
             noResultsMessage.style.display = "block"; // Displays "No results" message
@@ -63,11 +66,15 @@ document.addEventListener("DOMContentLoaded", async () => {
 });
 
 // Fetch shopping results from backend API
-async function fetchShoppingResults() {
+async function fetchShoppingResults(user_id, cart_id) {
     const API_BASE_URL = "https://cartbutler.duckdns.org/api";
     
     try {
-        const response = await fetch(`${API_BASE_URL}/shopping-results`);
+        const params = new URLSearchParams({
+            user_id: user_id,
+            cart_id: cart_id
+        });
+        const response = await fetch(`${API_BASE_URL}/shopping-results?${params}`);
         if (!response.ok) {
             throw new Error(`Error fetching shopping results: ${response.status}`);
         }

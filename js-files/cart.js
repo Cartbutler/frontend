@@ -3,7 +3,8 @@ import {fetchCartItems, updateCartItem, removeCartItem, addToCart} from './netwo
 
 const API_BASE_URL = "https://cartbutler.duckdns.org/api";
 let cartSidebarLoaded = false;
-let cart_items = []; // Store data locally
+export let cart_items = []; // Store data locally
+export let cart_id = null;
 const quantityTrackers = {}; // Track debounce per product ID
 
 // Add item to cart
@@ -196,7 +197,9 @@ document.addEventListener("DOMContentLoaded", async function () {
   await loadCartSidebar();
   initializeSidebarEvents();
   const user_id = getOrCreateUserId();
-  cart_items = await fetchCartItems(user_id);
+  const cart_data = await fetchCartItems(user_id);
+  cart_items = cart_data.cart_items;
+  cart_id = cart_data.cart_id;
   updateCartUI();
   updateCartIcon(cart_items);
   initializeCartIconEvent();

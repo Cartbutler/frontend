@@ -5,6 +5,7 @@ import {fetchCartItems, updateCartItem, removeCartItem, addToCart} from './netwo
     const API_BASE_URL = "hhttps://cartbutler.duckdns.org/api";
     let cartSidebarLoaded = false;
     let cart_items = []; // Added to store data locally
+    let cart_id = null;
     const quantityTrackers = {}; // { [productId]: { delta, timer } }
 
     // Add item to cart
@@ -35,7 +36,9 @@ import {fetchCartItems, updateCartItem, removeCartItem, addToCart} from './netwo
         console.log("Removing item from cart:", { user_id, product_id });
         try {
             await removeCartItem(user_id, product_id);
-            cart_items = await fetchCartItems(user_id);
+            const cart_data = await fetchCartItems(user_id);
+            cart_items = cart_data.cart_items;
+            cart_id = cart_data.cart_id;
             updateCartUI();
             updateCartIcon(cart_items);
         } catch (error) {
@@ -120,11 +123,12 @@ import {fetchCartItems, updateCartItem, removeCartItem, addToCart} from './netwo
 
             if (newQuantity <= 0) {
                 await removeCartItem(user_id, id);
-                cart_items = await fetchCartItems(user_id);
             } else {
                 await updateCartItem(user_id, id, newQuantity);
-                cart_items = await fetchCartItems(user_id);
             }
+            const cart_data = await fetchCartItems(user_id);
+            cart_items = cart_data.cart_items;
+            cart_id = cart_data.cart_id;
 
             updateCartUI();
             updateCartIcon(cart_items);
@@ -188,7 +192,9 @@ import {fetchCartItems, updateCartItem, removeCartItem, addToCart} from './netwo
         await loadCartSidebar();
         initializeSidebarEvents();
         const user_id = getOrCreateUserId();
-        cart_items = await fetchCartItems(user_id);
+        const cart_data = await fetchCartItems(user_id);
+        cart_items = cart_data.cart_items;
+        cart_id = cart_data.cart_id;
         updateCartUI();
         updateCartIcon(cart_items);
         initializeCartIconEvent();
