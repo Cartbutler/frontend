@@ -46,7 +46,7 @@ document.addEventListener("DOMContentLoaded", async () => {
                     ${index === 0 ? '🏆' : ''} ${rankingLabels[index]} ${store.store_name}
                 </h4>
                 <p><strong>Location:</strong> ${store.location || "Not available"}</p>
-                <p><strong>Total Price:</strong> $${store.total_price.toFixed(2)}</p>
+                <p><strong>Total Price:</strong> $${store.total.toFixed(2)}</p>
                 <button class="add-to-cart btn btn-primary btn-sm" data-product-id="${store.product_id}">
                     Add to Cart
                 </button>
