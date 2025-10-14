@@ -1,4 +1,6 @@
-import { addToCart } from './utils.js';
+import { addToCart } from './network.js';
+import { getOrCreateUserId } from './utils.js';
+import { updateCartUI, openSidebar } from './cart.js';
 
 document.addEventListener("DOMContentLoaded", async () => {
     const shoppingResultsContainer = document.getElementById("shopping-results");
@@ -6,7 +8,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     const cartButton = document.getElementById("cart-btn");
     
     // Ensure user ID is created
-    const user_id = getOrCreateuser_id();
+    const user_id = getOrCreateUserId();
     
     // Redirect to the cart when clicking the cart icon
     if (cartButton) {
@@ -49,7 +51,7 @@ document.addEventListener("DOMContentLoaded", async () => {
             button.addEventListener("click", async (e) => {
                 const product_id = e.target.dataset.product_id;
                 await addToCart(user_id, product_id);
-                await updateCart();
+                await updateCartUI();
                 openSidebar();
             });
         });
