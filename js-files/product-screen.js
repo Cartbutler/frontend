@@ -1,4 +1,20 @@
 import { fetchProductById } from './api_service.js';
+import { getBackendLanguageId } from "./utils.js"; // ✅ Importa idioma
+
+// Fetch product details by ID
+async function fetchProductById(product_id) {
+    const language_id = getBackendLanguageId(); // ✅ Usa o idioma
+    try {
+        const response = await fetch(`${API_BASE_URL}/product?id=${product_id}&language_id=${language_id}`);
+
+        if (!response.ok) throw new Error(`Error fetching product. Status: ${response.status}`);
+
+        return await response.json();
+    } catch (error) {
+        console.error("Error fetching product:", error);
+        return null;
+    }
+}
 
 // Load product details
 document.addEventListener("DOMContentLoaded", async () => {
@@ -38,13 +54,9 @@ document.addEventListener("DOMContentLoaded", async () => {
         // Updates the texts
         product_name.textContent = product.product_name || "Unknown Product";
         if (product.stores && product.stores.length > 0) {
-            const prices = product.stores
-                .filter(store => store.price !== undefined && store.price !== null)
-                .map(store => store.price);
-        
-            const minPrice = product.min_price; 
+            const minPrice = product.min_price;
             const maxPrice = product.max_price;
-        
+
             productPrice.textContent = (minPrice === maxPrice)
                 ? `$${minPrice.toFixed(2)}`
                 : `$${minPrice.toFixed(2)} - $${maxPrice.toFixed(2)}`;
@@ -63,7 +75,7 @@ document.addEventListener("DOMContentLoaded", async () => {
                 <div class="store-item">
                     <h5>${store.store_name}</h5>
                     <p><strong>Location:</strong> ${store.store_location || "Not available"}</p>
-                    <p><strong>Price:</strong> <span style="color: green;">$${store.price ? store.price.toFixed(2) : "Not available"}</span></p>
+                    <p><strong>Price:</strong> <span style="color: var(--on-background);">$${store.price ? store.price.toFixed(2) : "Not available"}</span></p>
                     <p><strong>Stock:</strong> ${store.stock} available</p>
                 </div>
             `).join("");
@@ -90,15 +102,33 @@ document.addEventListener("DOMContentLoaded", async () => {
     // Ensure search functionality works the same as in index.html
     document.getElementById("search-form").addEventListener("submit", function (event) {
         event.preventDefault();
-        let query = document.getElementById("search-input").value.trim(); 
+        let query = document.getElementById("search-input").value.trim();
 
-        console.log("Search query sent:", query); 
+        if (!query) return;
 
-        if (!query) {
-            return;
+        window.location.href = `search-results.html?query=${encodeURIComponent(query)}`;
+    });
+
+    // Open Sidebar on "Add to cart" button click
+    buyButton.addEventListener("click", () => {
+        const sidebar = document.getElementById("cart-sidebar");
+
+        // Logic to add product to the cart...
+        const productId = buyButton.dataset.product_id;
+        if (productId) {
+            addToCart(productId);
         }
 
-        // Redirect to search-results.html with the query
-        window.location.href = `search-results.html?query=${encodeURIComponent(query)}`;
+        // Open the sidebar
+        if (sidebar) {
+            sidebar.classList.add("open");
+
+            // Apply localization after opening the sidebar
+            if (typeof applyLocalization === 'function') {
+                applyLocalization();
+            }
+        } else {
+            console.error("❌ Sidebar not found");
+        }
     });
 });

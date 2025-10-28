@@ -36,11 +36,11 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     }
 
-    const searchForm = document.getElementById("search-form");
-    if (searchForm) {
-        searchForm.addEventListener("submit", (event) => {
-            event.preventDefault();
-            applyTheme(getThemePreference());
-        });
-    }
+    // const searchForm = document.getElementById("search-form");
+    // if (searchForm) {
+    //     searchForm.addEventListener("submit", (event) => {
+    //         event.preventDefault();
+    //         applyTheme(getThemePreference());
+    //     });
+    // }
 });

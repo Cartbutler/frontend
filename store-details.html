@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Store Details - CartBluter</title>
+
+  <!-- Bootstrap CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+
+   <!-- Bootstrap JS Bundle with Popper - List Language -->
+   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+  <!-- Icons -->
+  <link rel="icon" type="image/png" sizes="512x512" href="images/android-chrome-512x512.png">
+  <link rel="icon" type="image/png" sizes="192x192" href="images/android-chrome-192x192.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="images/apple-touch-icon.png">
+  <link rel="icon" type="image/x-icon" href="images/favicon.ico">
+  <link rel="manifest" href="site.webmanifest">
+
+  <!-- Theme CSS -->
+  <link id="theme-style" rel="stylesheet">
+  <link rel="stylesheet" href="cart.css">
+  <link rel="stylesheet" href="store-details.css">
+</head>
+<body class="d-flex flex-column min-vh-100">
+
+  <!-- Navbar -->
+  <nav class="navbar navbar-expand-lg">
+    <div class="container d-flex justify-content-between align-items-center">
+      <a class="navbar-brand" href="index.html">
+        <img src="images/CartBluterLogo.png" alt="CartBluter Logo">
+        <span>CartBluter</span>
+      </a>
+
+      <div class="mx-auto w-50 search-container position-relative">
+        <form class="d-flex" id="search-form">
+          <input id="search-input" class="form-control me-2" type="search" data-i18n-placeholder="search_products" aria-label="Search">
+          <button class="btn btn-primary" type="submit" data-i18n="search_button">Search</button>
+        </form>
+        <ul id="suggestions" class="suggestions list-group"></ul>
+      </div>
+
+      <div class="d-flex align-items-center gap-3">
+        <div class="language-toggle-container"></div>
+        <button id="cart-btn" class="cart-btn btn btn-outline-dark position-relative">
+          🛒
+          <span id="cart-count" class="cart-badge position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger d-none">0</span>
+        </button>
+        <div class="theme-toggle-container"></div>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Main Store Details -->
+  <main class="container mt-4">
+    <div id="store-details-container" class="card shadow-lg p-4 mt-4 mx-auto text-center">
+      
+      <!-- Store Image -->
+      <div class="image-wrapper position-relative">
+        <p id="image-loading" class="text-muted" data-i18n="loading_image">Loading image...</p>
+        <img id="store-image" class="img-fluid rounded d-none" alt="Store Image">
+      </div>
+
+      <!-- Store Stats -->
+      <div class="d-flex justify-content-around mb-4 mt-3">
+        <div><strong data-i18n="unique_items">Unique items:</strong> <span id="unique-items-count">0</span></div>
+        <div><strong>Total:</strong> $<span id="store-total-price">0.00</span></div>
+      </div>
+
+      <!-- Product List -->
+      <h4 class="mb-3" data-i18n="your_products">Your Products</h4>
+      <div id="store-products-list" class="list-group">
+        <p id="no-products-message" class="text-muted" data-i18n="no_products">No products available for this store.</p>
+      </div>
+
+      <!-- Store location -->
+      <h5 class="mt-4" data-i18n="store_location">Store Location:</h5>
+      <div id="store-map" class="store-map-container rounded border"></div>
+    </div>
+  </main>
+
+  <!-- Footer -->
+  <footer class="text-center mt-auto py-3">
+    <p data-i18n="tagline">&copy; 2025 CartBluter - Revolutionizing Grocery Shopping</p>
+  </footer>
+
+  <!-- Scripts -->
+<script src="js-files/cookie-id.js"></script>
+<script src="js-files/theme.js"></script>
+<script src="js-files/theme-toggle.js"></script>
+<script src="js-files/search.js"></script>
+
+<!-- ⚠️ Importante: carrega antes dos módulos que usam applyLocalization -->
+<script src="js-files/localization.js"></script>
+<script src="js-files/language-toggle.js"></script>
+
+<!-- Módulos que usam import/export -->
+<script type="module" src="js-files/api_service.js"></script>
+<script type="module" src="js-files/suggestions.js"></script>
+<script type="module" src="js-files/store-details.js"></script>
+<script type="module" src="js-files/cart.js"></script>
+
+<script>
+  document.addEventListener("DOMContentLoaded", () => {
+    if (typeof applyLocalization === "function") {
+      applyLocalization();
+    } else {
+      console.warn("⚠️ applyLocalization not defined");
+    }
+  });
+</script>
+</body>
+</html>

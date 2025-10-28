@@ -1,10 +1,12 @@
 import { fetchCategories } from './api_service.js';
 
 document.addEventListener("DOMContentLoaded", async function () {
+    await applyLocalization();
+
     const container = document.getElementById("category-container");
 
     // Show loading message
-    container.innerHTML = `<p>Loading categories...</p>`;
+    container.innerHTML = `<p data-i18n="loadingCategories">Loading categories...</p>`;
 
     try {
         // Fetch categories from API
@@ -14,7 +16,8 @@ document.addEventListener("DOMContentLoaded", async function () {
         container.innerHTML = "";
 
         if (categories.length === 0) {
-            container.innerHTML = `<p>No categories available.</p>`;
+            container.innerHTML = `<p data-i18n="noCategories">No categories available.</p>`;
+            await applyLocalization(); // traduz string dinâmica
             return;
         }
 
@@ -35,10 +38,14 @@ document.addEventListener("DOMContentLoaded", async function () {
             container.appendChild(div);
         });
 
+        // Apply localization after categories are rendered
+        await applyLocalization();
+
         console.log("Categories rendered with images:", categories);
 
     } catch (error) {
         console.error("Error loading categories:", error);
-        container.innerHTML = `<p>Failed to load categories. Please try again later.</p>`;
+        container.innerHTML = `<p data-i18n="errorCategories">Failed to load categories. Please try again later.</p>`;
+        await applyLocalization(); // traduz fallback message também
     }
 });

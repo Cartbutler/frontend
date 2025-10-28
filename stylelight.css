@@ -30,7 +30,7 @@ body {
     gap: 10px;
     color: var(--on-primary);
     text-decoration: none;
-    margin-left: -80px;
+    margin-left: -10px;
 }
 
 /* Navbar Brand - Prevents the name from changing color */

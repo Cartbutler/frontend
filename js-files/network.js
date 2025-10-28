@@ -1,8 +1,9 @@
 import { API_BASE_URL } from './config.js';
+import { getBackendLanguageId } from './utils.js';
 
-export async function fetchCartItems(user_id) {
+export async function fetchCartItems(user_id, language_id = getBackendLanguageId()) {
     try {
-        const res = await fetch(`${API_BASE_URL}/cart?user_id=${String(user_id)}`);
+        const res = await fetch(`${API_BASE_URL}/cart?user_id=${String(user_id)}&language_id=${language_id}`);
         if (!res.ok) throw new Error(`Fetch error: ${res.status}`);
         const data = await res.json();
         return {
@@ -18,6 +19,7 @@ export async function fetchCartItems(user_id) {
     }
 }
 
+// Mantém as demais funções iguais
 export async function addToCart(user_id, product_id, quantity = 1) {
     try {
         const res = await fetch(`${API_BASE_URL}/cart`, {
