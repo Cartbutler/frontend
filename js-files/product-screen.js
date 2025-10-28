@@ -1,16 +1,4 @@
-// Fetch product details by ID
-async function fetchProductById(product_id) {
-    try {
-        const response = await fetch(`${API_BASE_URL}/product?id=${product_id}`);
-
-        if (!response.ok) throw new Error(`Error fetching product. Status: ${response.status}`);
-
-        return await response.json();
-    } catch (error) {
-        console.error("Error fetching product:", error);
-        return null;
-    }
-}
+import { fetchProductById } from './api_service.js';
 
 // Load product details
 document.addEventListener("DOMContentLoaded", async () => {

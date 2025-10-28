@@ -1,7 +1,6 @@
 import {debounce, getOrCreateUserId, getCurrentQuantity, updateCartIcon, loadCartSidebar, formatPrice} from './utils.js';
 import {fetchCartItems, updateCartItem, removeCartItem, addToCart} from './network.js';
-
-const API_BASE_URL = "https://cartbutler.duckdns.org/api";
+import { API_BASE_URL } from './config.js';
 let cartSidebarLoaded = false;
 export let cart_items = []; // Store data locally
 export let cart_id = null;

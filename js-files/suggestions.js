@@ -1,3 +1,5 @@
+import { fetchSuggestions } from './api_service.js';
+
 document.addEventListener("DOMContentLoaded", () => {
     const searchInput = document.getElementById("search-input");
     const suggestionsBox = document.getElementById("suggestions");

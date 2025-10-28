@@ -1,3 +1,5 @@
+import { fetchProductsByCategory, fetchSearchResults } from './api_service.js';
+
 document.addEventListener("DOMContentLoaded", async () => {
     const searchResultsContainer = document.getElementById("search-results");
     const noResultsMessage = document.getElementById("no-results");

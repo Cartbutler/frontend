@@ -1,3 +1,5 @@
+import { fetchCategories } from './api_service.js';
+
 document.addEventListener("DOMContentLoaded", async function () {
     const container = document.getElementById("category-container");
 

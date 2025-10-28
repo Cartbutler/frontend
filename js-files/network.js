@@ -1,4 +1,4 @@
-const API_BASE_URL = "https://cartbutler.duckdns.org/api";
+import { API_BASE_URL } from './config.js';
 
 export async function fetchCartItems(user_id) {
     try {

@@ -1,6 +1,7 @@
 import { addToCart } from './network.js';
 import { getOrCreateUserId } from './utils.js';
 import { updateCartUI, openSidebar, cartDataPromise } from './cart.js';
+import { API_BASE_URL } from './config.js';
 
 document.addEventListener("DOMContentLoaded", async () => {
     const shoppingResultsContainer = document.getElementById("shopping-results");
@@ -71,8 +72,6 @@ document.addEventListener("DOMContentLoaded", async () => {
 
 // Fetch shopping results from backend API
 async function fetchShoppingResults(user_id, cart_id) {
-    const API_BASE_URL = "https://cartbutler.duckdns.org/api";
-    
     try {
         const params = new URLSearchParams({
             user_id: user_id,
