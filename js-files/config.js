@@ -4,7 +4,7 @@
  */
 
 // API Base URL - Single source of truth for all API calls
-const API_BASE_URL = "https://cartbutler.duckdns.org/api";
+const API_BASE_URL = "https://cartbutler.ue.r.appspot.com/";
 
 // TODO: Consider adding environment-specific configurations (dev, staging, prod)
 // TODO: Consider adding other configuration values like:
